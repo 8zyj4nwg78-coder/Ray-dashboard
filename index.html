@@ -1,0 +1,772 @@
+<title>Ray Builders Project Controls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky job bar + KPI strip on top, scrollable category chips, card list, bottom sheet for editing. Phone first, widens to a 2-col list on desktop. */
+:root{
+  color-scheme: dark;
+  --bg:#0d1116; --panel:#151b22; --panel2:#1c242d; --line:#2a3440; --line2:#36424f;
+  --fg:#e9eef3; --muted:#8d99a7; --dim:#5f6b78;
+  --accent:#f47b20; --accent-ink:#1a0e04; --accent-soft:rgba(244,123,32,.14);
+  --red:#f2554d; --red-soft:rgba(242,85,77,.13); --amber:#e9b63b; --amber-soft:rgba(233,182,59,.13);
+  --green:#3dbb88; --green-soft:rgba(61,187,136,.13); --blue:#58a2ec; --blue-soft:rgba(88,162,236,.13);
+  --grey-soft:rgba(141,153,167,.14);
+  --f-display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --f-body:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--f-body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(13,17,22,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:12px 10px}
+.mark{width:34px;height:34px;flex:none;border-radius:7px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:.02em}
+.brand h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.brand .sub{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.brand .grow{flex:1;min-width:0}
+.iconbtn{width:40px;height:40px;border-radius:9px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--fg)}
+.iconbtn:hover{border-color:var(--line2)}
+.iconbtn svg{width:20px;height:20px}
+
+.scroller{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px;margin-inline:-16px;padding-inline:16px}
+.scroller::-webkit-scrollbar{display:none}
+.jobchip{flex:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px;font-weight:600;font-size:14px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.jobchip .jn{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:500}
+.jobchip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.jobchip[aria-pressed="true"] .jn{color:var(--dim)}
+.jobchip.add{border-style:dashed;color:var(--accent);border-color:rgba(244,123,32,.5);background:transparent}
+
+/* Sample banner */
+.banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:14px;padding:10px 12px;border:1px solid rgba(233,182,59,.35);background:var(--amber-soft);border-radius:var(--r);font-size:13.5px}
+.banner b{color:var(--amber)}
+.banner .grow{flex:1;min-width:180px}
+.banner.warn{border-color:rgba(242,85,77,.4);background:var(--red-soft)}
+.banner.warn b{color:var(--red)}
+
+/* Job header */
+.jobhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap}
+.jobhead h2{margin:0;font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1.05;letter-spacing:.01em;text-wrap:balance}
+.jobhead .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.jobhead .meta span+span::before{content:" · "}
+.today{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+@media(min-width:640px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1000px){.kpis{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.kpi{text-align:left;border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:12px 12px 11px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi:hover{border-color:var(--line2)}
+.kpi .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .val{font-family:var(--f-display);font-weight:700;font-size:34px;line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .foot{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi.hot{border-color:rgba(242,85,77,.55);background:linear-gradient(180deg,var(--red-soft),transparent 80%),var(--panel)}
+.kpi.hot .val,.kpi.hot .lbl{color:var(--red)}
+.kpi.money .val{font-size:30px}
+
+/* Category tabs */
+.tabsbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--topH,112px));z-index:15;background:var(--bg);padding-top:16px;margin-top:6px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:0;background:none;padding:10px 10px 12px;font-weight:600;font-size:14px;color:var(--muted);border-bottom:3px solid transparent;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.tab .ct{font-family:var(--f-mono);font-size:11px;background:var(--panel2);color:var(--muted);padding:1px 6px;border-radius:5px;font-weight:600}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.tab[aria-selected="true"] .ct{background:var(--accent-soft);color:var(--accent)}
+.tab.due .ct{background:var(--red-soft);color:var(--red)}
+
+/* Toolbar */
+.toolbar{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.search{flex:1 1 200px;min-width:0;position:relative}
+.search input{width:100%;height:42px;border-radius:9px;border:1px solid var(--line);background:var(--panel);padding:0 12px 0 36px}
+.search svg{position:absolute;left:11px;top:12px;width:18px;height:18px;color:var(--muted)}
+.toggle{height:42px;border-radius:9px;border:1px solid var(--line);background:var(--panel);padding:0 12px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.toggle[aria-pressed="true"]{color:var(--fg);border-color:var(--line2);background:var(--panel2)}
+.listhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:18px}
+.listhead h3{margin:0;font-family:var(--f-display);font-size:21px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.listhead .hint{font-size:12.5px;color:var(--muted)}
+.tally{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);text-align:right}
+.tally b{color:var(--fg);font-weight:600}
+
+/* Cards */
+.list{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px;padding-bottom:120px}
+@media(min-width:820px){.list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{position:relative;text-align:left;border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:12px 14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;cursor:pointer}
+.card:hover{border-color:var(--line2)}
+.card.late{border-color:rgba(242,85,77,.6);box-shadow:inset 3px 0 0 var(--red)}
+.card.closed{opacity:.62}
+.c-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.num{font-family:var(--f-mono);font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.02em}
+.c-top .sp{flex:1}
+.pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:5px;white-space:nowrap}
+.t-green{background:var(--green-soft);color:var(--green)}
+.t-red{background:var(--red-soft);color:var(--red)}
+.t-amber{background:var(--amber-soft);color:var(--amber)}
+.t-blue{background:var(--blue-soft);color:var(--blue)}
+.t-grey{background:var(--grey-soft);color:var(--muted)}
+.pill.od{background:var(--red);color:#fff}
+.c-title{font-weight:600;font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.c-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;color:var(--muted)}
+.c-meta .amt{color:var(--fg);font-family:var(--f-mono);font-size:13px;font-weight:600}
+.c-meta .amt small{color:var(--muted);font-weight:500}
+.c-notes{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:7px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+.due{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.due.late{color:var(--red);font-weight:600}
+.due.soon{color:var(--amber)}
+.jobtag{margin-left:auto;font-size:11.5px;color:var(--muted);border:1px solid var(--line);padding:2px 7px;border-radius:5px;white-space:nowrap}
+.cat{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:700}
+.subrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.phone{font-family:var(--f-mono);font-size:13.5px;color:var(--fg);text-decoration:none;border:1px solid var(--line);padding:5px 9px;border-radius:7px;background:var(--panel2);user-select:all}
+.ns{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-left:auto}
+.ns span{padding:4px 9px;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.ns span b{font-family:var(--f-mono);color:var(--fg)}
+.ns.bad{border-color:rgba(242,85,77,.55)}
+.ns.bad span,.ns.bad span b{color:var(--red)}
+.ns button{border:0;border-left:1px solid var(--line);background:var(--panel2);width:34px;height:30px;font-weight:700}
+
+.empty{border:1px dashed var(--line2);border-radius:var(--r);padding:28px 18px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--fg);font-size:16px;margin-bottom:4px}
+
+/* FAB */
+.fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;height:56px;padding:0 20px 0 16px;border-radius:14px;border:0;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.fab svg{width:22px;height:22px}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:620px;max-height:92%;overflow:auto;background:var(--panel);border:1px solid var(--line2);border-bottom:0;border-radius:16px 16px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+@media(min-width:700px){.scrim{align-items:center}.sheet{border-radius:16px;border-bottom:1px solid var(--line2);max-height:88%}}
+.grab{width:42px;height:4px;border-radius:4px;background:var(--line2);margin:4px auto 10px}
+.sheet h4{margin:0 0 2px;font-family:var(--f-display);font-size:24px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+.sheet .shint{font-size:13px;color:var(--muted);margin:0 0 12px}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.f input,.f select,.f textarea{width:100%;min-width:0;height:44px;border-radius:9px;border:1px solid var(--line);background:var(--bg);padding:0 11px;font-size:16px}
+.f textarea{height:auto;min-height:92px;padding:10px 11px;resize:vertical;line-height:1.4}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--accent);outline:none}
+.f .err{color:var(--red);font-size:12.5px}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{height:46px;border-radius:10px;padding:0 18px;border:1px solid var(--line2);background:var(--panel2);font-weight:700;font-size:15px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);flex:1}
+.btn.danger{color:var(--red);border-color:rgba(242,85,77,.45);background:transparent}
+.btn.danger.arm{background:var(--red);color:#fff;border-color:var(--red)}
+.btn.sm{height:36px;padding:0 12px;font-size:13.5px}
+.btn.amber{background:var(--amber);border-color:var(--amber);color:#1b1404}
+.menu{display:flex;flex-direction:column;gap:10px}
+.mrow{border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.mrow .t{font-weight:700}
+.mrow .d{font-size:13px;color:var(--muted)}
+.mrow .r{display:flex;gap:8px;flex-wrap:wrap}
+.jobline{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.jobline .grow{flex:1;min-width:0}
+.jobline .n{font-weight:600;overflow-wrap:anywhere}
+.jobline .m{font-size:12.5px;color:var(--muted)}
+textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .22s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.4}}}
+</style>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">RB</div>
+      <div class="grow">
+        <h1>Ray Builders</h1>
+        <div class="sub">Project Controls</div>
+      </div>
+      <button class="iconbtn" id="btnMenu" aria-label="Settings and data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <nav class="scroller" id="jobs" aria-label="Jobs"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="banners"></div>
+  <section class="jobhead" id="jobhead"></section>
+  <section class="kpis" id="kpis" aria-label="Summary"></section>
+  <div class="tabsbar" id="tabsbar"><nav class="tabs" id="tabs" role="tablist" aria-label="Categories"></nav></div>
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search number, title, company, notes" autocomplete="off">
+    </div>
+    <button class="toggle" id="btnClosed" aria-pressed="false">Show closed</button>
+  </div>
+  <div class="listhead" id="listhead"></div>
+  <section class="list" id="list"></section>
+</main>
+
+<button class="fab" id="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="fabLbl">Add</span></button>
+<div id="sheetHost"></div>
+
+<script>
+(() => {
+"use strict";
+const KEY = "raybuilders.pc.v1", UIKEY = "raybuilders.ui.v1";
+
+/* ---------- Categories ---------- */
+const CATS = [
+  {k:"open",  one:"Open Item",  label:"Open Items",      short:"Open Items", pre:"OI",  statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Responsible", due:"Follow-up date", hint:"Anything still hanging on the job."},
+  {k:"owner", one:"Owner Question", label:"Owner Questions", short:"Owner Qs",   pre:"OQ",  statuses:["To Ask","Asked","Answered"], done:["Answered"], party:"Asked to", due:"Need answer by", hint:"Decisions and answers you need from the owner."},
+  {k:"rfi", one:"RFI",   label:"RFIs",            short:"RFIs",       pre:"RFI", statuses:["Draft","Open","Answered","Closed"], done:["Answered","Closed"], party:"Sent to", due:"Response due", hint:"Numbered requests for information to the design team."},
+  {k:"subm", one:"Submittal",  label:"Submittals",      short:"Submittals", pre:"SUB", statuses:["Pending","Submitted","Revise & Resubmit","Approved"], done:["Approved"], party:"From (sub / supplier)", due:"Due / follow-up", hint:"Pending, submitted, revise & resubmit, approved."},
+  {k:"dwg", one:"Drawing",   label:"Drawings",        short:"Drawings",   pre:"DWG", statuses:["Under Review","Current","Superseded"], done:["Current","Superseded"], party:"From", due:"Review by", hint:"Final sets, field markups and shop drawings.", types:["Final","Markup","Shop Drawing"]},
+  {k:"inv", one:"Invoice",   label:"Invoices",        short:"Invoices",   pre:"INV", statuses:["Draft","Sent","Partially Paid","Paid"], done:["Paid"], party:"Billed to", due:"Payment due", money:true, paid:true, hint:"Pay apps and bills you sent. Unpaid = money owed to you."},
+  {k:"co", one:"Change Order",    label:"Change Orders",   short:"COs",        pre:"CO",  statuses:["Pending","Submitted","Approved","Rejected"], done:["Approved","Rejected"], party:"Requested by / sent to", due:"Decision by", money:true, hint:"Track pricing and approval of changes."},
+  {k:"subs", one:"Sub",  label:"Subs on Job",     short:"Subs",       pre:"SC",  statuses:["Active","Not Started","Off Job"], done:["Off Job"], party:"Company", due:"Next follow-up", hint:"Trade, phone and no-show count for each sub.", sub:true},
+  {k:"quote", one:"Quote", label:"Quotes to Get",   short:"Quotes",     pre:"Q",   statuses:["Need to Request","Requested","Received"], done:["Received"], party:"Vendor", due:"Need by", money:true, hint:"Pricing you still need to chase."},
+  {k:"prop", one:"Proposal",  label:"Proposals to Sign", short:"Proposals", pre:"P",  statuses:["To Review","Ready to Sign","Signed","Declined"], done:["Signed","Declined"], party:"From", due:"Sign by", money:true, hint:"Sub and vendor proposals waiting on your signature."},
+  {k:"owed", one:"Payable",  label:"Who's Owed",      short:"Owed",       pre:"PAY", statuses:["Owed","Partially Paid","Paid"], done:["Paid"], party:"Pay to", due:"Pay by", money:true, paid:true, hint:"Money you owe subs and suppliers."},
+];
+const CAT = Object.fromEntries(CATS.map(c => [c.k, c]));
+const NEG = ["Revise & Resubmit","Rejected","Declined"];
+const NEUTRAL = ["Draft","Pending","To Ask","Need to Request","To Review","Not Started","Superseded"];
+
+/* ---------- Dates & money ---------- */
+const pad = n => String(n).padStart(2,"0");
+const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const TODAY = isoOf(new Date());
+const addDays = n => { const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+n); return isoOf(d); };
+const dayDiff = iso => { const [y,m,d] = iso.split("-").map(Number); const a = Date.UTC(y,m-1,d); const t = new Date(); return Math.round((a - Date.UTC(t.getFullYear(),t.getMonth(),t.getDate()))/864e5); };
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtDate = iso => { const [y,m,d] = iso.split("-").map(Number); return `${MON[m-1]} ${d}` + (y !== new Date().getFullYear() ? `, ${y}` : ""); };
+const money = n => "$" + Math.round(Number(n)||0).toLocaleString("en-US");
+const moneyShort = n => { n = Number(n)||0; if (Math.abs(n) >= 1e6) return "$" + (n/1e6).toFixed(2).replace(/\.?0+$/,"") + "M"; if (Math.abs(n) >= 1e4) return "$" + (n/1e3).toFixed(1).replace(/\.0$/,"") + "K"; return money(n); };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+
+/* ---------- Item logic ---------- */
+const isDone = it => CAT[it.cat].done.includes(it.status);
+const isLate = it => !!it.due && !isDone(it) && it.due < TODAY;
+const unpaid = it => Math.max(0, (Number(it.amount)||0) - (Number(it.paid)||0));
+const tone = it => {
+  if (NEG.includes(it.status)) return "t-red";
+  if (isDone(it)) return it.status === "Superseded" ? "t-grey" : "t-green";
+  if (NEUTRAL.includes(it.status)) return "t-grey";
+  if (["Partially Paid","Revise & Resubmit","Asked","Ready to Sign","Owed"].includes(it.status)) return "t-amber";
+  return "t-blue";
+};
+
+/* ---------- Sample data ---------- */
+function sampleData(){
+  const jobs = [
+    {id:"j-oak",  name:"Oakhurst Synagogue", number:"2401", location:"Oakhurst, NJ", client:"Building Committee"},
+    {id:"j-par",  name:"Paramount Office",   number:"2402", location:"", client:"Paramount ownership"},
+    {id:"j-deal", name:"Deal Kollel",        number:"2403", location:"Deal, NJ", client:"Kollel board"},
+  ];
+  const rows = {
+    "j-oak": [
+      ["open","Confirm ark wall blocking locations","Elite Millwork",null,-3,"Open","Need final dims from millwork shop before we close up the wall."],
+      ["open","Punch list: lobby restrooms","Ray Builders",null,6,"In Progress","Partitions, accessories, caulk at vanity tops."],
+      ["owner","Bimah finish: walnut or white oak?","Building Committee",null,2,"Asked","Samples dropped off Tuesday. Millwork needs answer to release."],
+      ["owner","Approve women's section partition height","Building Committee",null,-2,"Asked","Architect shows 54\". Committee asked about 60\"."],
+      ["rfi","Steel lintel size at sanctuary east windows","Kessler Architects",null,-4,"Open","Conflict between S-201 and A-302. Mason is waiting."],
+      ["rfi","Mikvah waterproofing detail at pool walls","Kessler Architects",null,3,"Open",""],
+      ["rfi","Fire alarm device count in social hall","Benchmark Engineering",null,-12,"Answered","Answered: add 4 strobes. Passed to Allied."],
+      ["subm","Sanctuary pendant light fixtures","Shore Line Electric",null,5,"Submitted",""],
+      ["subm","Storefront glazing system","Precision Glass & Glazing",null,-1,"Revise & Resubmit","Architect wants thermally broken frames. Resubmit with updated cut sheets."],
+      ["subm","Roofing membrane: TPO 60 mil","Jersey Roofing Systems",null,null,"Approved","Approved as noted 9/18."],
+      ["subm","Ark casework","Elite Millwork",null,9,"Pending","Waiting on finish decision from owner (OQ-001)."],
+      ["dwg","A-101 Floor Plan, Rev 4","Kessler Architects",null,null,"Current","",{type:"Final"}],
+      ["dwg","Sanctuary ceiling: field markups","Ray Builders",null,2,"Under Review","Soffit heights changed at duct crossing.",{type:"Markup"}],
+      ["dwg","Ark casework shop drawings","Elite Millwork",null,-2,"Under Review","",{type:"Shop Drawing"}],
+      ["inv","Pay App #6: September","Building Committee",186450,-5,"Sent","Sent 9/30. Committee meets Thursdays.",{paid:0}],
+      ["inv","Pay App #5: August","Building Committee",142300,null,"Paid","",{paid:142300}],
+      ["co","Add blocking for memorial boards","Building Committee",4850,4,"Submitted",""],
+      ["co","Upgrade sanctuary HVAC controls","Atlantic Mechanical",18200,10,"Pending","Waiting on Atlantic's final number."],
+      ["subs","Shore Line Electric","Mike T.",null,null,"Active","",{trade:"Electrical",phone:"(732) 555-0148",noShows:0}],
+      ["subs","Atlantic Mechanical","Joe R.",null,null,"Active","",{trade:"HVAC",phone:"(732) 555-0192",noShows:1}],
+      ["subs","Garden State Drywall","Luis M.",null,1,"Active","No-shows Mon 9/29, Thu 10/2 and Wed 10/8. Call office before Friday.",{trade:"Drywall & Framing",phone:"(732) 555-0117",noShows:3}],
+      ["subs","Elite Millwork","Avi S.",null,null,"Not Started","",{trade:"Millwork",phone:"(718) 555-0163",noShows:0}],
+      ["quote","Mikvah tile: porcelain 24x24","Coastal Tile & Stone",null,3,"Requested",""],
+      ["quote","Exterior building signage","",null,-1,"Need to Request","Get 2 prices."],
+      ["prop","Site paving & concrete","Tri-County Concrete",68400,1,"Ready to Sign","Includes curbs and ADA ramp."],
+      ["owed","Req #4: drywall & framing","Garden State Drywall",38700,-3,"Owed","",{paid:0}],
+      ["owed","Req #5: electrical rough-in","Shore Line Electric",52100,7,"Partially Paid","Paid $25,000 on 10/1.",{paid:25000}],
+    ],
+    "j-par": [
+      ["open","Elevator inspection scheduling","Ray Builders",null,5,"Open",""],
+      ["open","Tenant 3rd floor demising wall layout","Paramount ownership",null,-6,"Open","Waiting on tenant's lease exhibit."],
+      ["owner","Lobby flooring: confirm porcelain vs. terrazzo","Paramount ownership",null,4,"Asked",""],
+      ["rfi","Roof drain relocation at RTU-2","Benchmark Engineering",null,-2,"Open","Drain lands under new curb."],
+      ["rfi","Existing beam reinforcement at 2nd floor","Benchmark Engineering",null,6,"Open",""],
+      ["subm","RTU-1 & RTU-2 equipment","Atlantic Mechanical",null,-4,"Submitted","Long lead. Push engineer for review."],
+      ["subm","Ceiling grid and tile","Garden State Drywall",null,8,"Pending",""],
+      ["subm","Fire sprinkler hydraulic calcs","Allied Fire Protection",null,null,"Approved",""],
+      ["dwg","Mechanical shop drawings, 2nd floor","Atlantic Mechanical",null,3,"Under Review","",{type:"Shop Drawing"}],
+      ["dwg","Full permit set, Rev 2","Kessler Architects",null,null,"Current","",{type:"Final"}],
+      ["inv","Pay App #3: September","Paramount ownership",97250,12,"Sent","",{paid:0}],
+      ["inv","Pay App #2: August","Paramount ownership",88600,-18,"Partially Paid","Short paid $10,000 pending CO-001 approval.",{paid:78600}],
+      ["co","Additional outlets in open office","Paramount ownership",6320,-3,"Submitted","Owner verbally OK'd. Need signature."],
+      ["co","Upgrade lobby storefront doors","Paramount ownership",11900,null,"Approved",""],
+      ["subs","Atlantic Mechanical","Joe R.",null,null,"Active","",{trade:"HVAC",phone:"(732) 555-0192",noShows:0}],
+      ["subs","Allied Fire Protection","Dana K.",null,null,"Active","",{trade:"Fire Sprinkler",phone:"(732) 555-0175",noShows:0}],
+      ["subs","Garden State Drywall","Luis M.",null,null,"Active","",{trade:"Drywall & Ceilings",phone:"(732) 555-0117",noShows:2}],
+      ["quote","Window film, south elevation","",null,7,"Need to Request",""],
+      ["quote","Parking lot restriping","Shore Paving & Striping",3800,null,"Received",""],
+      ["prop","Elevator modernization","Liberty Elevator",42600,-1,"To Review","Compare against second bid before signing."],
+      ["owed","Req #2: HVAC rough","Atlantic Mechanical",61400,2,"Owed","",{paid:0}],
+    ],
+    "j-deal": [
+      ["open","Temporary power for 2nd floor","Shore Line Electric",null,-1,"Open",""],
+      ["open","Dumpster swap schedule","Ray Builders",null,3,"In Progress",""],
+      ["owner","Beis medrash bookshelf layout","Kollel board",null,-4,"Asked","Need count of shelves and seating per row."],
+      ["owner","Air conditioning in study rooms: split units OK?","Kollel board",null,6,"To Ask",""],
+      ["rfi","Foundation step at north wall","Benchmark Engineering",null,-7,"Open","Field condition does not match S-100. Concrete crew on hold."],
+      ["rfi","Stair handrail height at landing","Kessler Architects",null,2,"Draft",""],
+      ["subm","Concrete mix design","Tri-County Concrete",null,null,"Approved",""],
+      ["subm","Rebar shop drawings","Monmouth Steel",null,-3,"Revise & Resubmit","Engineer flagged lap lengths."],
+      ["subm","Windows: vinyl double hung","Precision Glass & Glazing",null,10,"Pending",""],
+      ["dwg","Foundation plan with field markups","Ray Builders",null,1,"Under Review","Marked up step at north wall.",{type:"Markup"}],
+      ["dwg","Rebar shop drawings","Monmouth Steel",null,-3,"Under Review","",{type:"Shop Drawing"}],
+      ["inv","Deposit / Pay App #1","Kollel board",54000,-9,"Sent","Follow up with treasurer.",{paid:0}],
+      ["co","Rock removal at foundation","Kollel board",9750,2,"Pending",""],
+      ["subs","Tri-County Concrete","Sal P.",null,null,"Active","",{trade:"Concrete",phone:"(732) 555-0131",noShows:1}],
+      ["subs","Monmouth Steel","Ed W.",null,null,"Not Started","",{trade:"Rebar / Steel",phone:"(732) 555-0184",noShows:0}],
+      ["subs","Shore Line Electric","Mike T.",null,null,"Active","",{trade:"Electrical",phone:"(732) 555-0148",noShows:0}],
+      ["quote","Plumbing rough & finish","Coastal Plumbing & Heating",null,-2,"Requested","Second call. Promised by Monday."],
+      ["quote","Roof trusses","",null,9,"Need to Request",""],
+      ["prop","Excavation & backfill","Jersey Site Work",31500,null,"Signed",""],
+      ["owed","Excavation: progress payment","Jersey Site Work",18000,-2,"Owed","",{paid:0}],
+      ["owed","Concrete footings","Tri-County Concrete",22400,9,"Owed","",{paid:0}],
+    ],
+  };
+  const items = [];
+  for (const j of jobs) {
+    const counters = {};
+    for (const [cat,title,party,amount,dueOff,status,notes,extra] of rows[j.id]) {
+      counters[cat] = (counters[cat]||0) + 1;
+      items.push({
+        id: uid(), jobId: j.id, cat, num: `${CAT[cat].pre}-${String(counters[cat]).padStart(3,"0")}`,
+        title, party, amount: amount ?? "", due: dueOff == null ? "" : addDays(dueOff), status, notes,
+        sample: true, created: Date.now(), ...(extra||{})
+      });
+    }
+  }
+  return {v:1, jobs, items, sampleLoaded:true};
+}
+
+/* ---------- Storage ---------- */
+let storageOK = true;
+function load(){
+  try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }
+  catch(e){ storageOK = false; return null; }
+}
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(db)); storageOK = true; }
+  catch(e){ storageOK = false; }
+}
+function loadUI(){ try { return JSON.parse(localStorage.getItem(UIKEY)) || {}; } catch(e){ return {}; } }
+function saveUI(){ try { localStorage.setItem(UIKEY, JSON.stringify(ui)); } catch(e){} }
+try { navigator.storage && navigator.storage.persist && navigator.storage.persist().catch(()=>{}); } catch(e){}
+
+let db = load();
+if (!db || !Array.isArray(db.jobs)) { db = sampleData(); save(); }
+const ui = Object.assign({job:"all", tab:"due", q:"", showClosed:false}, loadUI());
+if (ui.job !== "all" && !db.jobs.some(j => j.id === ui.job)) ui.job = "all";
+if (ui.tab !== "due" && !CAT[ui.tab]) ui.tab = "due";
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const jobById = id => db.jobs.find(j => j.id === id);
+const scoped = () => ui.job === "all" ? db.items : db.items.filter(i => i.jobId === ui.job);
+function nextNum(jobId, cat){
+  const pre = CAT[cat].pre; let max = 0;
+  for (const i of db.items) if (i.jobId === jobId && i.cat === cat) { const m = String(i.num).match(/(\d+)\s*$/); if (m) max = Math.max(max, +m[1]); }
+  return `${pre}-${String(max+1).padStart(3,"0")}`;
+}
+function toast(msg){
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; t.setAttribute("role","status");
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
+}
+function sortItems(arr){
+  return arr.slice().sort((a,b) => {
+    const da = isDone(a), dbb = isDone(b); if (da !== dbb) return da ? 1 : -1;
+    const la = isLate(a), lb = isLate(b); if (la !== lb) return la ? -1 : 1;
+    if (a.due && b.due && a.due !== b.due) return a.due < b.due ? -1 : 1;
+    if (!!a.due !== !!b.due) return a.due ? -1 : 1;
+    return String(a.num).localeCompare(String(b.num), undefined, {numeric:true});
+  });
+}
+
+/* ---------- Render ---------- */
+function render(){ renderJobs(); renderBanners(); renderHead(); renderKpis(); renderTabs(); renderList(); saveUI(); }
+
+function renderJobs(){
+  const chips = [`<button class="jobchip" data-job="all" aria-pressed="${ui.job==="all"}">All jobs</button>`]
+    .concat(db.jobs.map(j => `<button class="jobchip" data-job="${esc(j.id)}" aria-pressed="${ui.job===j.id}">${esc(j.name)}${j.number?`<span class="jn">#${esc(j.number)}</span>`:""}</button>`));
+  chips.push(`<button class="jobchip add" data-addjob="1">+ Add job</button>`);
+  $("jobs").innerHTML = chips.join("");
+  requestAnimationFrame(() => document.documentElement.style.setProperty("--topH", $("top").offsetHeight + "px"));
+}
+
+function renderBanners(){
+  let h = "";
+  if (!storageOK) h += `<div class="banner warn"><div class="grow"><b>Saving is blocked in this browser.</b> Changes will be lost when you close it. Turn off private browsing, or use Settings → Backup to copy your data.</div></div>`;
+  if (db.items.some(i => i.sample)) h += `<div class="banner"><div class="grow"><b>Sample data.</b> These items are examples so you can see how it works. Your three jobs stay when you clear them.</div><button class="btn sm amber" data-act="clearSample">Clear sample data</button></div>`;
+  $("banners").innerHTML = h;
+}
+
+function renderHead(){
+  const j = jobById(ui.job);
+  const d = new Date();
+  const dateStr = `${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  if (!j) {
+    $("jobhead").innerHTML = `<div><h2>All Jobs</h2><div class="meta"><span>${db.jobs.length} active job${db.jobs.length===1?"":"s"}</span></div></div><div class="today">${dateStr}</div>`;
+  } else {
+    const meta = [j.number && `Job #${esc(j.number)}`, j.location && esc(j.location), j.client && `Owner: ${esc(j.client)}`].filter(Boolean).map(s => `<span>${s}</span>`).join("");
+    $("jobhead").innerHTML = `<div><h2>${esc(j.name)}</h2><div class="meta">${meta}</div></div><div class="today">${dateStr}</div>`;
+  }
+}
+
+function renderKpis(){
+  const its = scoped();
+  const late = its.filter(isLate);
+  const rfis = its.filter(i => i.cat==="rfi" && !isDone(i));
+  const rfiLate = rfis.filter(isLate).length;
+  const subm = its.filter(i => i.cat==="subm" && !isDone(i));
+  const rr = subm.filter(i => i.status==="Revise & Resubmit").length;
+  const inv = its.filter(i => i.cat==="inv" && !isDone(i) && i.status !== "Draft");
+  const invAmt = inv.reduce((s,i) => s + unpaid(i), 0);
+  const invLate = inv.filter(isLate).reduce((s,i) => s + unpaid(i), 0);
+  const owed = its.filter(i => i.cat==="owed" && !isDone(i));
+  const owedAmt = owed.reduce((s,i) => s + unpaid(i), 0);
+  const cos = its.filter(i => i.cat==="co" && !isDone(i));
+  const coAmt = cos.reduce((s,i) => s + (Number(i.amount)||0), 0);
+  const k = (tab, lbl, val, foot, cls="") => `<button class="kpi ${cls}" data-tab="${tab}"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="foot">${foot}</span></button>`;
+  $("kpis").innerHTML = [
+    k("due","Overdue", late.length, late.length ? `${new Set(late.map(i=>i.cat)).size} categories` : "Nothing past due", late.length ? "hot" : ""),
+    k("rfi","Open RFIs", rfis.length, rfiLate ? `${rfiLate} past response date` : "None late"),
+    k("subm","Pending submittals", subm.length, rr ? `${rr} revise & resubmit` : "None returned"),
+    k("inv","Unpaid invoices", moneyShort(invAmt), invLate ? `${moneyShort(invLate)} past due` : `${inv.length} open`, "money" + (invLate ? " hot" : "")),
+    k("owed","You owe", moneyShort(owedAmt), `${owed.length} open payable${owed.length===1?"":"s"}`, "money"),
+    k("co","Pending COs", moneyShort(coAmt), `${cos.length} awaiting approval`, "money"),
+  ].join("");
+}
+
+function renderTabs(){
+  const its = scoped();
+  const late = its.filter(isLate).length;
+  const t = [`<button class="tab due" role="tab" data-tab="due" aria-selected="${ui.tab==="due"}">Overdue <span class="ct">${late}</span></button>`];
+  for (const c of CATS) {
+    const n = its.filter(i => i.cat===c.k && !isDone(i)).length;
+    t.push(`<button class="tab" role="tab" data-tab="${c.k}" aria-selected="${ui.tab===c.k}">${c.short} <span class="ct">${n}</span></button>`);
+  }
+  $("tabs").innerHTML = t.join("");
+  const sel = $("tabs").querySelector('[aria-selected="true"]');
+  if (sel) { const tabs = $("tabs"); const l = sel.offsetLeft - 16, r = l + sel.offsetWidth + 32; if (l < tabs.scrollLeft || r > tabs.scrollLeft + tabs.clientWidth) tabs.scrollLeft = l - 40; }
+  $("fabLbl").textContent = ui.tab === "due" ? "Add item" : ("Add " + CAT[ui.tab].one.toLowerCase().replace(/^rfi$/,"RFI"));
+  $("btnClosed").setAttribute("aria-pressed", ui.showClosed);
+  $("btnClosed").hidden = ui.tab === "due";
+}
+
+function renderList(){
+  const all = scoped();
+  let base = ui.tab === "due" ? all.filter(isLate) : all.filter(i => i.cat === ui.tab);
+  const closedN = base.filter(isDone).length;
+  let items = (ui.showClosed || ui.tab === "due") ? base : base.filter(i => !isDone(i));
+  const q = ui.q.trim().toLowerCase();
+  if (q) items = items.filter(i => [i.num,i.title,i.party,i.notes,i.trade,i.phone,i.type,i.status].some(v => String(v||"").toLowerCase().includes(q)));
+  items = sortItems(items);
+
+  const c = CAT[ui.tab];
+  let tally = "";
+  if (c && c.money) {
+    const open = base.filter(i => !isDone(i));
+    const sum = open.reduce((s,i) => s + (c.paid ? unpaid(i) : (Number(i.amount)||0)), 0);
+    tally = `<div class="tally">${c.paid ? "Unpaid" : "Open total"}<br><b>${money(sum)}</b></div>`;
+  } else if (ui.tab !== "due" && closedN) {
+    tally = `<div class="tally">${closedN} closed<br>${ui.showClosed ? "shown" : "hidden"}</div>`;
+  }
+  $("listhead").innerHTML = `<div><h3>${ui.tab==="due" ? "Overdue" : esc(c.label)}</h3><div class="hint">${ui.tab==="due" ? "Past the due or follow-up date and still open. Oldest first." : esc(c.hint)}</div></div>${tally}`;
+
+  if (!items.length) {
+    let msg;
+    if (q) msg = `<b>No matches for “${esc(ui.q)}”</b>Try a number, company or word from the notes.`;
+    else if (ui.tab === "due") msg = `<b>Nothing overdue</b>Every open item is on schedule.`;
+    else msg = `<b>No open ${esc(c.label.toLowerCase())}${ui.job!=="all" ? " on this job" : ""}</b>Tap <b style="display:inline;color:var(--accent)">+ Add</b> to log the first one.${closedN && !ui.showClosed ? ` ${closedN} closed item${closedN===1?" is":"s are"} hidden.` : ""}`;
+    $("list").innerHTML = `<div class="empty">${msg}</div>`;
+    return;
+  }
+  $("list").innerHTML = items.map(card).join("");
+}
+
+function dueLabel(it){
+  if (!it.due) return "";
+  const d = dayDiff(it.due), c = CAT[it.cat];
+  const word = c.due.replace(/ date$/,"").replace(/ \/ follow-up$/,"");
+  if (isDone(it)) return `<span class="due">${esc(word)} ${fmtDate(it.due)}</span>`;
+  if (d < 0) return `<span class="due late">${fmtDate(it.due)} · ${-d}d late</span>`;
+  if (d === 0) return `<span class="due soon">Due today</span>`;
+  if (d <= 3) return `<span class="due soon">${esc(word)} ${fmtDate(it.due)} · in ${d}d</span>`;
+  return `<span class="due">${esc(word)} ${fmtDate(it.due)}</span>`;
+}
+
+function card(it){
+  const c = CAT[it.cat], late = isLate(it), done = isDone(it);
+  const job = ui.job === "all" ? jobById(it.jobId) : null;
+  const meta = [];
+  if (it.cat === "dwg" && it.type) meta.push(esc(it.type));
+  if (it.cat === "subs") { if (it.trade) meta.push(`<b style="color:var(--fg);font-weight:600">${esc(it.trade)}</b>`); if (it.party) meta.push(esc(it.party)); }
+  else if (it.party) meta.push(esc(it.party));
+  if (c.money && it.amount !== "" && it.amount != null) {
+    if (c.paid && Number(it.paid) > 0 && !done) meta.push(`<span class="amt">${money(unpaid(it))} <small>due of ${money(it.amount)}</small></span>`);
+    else meta.push(`<span class="amt">${money(it.amount)}</span>`);
+  }
+  let subrow = "";
+  if (it.cat === "subs") {
+    const ns = Number(it.noShows)||0;
+    subrow = `<div class="subrow">${it.phone ? `<a class="phone" href="tel:${esc(String(it.phone).replace(/[^\d+]/g,""))}" data-stop="1">${esc(it.phone)}</a>` : `<span class="due">No phone saved</span>`}
+      <div class="ns ${ns>=2?"bad":""}" data-stop="1"><span>No-shows <b>${ns}</b></span><button data-ns="-1" data-id="${it.id}" aria-label="Remove a no-show">−</button><button data-ns="1" data-id="${it.id}" aria-label="Log a no-show">+</button></div></div>`;
+  }
+  return `<div class="card ${late?"late":""} ${done?"closed":""}" role="button" tabindex="0" data-id="${it.id}">
+    <div class="c-top"><span class="num">${esc(it.num)}</span>${ui.tab==="due" ? `<span class="cat">${esc(c.short)}</span>` : ""}<span class="sp"></span>${late?`<span class="pill od">Overdue</span>`:""}<span class="pill ${tone(it)}">${esc(it.status)}</span></div>
+    <div class="c-title">${esc(it.title)}</div>
+    ${meta.length ? `<div class="c-meta">${meta.map(m=>`<span>${m}</span>`).join("")}</div>` : ""}
+    ${subrow}
+    ${(it.due || job) ? `<div class="c-foot">${dueLabel(it)}${job ? `<span class="jobtag">${esc(job.name)}</span>` : ""}</div>` : ""}
+    ${it.notes ? `<div class="c-notes">${esc(it.notes)}</div>` : ""}
+  </div>`;
+}
+
+/* ---------- Sheets ---------- */
+function openSheet(html, onMount){
+  $("sheetHost").innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${`<div class="grab"></div>`}${html}</div></div>`;
+  document.body.style.overflow = "hidden";
+  $("scrim").addEventListener("click", e => { if (e.target.id === "scrim") closeSheet(); });
+  onMount && onMount($("scrim").querySelector(".sheet"));
+}
+function closeSheet(){ $("sheetHost").innerHTML = ""; document.body.style.overflow = ""; }
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("scrim")) closeSheet(); });
+
+function armButton(btn, label, fn){
+  btn.addEventListener("click", () => {
+    if (btn.classList.contains("arm")) { fn(); return; }
+    btn.classList.add("arm"); const old = btn.textContent; btn.textContent = label;
+    setTimeout(() => { if (btn.isConnected) { btn.classList.remove("arm"); btn.textContent = old; } }, 3500);
+  });
+}
+
+function itemForm(existing, presetCat){
+  const it = existing || null;
+  let cat = it ? it.cat : (presetCat && CAT[presetCat] ? presetCat : "open");
+  let jobId = it ? it.jobId : (ui.job !== "all" ? ui.job : (db.jobs[0] && db.jobs[0].id));
+  if (!db.jobs.length) { jobForm(); toast("Add a job first"); return; }
+  const v = (k, d="") => it && it[k] != null ? it[k] : d;
+
+  const build = () => {
+    const c = CAT[cat];
+    const catSel = it ? "" : `<div class="f full"><label for="f-cat">Type</label><select id="f-cat">${CATS.map(x=>`<option value="${x.k}" ${x.k===cat?"selected":""}>${esc(x.label)}</option>`).join("")}</select></div>`;
+    return `
+      <h4>${it ? "Edit " : "New "}${esc(c.one)}</h4>
+      <p class="shint">${esc(c.hint)}</p>
+      <form class="form" id="itemForm" novalidate>
+        ${catSel}
+        <div class="f full"><label for="f-job">Job</label><select id="f-job">${db.jobs.map(j=>`<option value="${esc(j.id)}" ${j.id===jobId?"selected":""}>${esc(j.name)}</option>`).join("")}</select></div>
+        <div class="f"><label for="f-num">Number</label><input id="f-num" value="${esc(v("num", nextNum(jobId,cat)))}" autocomplete="off"></div>
+        <div class="f"><label for="f-status">Status</label><select id="f-status">${c.statuses.map(s=>`<option ${s===v("status",c.statuses[0])?"selected":""}>${esc(s)}</option>`).join("")}</select></div>
+        <div class="f full"><label for="f-title">${c.sub ? "Company name" : "Title"}</label><input id="f-title" value="${esc(v("title"))}" placeholder="${c.sub ? "e.g. Shore Line Electric" : "What is it?"}" autocomplete="off"><span class="err" id="e-title" hidden>Give it a title so you can find it later.</span></div>
+        ${c.sub ? `
+          <div class="f"><label for="f-trade">Trade</label><input id="f-trade" value="${esc(v("trade"))}" placeholder="e.g. Electrical"></div>
+          <div class="f"><label for="f-phone">Phone</label><input id="f-phone" type="tel" inputmode="tel" value="${esc(v("phone"))}" placeholder="(732) 555-0100"></div>
+          <div class="f"><label for="f-party">Contact person</label><input id="f-party" value="${esc(v("party"))}"></div>
+          <div class="f"><label for="f-ns">No-shows</label><input id="f-ns" type="number" min="0" inputmode="numeric" value="${esc(v("noShows",0))}"></div>
+        ` : `<div class="f full"><label for="f-party">${esc(c.party)}</label><input id="f-party" value="${esc(v("party"))}" placeholder="Company or person" list="partyList"></div>`}
+        ${c.types ? `<div class="f full"><label for="f-type">Drawing type</label><select id="f-type">${c.types.map(t=>`<option ${t===v("type",c.types[0])?"selected":""}>${esc(t)}</option>`).join("")}</select></div>` : ""}
+        ${c.money ? `<div class="f"><label for="f-amount">Amount ($)</label><input id="f-amount" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(v("amount"))}" placeholder="0"></div>` : ""}
+        ${c.paid ? `<div class="f"><label for="f-paid">Paid so far ($)</label><input id="f-paid" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(v("paid"))}" placeholder="0"></div>` : ""}
+        <div class="f ${c.money && !c.paid ? "" : "full"}"><label for="f-due">${esc(c.due)}</label><input id="f-due" type="date" value="${esc(v("due"))}"></div>
+        <div class="f full"><label for="f-notes">Notes</label><textarea id="f-notes" placeholder="Who you spoke to, what was promised, next step">${esc(v("notes"))}</textarea></div>
+        <datalist id="partyList">${[...new Set(db.items.map(i=>i.party).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
+      </form>
+      <div class="actions">
+        ${it ? `<button class="btn danger" id="btnDel" type="button">Delete</button>` : ""}
+        <button class="btn" type="button" id="btnCancel">Cancel</button>
+        <button class="btn primary" type="button" id="btnSave">${it ? "Save changes" : "Add"}</button>
+      </div>`;
+  };
+
+  const mount = sheet => {
+    const read = () => ({
+      title: $("f-title")?.value, num: $("f-num")?.value, status: $("f-status")?.value, party: $("f-party")?.value,
+      trade: $("f-trade")?.value, phone: $("f-phone")?.value, noShows: $("f-ns")?.value, type: $("f-type")?.value,
+      amount: $("f-amount")?.value, paid: $("f-paid")?.value, due: $("f-due")?.value, notes: $("f-notes")?.value,
+    });
+    const rebuild = () => { const keep = read(); sheet.innerHTML = `<div class="grab"></div>` + build(); for (const k of ["title","party","due","notes","amount","paid"]) { const el = $("f-"+k); if (el && keep[k]) el.value = keep[k]; } wire(); };
+    const wire = () => {
+      $("f-cat") && $("f-cat").addEventListener("change", e => { cat = e.target.value; rebuild(); });
+      $("f-job").addEventListener("change", e => { jobId = e.target.value; if (!it) $("f-num").value = nextNum(jobId, cat); });
+      $("btnCancel").addEventListener("click", closeSheet);
+      $("btnSave").addEventListener("click", submit);
+      $("itemForm").addEventListener("submit", e => { e.preventDefault(); submit(); });
+      $("btnDel") && armButton($("btnDel"), "Tap again to delete", () => {
+        db.items = db.items.filter(x => x.id !== it.id); save(); closeSheet(); render(); toast(`Deleted ${it.num}`);
+      });
+    };
+    const submit = () => {
+      const f = read();
+      if (!f.title || !f.title.trim()) { $("e-title").hidden = false; $("f-title").focus(); return; }
+      const c = CAT[cat];
+      const rec = {
+        cat, jobId, num: (f.num||"").trim() || nextNum(jobId, cat), title: f.title.trim(), status: f.status,
+        party: (f.party||"").trim(), due: f.due || "", notes: (f.notes||"").trim(),
+        amount: c.money ? (f.amount === "" ? "" : Number(f.amount)) : "",
+      };
+      if (c.paid) rec.paid = f.paid === "" ? 0 : Number(f.paid);
+      if (c.paid && rec.status === "Paid" && rec.amount !== "") rec.paid = rec.amount;
+      if (c.types) rec.type = f.type;
+      if (c.sub) { rec.trade = (f.trade||"").trim(); rec.phone = (f.phone||"").trim(); rec.noShows = Math.max(0, parseInt(f.noShows,10)||0); }
+      if (it) { Object.assign(it, rec); delete it.sample; }
+      else db.items.push({id: uid(), created: Date.now(), ...rec});
+      save(); closeSheet();
+      if (!it && ui.tab !== "due") ui.tab = cat;
+      render(); toast(it ? `Saved ${rec.num}` : `Added ${rec.num}`);
+    };
+    wire();
+    if (!it) setTimeout(() => $("f-title") && $("f-title").focus(), 60);
+  };
+  openSheet(build(), mount);
+}
+
+function jobForm(existing){
+  const j = existing;
+  openSheet(`
+    <h4>${j ? "Edit job" : "New job"}</h4>
+    <p class="shint">${j ? "Update the job details." : "Every list (RFIs, submittals, subs and the rest) starts empty for a new job."}</p>
+    <form class="form" id="jobFormEl" novalidate>
+      <div class="f full"><label for="j-name">Job name</label><input id="j-name" value="${esc(j?.name)}" placeholder="e.g. Lakewood Retail Fit-out" autocomplete="off"><span class="err" id="e-jname" hidden>Enter a job name.</span></div>
+      <div class="f"><label for="j-number">Job number</label><input id="j-number" value="${esc(j?.number)}" placeholder="2404"></div>
+      <div class="f"><label for="j-loc">Location</label><input id="j-loc" value="${esc(j?.location)}" placeholder="Town, NJ"></div>
+      <div class="f full"><label for="j-client">Owner / client</label><input id="j-client" value="${esc(j?.client)}"></div>
+    </form>
+    <div class="actions">
+      ${j ? `<button class="btn danger" id="jDel" type="button">Delete job</button>` : ""}
+      <button class="btn" id="jCancel" type="button">Cancel</button>
+      <button class="btn primary" id="jSave" type="button">${j ? "Save job" : "Add job"}</button>
+    </div>`, () => {
+    const submit = () => {
+      const name = $("j-name").value.trim();
+      if (!name) { $("e-jname").hidden = false; $("j-name").focus(); return; }
+      const rec = {name, number:$("j-number").value.trim(), location:$("j-loc").value.trim(), client:$("j-client").value.trim()};
+      if (j) Object.assign(j, rec); else { const nj = {id:"j-"+uid(), ...rec}; db.jobs.push(nj); ui.job = nj.id; ui.tab = "open"; }
+      save(); closeSheet(); render(); toast(j ? "Job saved" : `Added ${name}`);
+    };
+    $("jSave").addEventListener("click", submit);
+    $("jobFormEl").addEventListener("submit", e => { e.preventDefault(); submit(); });
+    $("jCancel").addEventListener("click", closeSheet);
+    if (j) {
+      const n = db.items.filter(i => i.jobId === j.id).length;
+      armButton($("jDel"), n ? `Delete job + ${n} items?` : "Tap again to delete", () => {
+        db.jobs = db.jobs.filter(x => x.id !== j.id); db.items = db.items.filter(i => i.jobId !== j.id);
+        if (ui.job === j.id) ui.job = "all"; save(); closeSheet(); render(); toast(`Deleted ${j.name}`);
+      });
+    }
+    if (!j) setTimeout(() => $("j-name").focus(), 60);
+  });
+}
+
+function menuSheet(){
+  const hasSample = db.items.some(i => i.sample);
+  openSheet(`
+    <h4>Settings & data</h4>
+    <p class="shint">Your data is saved on this phone, in this browser. Copy a backup now and then so you never lose it.</p>
+    <div class="menu">
+      <div class="mrow"><div class="t">Jobs</div>
+        ${db.jobs.map(j => `<div class="jobline"><div class="grow"><div class="n">${esc(j.name)}</div><div class="m">${[j.number && "#"+esc(j.number), esc(j.location||""), db.items.filter(i=>i.jobId===j.id).length + " items"].filter(Boolean).join(" · ")}</div></div><button class="btn sm" data-editjob="${esc(j.id)}">Edit</button></div>`).join("") || `<div class="d">No jobs yet.</div>`}
+        <div class="r"><button class="btn sm" id="mAddJob">+ Add job</button></div>
+      </div>
+      <div class="mrow"><div class="t">Sample data</div>
+        <div class="d">${hasSample ? `${db.items.filter(i=>i.sample).length} example items are loaded. Clearing removes only the examples. Items you added or edited stay.` : "Sample items are cleared. You can load them again to try things out."}</div>
+        <div class="r">${hasSample ? `<button class="btn sm amber" id="mClear">Clear sample data</button>` : `<button class="btn sm" id="mLoad">Load sample data</button>`}</div>
+      </div>
+      <div class="mrow"><div class="t">Backup</div>
+        <div class="d">Copy your data and paste it into an email or note to yourself. To restore, paste it back here or pick a saved backup file.</div>
+        <div class="r"><button class="btn sm" id="mExport">Copy backup</button><button class="btn sm" id="mImportShow">Restore backup</button></div>
+        <div id="exportBox" hidden><div class="f"><label for="exportText">Backup text</label><textarea class="code" id="exportText" readonly></textarea></div></div>
+        <div id="importBox" hidden>
+          <div class="f"><label for="importText">Paste backup</label><textarea class="code" id="importText" placeholder='{"v":1,"jobs":[...'></textarea></div>
+          <div class="f" style="margin-top:8px"><label for="importFile">Or choose a backup file</label><input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" style="padding-top:9px"></div>
+          <span class="err" id="importErr" hidden></span>
+          <div class="r" style="margin-top:8px"><button class="btn sm" id="mImport">Replace my data with this backup</button></div>
+        </div>
+      </div>
+      <div class="mrow"><div class="t">Erase everything</div>
+        <div class="d">Deletes all jobs and items on this phone. Copy a backup first.</div>
+        <div class="r"><button class="btn sm danger" id="mWipe">Erase all data</button></div>
+      </div>
+    </div>
+    <div class="actions"><button class="btn primary" id="mDone" type="button">Done</button></div>`, sheet => {
+    $("mDone").addEventListener("click", closeSheet);
+    $("mAddJob").addEventListener("click", () => jobForm());
+    sheet.querySelectorAll("[data-editjob]").forEach(b => b.addEventListener("click", () => jobForm(jobById(b.dataset.editjob))));
+    $("mClear") && armButton($("mClear"), "Tap again to clear", () => { clearSample(); menuSheet(); });
+    $("mLoad") && $("mLoad").addEventListener("click", () => { loadSample(); menuSheet(); });
+    $("mExport").addEventListener("click", () => {
+      const txt = JSON.stringify(db); $("exportBox").hidden = false; $("exportText").value = txt;
+      const sel = () => { $("exportText").focus(); $("exportText").select(); };
+      try { navigator.clipboard.writeText(txt).then(() => toast("Backup copied"), () => { sel(); toast("Select all and copy the text"); }); }
+      catch(e){ sel(); toast("Select all and copy the text"); }
+    });
+    $("mImportShow").addEventListener("click", () => { $("importBox").hidden = false; $("importText").focus(); });
+    $("importFile").addEventListener("change", e => {
+      const f = e.target.files && e.target.files[0]; if (!f) return;
+      const r = new FileReader(); r.onload = () => { $("importText").value = String(r.result||""); }; r.readAsText(f);
+    });
+    armButton($("mImport"), "Tap again to replace", () => {
+      try {
+        const d = JSON.parse($("importText").value);
+        if (!d || !Array.isArray(d.jobs) || !Array.isArray(d.items)) throw new Error("shape");
+        db = d; ui.job = "all"; save(); closeSheet(); render(); toast("Backup restored");
+      } catch(e){ const el = $("importErr"); el.hidden = false; el.textContent = "That text isn't a Ray Builders backup. Paste the whole backup, starting with {\"v\":1"; }
+    });
+    armButton($("mWipe"), "Tap again to erase all", () => { db = {v:1, jobs:[], items:[], sampleLoaded:false}; ui.job = "all"; ui.tab = "due"; save(); closeSheet(); render(); toast("All data erased"); });
+  });
+}
+
+function clearSample(){
+  const n = db.items.filter(i => i.sample).length;
+  db.items = db.items.filter(i => !i.sample); db.sampleLoaded = false; save(); render(); toast(`Cleared ${n} sample items`);
+}
+function loadSample(){
+  const s = sampleData();
+  for (const j of s.jobs) if (!jobById(j.id)) db.jobs.push(j);
+  const taken = new Set(db.items.map(i => i.jobId + "|" + i.cat + "|" + i.num));
+  for (const i of s.items) { if (taken.has(i.jobId + "|" + i.cat + "|" + i.num)) i.num = nextNum(i.jobId, i.cat); db.items.push(i); }
+  db.sampleLoaded = true; save(); render(); toast("Sample data loaded");
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e => {
+  const t = e.target;
+  const ns = t.closest("[data-ns]");
+  if (ns) { const it = db.items.find(i => i.id === ns.dataset.id); if (it) { it.noShows = Math.max(0, (Number(it.noShows)||0) + Number(ns.dataset.ns)); delete it.sample; save(); render(); if (+ns.dataset.ns > 0) toast(`No-show logged for ${it.title}`); } return; }
+  if (t.closest("[data-stop]")) return;
+  const jc = t.closest("[data-job]"); if (jc) { ui.job = jc.dataset.job; render(); return; }
+  if (t.closest("[data-addjob]")) { jobForm(); return; }
+  const tb = t.closest("[data-tab]"); if (tb) { ui.tab = tb.dataset.tab; render(); if (tb.classList.contains("kpi")) $("tabsbar").scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  const cd = t.closest(".card[data-id]"); if (cd) { const it = db.items.find(i => i.id === cd.dataset.id); if (it) itemForm(it); return; }
+  const act = t.closest("[data-act]"); if (act && act.dataset.act === "clearSample") { if (act.classList.contains("arm")) clearSample(); else { act.classList.add("arm"); act.textContent = "Tap again to clear"; } return; }
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("card")) { e.preventDefault(); e.target.click(); }
+});
+$("fab").addEventListener("click", () => itemForm(null, ui.tab === "due" ? "open" : ui.tab));
+$("btnMenu").addEventListener("click", menuSheet);
+$("btnClosed").addEventListener("click", () => { ui.showClosed = !ui.showClosed; render(); });
+$("q").value = ui.q || "";
+$("q").addEventListener("input", e => { ui.q = e.target.value; renderList(); saveUI(); });
+window.addEventListener("resize", () => document.documentElement.style.setProperty("--topH", $("top").offsetHeight + "px"));
+
+render();
+})();
+</script>
