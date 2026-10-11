@@ -1,21 +1,24 @@
 <title>Ray Builders Project Controls</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Layout: sticky job bar + KPI strip on top, scrollable category chips, card list, bottom sheet for editing. Phone first, widens to a 2-col list on desktop. */
+/* Layout: job-site look. Asphalt-dark ground with a faint blueprint grid, safety-yellow accent, hazard-stripe edges, steel-plate panels, signage type. Phone first, 2-col list on desktop. */
 :root{
   color-scheme: dark;
-  --bg:#0d1116; --panel:#151b22; --panel2:#1c242d; --line:#2a3440; --line2:#36424f;
-  --fg:#e9eef3; --muted:#8d99a7; --dim:#5f6b78;
-  --accent:#f47b20; --accent-ink:#1a0e04; --accent-soft:rgba(244,123,32,.14);
-  --red:#f2554d; --red-soft:rgba(242,85,77,.13); --amber:#e9b63b; --amber-soft:rgba(233,182,59,.13);
+  --bg:#101113; --panel:#1a1b1e; --panel2:#24252a; --line:#303237; --line2:#44464d;
+  --fg:#f3f1ea; --muted:#a29e94; --dim:#6c6961;
+  --accent:#ffc20e; --accent-ink:#121212; --accent-soft:rgba(255,194,14,.13); --accent-line:rgba(255,194,14,.55);
+  --red:#f2554d; --red-soft:rgba(242,85,77,.13); --amber:#ff8a1f; --amber-soft:rgba(255,138,31,.13);
+  --stripe:#121212; --grid:rgba(255,255,255,.028);
   --green:#3dbb88; --green-soft:rgba(61,187,136,.13); --blue:#58a2ec; --blue-soft:rgba(88,162,236,.13);
   --grey-soft:rgba(141,153,167,.14);
-  --f-display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
-  --f-body:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-  --r:10px;
+  --r:4px;
+  --hazard:repeating-linear-gradient(-45deg,var(--accent) 0 11px,var(--stripe) 11px 22px);
+  --hazard-red:repeating-linear-gradient(-45deg,var(--red) 0 7px,var(--stripe) 7px 14px);
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--fg)}
@@ -43,10 +46,10 @@ button{cursor:pointer}
 .jobchip .jn{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:500}
 .jobchip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .jobchip[aria-pressed="true"] .jn{color:var(--dim)}
-.jobchip.add{border-style:dashed;color:var(--accent);border-color:rgba(244,123,32,.5);background:transparent}
+.jobchip.add{border-style:dashed;color:var(--accent);border-color:var(--accent-line);background:transparent}
 
 /* Sample banner */
-.banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:14px;padding:10px 12px;border:1px solid rgba(233,182,59,.35);background:var(--amber-soft);border-radius:var(--r);font-size:13.5px}
+.banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:14px;padding:10px 12px;border:1px solid rgba(255,138,31,.4);background:var(--amber-soft);border-radius:var(--r);font-size:13.5px}
 .banner b{color:var(--amber)}
 .banner .grow{flex:1;min-width:180px}
 .banner.warn{border-color:rgba(242,85,77,.4);background:var(--red-soft)}
@@ -236,7 +239,7 @@ textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .thumb .doc{font-family:var(--f-mono);font-weight:600;font-size:13px;color:var(--accent);border:2px solid var(--accent);border-radius:5px;padding:6px 8px}
 .thumb .cap{font-size:11.5px;padding:5px 7px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.thumb.add{border-style:dashed;border-color:rgba(244,123,32,.5);align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:13px;min-height:104px;gap:4px;background:transparent}
+.thumb.add{border-style:dashed;border-color:var(--accent-line);align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:13px;min-height:104px;gap:4px;background:transparent}
 .thumb.add svg{width:24px;height:24px}
 .fgroup{margin-top:18px}
 .fgroup h5{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -247,12 +250,73 @@ textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
 .pending{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
 .cnt-dot{font-family:var(--f-mono);font-size:11px;background:var(--panel2);color:var(--muted);padding:1px 6px;border-radius:5px}
 .loading{border:1px dashed var(--line2);border-radius:var(--r);padding:22px 18px;text-align:center;color:var(--muted)}
+
+/* ---------- Job-site skin ---------- */
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;font-size:15.5px}
+.top{background:rgba(16,17,19,.96);border-bottom:0}
+.top::after{content:"";display:block;height:6px;background:var(--hazard)}
+.mark{width:40px;height:40px;border-radius:4px;color:var(--accent-ink);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+.mark svg{width:30px;height:30px}
+.brand h1{font-weight:900;font-size:27px;letter-spacing:.05em}
+.brand .sub{font-family:var(--f-display);font-weight:800;font-size:12.5px;letter-spacing:.24em;color:var(--accent)}
+@media(max-width:440px){.mebtn #meName{display:none}.mebtn{padding:0 4px}.brand h1{font-size:25px}.brand .sub{letter-spacing:.18em}}
+.iconbtn,.mebtn{border-radius:4px}
+.jobchip{border-radius:3px;font-family:var(--f-display);font-weight:800;font-size:16px;letter-spacing:.05em;text-transform:uppercase;padding:7px 13px}
+.jobchip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.jobchip[aria-pressed="true"] .jn{color:rgba(0,0,0,.55)}
+.jobchip .jn{font-family:var(--f-mono);text-transform:none;letter-spacing:0}
+.banner{border-radius:var(--r);border-left:6px solid var(--amber)}
+.banner.warn{border-left-color:var(--red)}
+.jobhead h2{font-weight:900;font-size:38px;text-transform:uppercase;letter-spacing:.03em;line-height:.98}
+.jobhead h2::after{content:"";display:block;width:56px;height:5px;background:var(--accent);margin-top:8px}
+.lbl,.kpi .lbl,.f label{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.16em}
+.person,.stage,.qk,.kpi,.jobcard,.card,.files,.mrow,.empty,.loading{border-radius:var(--r)}
+.person,.stage,.kpi,.qk{background:linear-gradient(180deg,rgba(255,255,255,.035),transparent 60%),var(--panel);border-top:3px solid var(--line2)}
+.st-name{font-weight:900;font-size:30px;text-transform:uppercase;letter-spacing:.03em}
+/* Progress reads like a tape measure: yellow fill over a track ticked every 10%. */
+.bar{height:14px;border-radius:2px;background-color:var(--panel2);background-image:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),rgba(255,255,255,.22) calc(10% - 2px) 10%);border:1px solid var(--line2)}
+.bar i{border-radius:0;background:var(--accent);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.qk b,.kpi .val{font-weight:900}
+.qk.hot,.kpi.hot{border-top-color:var(--red)}
+.kpi{position:relative;overflow:hidden}
+.kpi.hot::after{content:"";position:absolute;right:0;top:0;width:44px;height:44px;background:var(--hazard-red);clip-path:polygon(100% 0,0 0,100% 100%);opacity:.9}
+.kpi .val{font-size:40px}
+.kpi.money .val{font-size:34px}
+.jobcard{position:relative;padding-top:18px;overflow:hidden}
+.jobcard::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--hazard)}
+.jobcard.hot::before{background:var(--hazard-red)}
+.jc-top b{font-family:var(--f-display);font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.03em;line-height:1}
+.tabsbar{background:var(--bg);border-bottom:2px solid var(--line2)}
+.tab{font-family:var(--f-display);font-weight:800;font-size:16px;letter-spacing:.06em;text-transform:uppercase;border-bottom:0;border-radius:3px 3px 0 0;padding:9px 11px 9px}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tab[aria-selected="true"] .ct{background:var(--accent-ink);color:var(--accent)}
+.tab .ct{border-radius:2px}
+.listhead h3{font-weight:900;font-size:26px;letter-spacing:.04em}
+.search input,.toggle,.f input,.f select,.f textarea{border-radius:3px}
+.card{border-top:3px solid var(--line2);padding:12px 14px}
+.card.late{border-color:rgba(242,85,77,.55);border-top-color:var(--red);box-shadow:none;padding-left:22px}
+.card.late::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--hazard-red)}
+.num{font-size:12.5px;background:var(--accent-soft);padding:1px 6px;border-radius:2px}
+.c-title{font-size:16.5px}
+.pill{border-radius:2px;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.1em;padding:2px 8px}
+.pill.od{background:var(--red);color:#fff}
+.jobtag,.phone,.ns,.who{border-radius:3px}
+.fab{border-radius:4px;font-family:var(--f-display);font-weight:900;font-size:19px;letter-spacing:.06em;text-transform:uppercase;border-bottom:4px solid rgba(0,0,0,.3);box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.sheet{border-radius:6px 6px 0 0;border-top:0}
+.sheet::before{content:"";display:block;height:6px;margin:-8px -16px 8px;background:var(--hazard);border-radius:6px 6px 0 0}
+@media(min-width:700px){.sheet{border-radius:6px}}
+.sheet h4{font-weight:900;font-size:30px;letter-spacing:.04em}
+.btn{border-radius:3px;font-family:var(--f-display);font-weight:800;font-size:17px;letter-spacing:.06em;text-transform:uppercase}
+.btn.sm{font-size:15px}
+.files-h b{font-weight:900;font-size:21px}
+.thumb{border-radius:3px}
+.toast{border-radius:3px;background:var(--accent);color:var(--accent-ink);font-weight:700}
 </style>
 
 <header class="top" id="top">
   <div class="wrap">
     <div class="brand">
-      <div class="mark" aria-hidden="true">RB</div>
+      <div class="mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 22h22v3H5z" fill="currentColor"/><path d="M7 21a9 9 0 0 1 18 0z" fill="currentColor"/><path d="M14 9h4v7h-4z" fill="var(--accent)"/><path d="M15 10h2v6h-2z" fill="currentColor"/></svg></div>
       <div class="grow">
         <h1>Ray Builders</h1>
         <div class="sub">Project Controls</div>
