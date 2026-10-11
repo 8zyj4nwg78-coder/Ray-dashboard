@@ -30,6 +30,7 @@ button{cursor:pointer}
 .brand{display:flex;align-items:center;gap:12px;padding-block:12px 10px}
 .mark{width:34px;height:34px;flex:none;border-radius:7px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:.02em}
 .brand h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.brand h1,.brand .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand .sub{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
 .brand .grow{flex:1;min-width:0}
 .iconbtn{width:40px;height:40px;border-radius:9px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--fg)}
@@ -74,8 +75,8 @@ button{cursor:pointer}
 .bar i{display:block;height:100%;background:var(--accent);border-radius:8px}
 .st-foot{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--muted)}
 .st-foot .pct{font-family:var(--f-mono);color:var(--fg);font-weight:600}
-.quick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-@media(max-width:520px){.quick{grid-template-columns:repeat(3,minmax(0,1fr))}.quick .qk:first-child{grid-column:span 2}}
+.quick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media(max-width:520px){.quick{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .qk{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:9px 8px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;min-width:0}
 .qk:hover{border-color:var(--line2)}
 .qk b{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
@@ -209,6 +210,43 @@ button{cursor:pointer}
 textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
 .toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .22s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.4}}}
+/* Team, assignments, files */
+.mebtn{height:40px;border-radius:9px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;gap:8px;padding:0 10px 0 5px;font-weight:600;font-size:13.5px;max-width:150px}
+.mebtn .av{width:30px;height:30px;font-size:12px}
+.mebtn span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:24px;height:24px;flex:none;border-radius:50%;display:inline-grid;place-items:center;font-weight:700;font-size:10.5px;color:#0d1116;background:var(--muted);letter-spacing:.02em}
+.who{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:2px 9px 2px 2px;white-space:nowrap}
+.who.none{color:var(--dim);border-style:dashed;padding-left:9px}
+.who .av{width:20px;height:20px;font-size:9.5px}
+.pickrow{display:flex;flex-wrap:wrap;gap:8px}
+.pick{border:1px solid var(--line2);background:var(--panel2);border-radius:999px;padding:5px 14px 5px 5px;display:flex;align-items:center;gap:8px;font-weight:600}
+.pick .av{width:28px;height:28px;font-size:11px}
+.pick small{color:var(--muted);font-weight:500;font-size:12px}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.toolbar select.toggle{appearance:auto;padding-right:8px;max-width:170px}
+.files{margin-top:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:12px}
+.files-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.files-h b{font-family:var(--f-display);font-size:18px;letter-spacing:.03em;text-transform:uppercase}
+.files-h small{color:var(--muted);font-size:12.5px}
+.thumbs{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:thin}
+.thumbs.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));overflow:visible}
+.thumb{flex:none;width:104px;border:1px solid var(--line);border-radius:8px;background:var(--bg);overflow:hidden;padding:0;text-align:left;display:flex;flex-direction:column;min-width:0}
+.thumbs.grid .thumb{width:auto}
+.thumb .img{aspect-ratio:1/1;width:100%;max-width:100%;display:grid;place-items:center;background:var(--panel2);overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .doc{font-family:var(--f-mono);font-weight:600;font-size:13px;color:var(--accent);border:2px solid var(--accent);border-radius:5px;padding:6px 8px}
+.thumb .cap{font-size:11.5px;padding:5px 7px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb.add{border-style:dashed;border-color:rgba(244,123,32,.5);align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:13px;min-height:104px;gap:4px;background:transparent}
+.thumb.add svg{width:24px;height:24px}
+.fgroup{margin-top:18px}
+.fgroup h5{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lb{display:flex;flex-direction:column;gap:10px}
+.lb img,.lb video{width:100%;max-width:100%;max-height:60vh;object-fit:contain;border-radius:10px;background:#000}
+.lb .meta{font-size:13px;color:var(--muted)}
+.lb a.btn{display:inline-flex;align-items:center;text-decoration:none;color:var(--fg)}
+.pending{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.cnt-dot{font-family:var(--f-mono);font-size:11px;background:var(--panel2);color:var(--muted);padding:1px 6px;border-radius:5px}
+.loading{border:1px dashed var(--line2);border-radius:var(--r);padding:22px 18px;text-align:center;color:var(--muted)}
 </style>
 
 <header class="top" id="top">
@@ -219,7 +257,8 @@ textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
         <h1>Ray Builders</h1>
         <div class="sub">Project Controls</div>
       </div>
-      <button class="iconbtn" id="btnMenu" aria-label="Settings and data">
+      <button class="mebtn" id="btnMe" aria-label="Choose who you are"><span class="av" id="meAv">?</span><span id="meName">Who are you?</span></button>
+      <button class="iconbtn" id="btnMenu" aria-label="Settings and team">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
@@ -237,247 +276,173 @@ textarea.code{font-family:var(--f-mono);font-size:12px;min-height:140px}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="Search number, title, company, notes" autocomplete="off">
     </div>
+    <select class="toggle" id="selWho" aria-label="Filter by assigned person"></select>
     <button class="toggle" id="btnClosed" aria-pressed="false">Show closed</button>
   </div>
+  <div id="filesStrip"></div>
   <div class="listhead" id="listhead"></div>
   <section class="list" id="list"></section>
 </main>
 
 <button class="fab" id="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="fabLbl">Add</span></button>
+<input type="file" id="filePick" multiple accept="image/*,application/pdf,video/mp4,video/webm,text/plain,text/csv" hidden>
 <div id="sheetHost"></div>
 
 <script>
 (() => {
 "use strict";
-const KEY = "raybuilders.pc.v1", UIKEY = "raybuilders.ui.v1";
+const UIKEY = "raybuilders.ui.v2", MEKEY = "raybuilders.me", OLDKEY = "raybuilders.pc.v1", IMPORTED = "raybuilders.imported";
 
 /* ---------- Categories ---------- */
 const CATS = [
-  {k:"open",  one:"Open Item",  label:"Open Items",      short:"Open Items", pre:"OI",  statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Responsible", due:"Follow-up date", hint:"Anything still hanging on the job."},
-  {k:"tkt", one:"Ticket", label:"Open Tickets", short:"Tickets", pre:"TKT", statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Assigned to", due:"Due", money:true, hint:"Work, service and T&M tickets on the job. Amount is optional."},
-  {k:"owner", one:"Owner Question", label:"Owner Questions", short:"Owner Qs",   pre:"OQ",  statuses:["To Ask","Asked","Answered"], done:["Answered"], party:"Asked to", due:"Need answer by", hint:"Decisions and answers you need from the owner."},
-  {k:"rfi", one:"RFI",   label:"RFIs",            short:"RFIs",       pre:"RFI", statuses:["Draft","Open","Answered","Closed"], done:["Answered","Closed"], party:"Sent to", due:"Response due", hint:"Numbered requests for information to the design team."},
-  {k:"subm", one:"Submittal",  label:"Submittals",      short:"Submittals", pre:"SUB", statuses:["Pending","Submitted","Revise & Resubmit","Approved"], done:["Approved"], party:"From (sub / supplier)", due:"Due / follow-up", hint:"Pending, submitted, revise & resubmit, approved."},
-  {k:"dwg", one:"Drawing",   label:"Drawings",        short:"Drawings",   pre:"DWG", statuses:["Under Review","Current","Superseded"], done:["Current","Superseded"], party:"From", due:"Review by", hint:"Every drawing for the job: final sets, field markups and shop drawings.", types:["Final","Markup","Shop Drawing"]},
-  {k:"inv", one:"Invoice",   label:"Invoices",        short:"Invoices",   pre:"INV", statuses:["Draft","Sent","Partially Paid","Paid"], done:["Paid"], party:"Billed to", due:"Payment due", money:true, paid:true, hint:"Pay apps and bills you sent. Unpaid = money owed to you."},
-  {k:"co", one:"Change Order",    label:"Change Orders",   short:"COs",        pre:"CO",  statuses:["Pending","Submitted","Approved","Rejected"], done:["Approved","Rejected"], party:"Requested by / sent to", due:"Decision by", money:true, hint:"Track pricing and approval of changes."},
+  {k:"task", one:"Task", label:"Team Tasks", short:"Tasks", pre:"T", statuses:["To Do","In Progress","Done"], done:["Done"], party:"Related company (optional)", due:"Due", hint:"Work assigned to a team member. Pick who it's for under Assigned to."},
+  {k:"open", one:"Open Item", label:"Open Items", short:"Open Items", pre:"OI", statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Responsible", due:"Follow-up date", hint:"Anything still hanging on the job."},
+  {k:"tkt", one:"Ticket", label:"Open Tickets", short:"Tickets", pre:"TKT", statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Company", due:"Due", money:true, hint:"Work, service and T&M tickets on the job. Amount is optional."},
+  {k:"owner", one:"Owner Question", label:"Owner Questions", short:"Owner Qs", pre:"OQ", statuses:["To Ask","Asked","Answered"], done:["Answered"], party:"Asked to", due:"Need answer by", hint:"Decisions and answers you need from the owner."},
+  {k:"rfi", one:"RFI", label:"RFIs", short:"RFIs", pre:"RFI", statuses:["Draft","Open","Answered","Closed"], done:["Answered","Closed"], party:"Sent to", due:"Response due", hint:"Numbered requests for information to the design team."},
+  {k:"subm", one:"Submittal", label:"Submittals", short:"Submittals", pre:"SUB", statuses:["Pending","Submitted","Revise & Resubmit","Approved"], done:["Approved"], party:"From (sub / supplier)", due:"Due / follow-up", hint:"Pending, submitted, revise & resubmit, approved."},
+  {k:"dwg", one:"Drawing", label:"Drawings", short:"Drawings", pre:"DWG", statuses:["Under Review","Current","Superseded"], done:["Current","Superseded"], party:"From", due:"Review by", hint:"Every drawing for the job: final sets, field markups and shop drawings. Attach the PDF to each one.", types:["Final","Markup","Shop Drawing"]},
+  {k:"inv", one:"Invoice", label:"Invoices", short:"Invoices", pre:"INV", statuses:["Draft","Sent","Partially Paid","Paid"], done:["Paid"], party:"Billed to", due:"Payment due", money:true, paid:true, hint:"Pay apps and bills you sent. Unpaid = money owed to you."},
+  {k:"co", one:"Change Order", label:"Change Orders", short:"COs", pre:"CO", statuses:["Pending","Submitted","Approved","Rejected"], done:["Approved","Rejected"], party:"Requested by / sent to", due:"Decision by", money:true, hint:"Track pricing and approval of changes."},
   {k:"subs", one:"Subcontractor", label:"Subcontractors", short:"Subs", pre:"SC", statuses:["Active","Not Started","Off Job"], done:["Off Job"], party:"Contact person", due:"Next follow-up", hint:"Trade, phone and no-show count for each sub on the job.", dir:true, titleLabel:"Company name", tradeLabel:"Trade", tradePh:"e.g. Electrical", ns:true},
   {k:"vend", one:"Vendor", label:"Vendors & Suppliers", short:"Vendors", pre:"V", statuses:["Active","Not Started","Done"], done:["Done"], party:"Contact person", due:"Next follow-up", hint:"Sub-vendors and suppliers furnishing material or equipment for the job.", dir:true, titleLabel:"Company name", tradeLabel:"Supplies", tradePh:"e.g. Lumber, windows, HVAC equipment"},
   {k:"contact", one:"Contact", label:"Contacts", short:"Contacts", pre:"C", statuses:["Active","Inactive"], done:["Inactive"], party:"Company", due:"Follow-up", hint:"Everyone on the job: owner, architect, engineers, inspectors, utilities.", dir:true, titleLabel:"Name", tradeLabel:"Role", tradePh:"e.g. Architect, Owner's rep, Inspector", email:true, noDue:true},
-  {k:"quote", one:"Quote", label:"Quotes to Get",   short:"Quotes",     pre:"Q",   statuses:["Need to Request","Requested","Received"], done:["Received"], party:"Vendor", due:"Need by", money:true, hint:"Pricing you still need to chase."},
-  {k:"prop", one:"Proposal",  label:"Proposals to Sign", short:"Proposals", pre:"P",  statuses:["To Review","Ready to Sign","Signed","Declined"], done:["Signed","Declined"], party:"From", due:"Sign by", money:true, hint:"Sub and vendor proposals waiting on your signature."},
-  {k:"owed", one:"Payable",  label:"Who's Owed",      short:"Owed",       pre:"PAY", statuses:["Owed","Partially Paid","Paid"], done:["Paid"], party:"Pay to", due:"Pay by", money:true, paid:true, hint:"Money you owe subs and suppliers."},
+  {k:"quote", one:"Quote", label:"Quotes to Get", short:"Quotes", pre:"Q", statuses:["Need to Request","Requested","Received"], done:["Received"], party:"Vendor", due:"Need by", money:true, hint:"Pricing you still need to chase."},
+  {k:"prop", one:"Proposal", label:"Proposals to Sign", short:"Proposals", pre:"P", statuses:["To Review","Ready to Sign","Signed","Declined"], done:["Signed","Declined"], party:"From", due:"Sign by", money:true, hint:"Sub and vendor proposals waiting on your signature."},
+  {k:"owed", one:"Payable", label:"Who's Owed", short:"Owed", pre:"PAY", statuses:["Owed","Partially Paid","Paid"], done:["Paid"], party:"Pay to", due:"Pay by", money:true, paid:true, hint:"Money you owe subs and suppliers."},
 ];
 const CAT = Object.fromEntries(CATS.map(c => [c.k, c]));
+const FILE_CATS = [{k:"general", label:"General / site photos"}].concat(CATS.map(c => ({k:c.k, label:c.label})));
+const fileCatLabel = k => (FILE_CATS.find(c => c.k === k) || {label:"General"}).label;
 const NEG = ["Revise & Resubmit","Rejected","Declined"];
-const NEUTRAL = ["Draft","Pending","To Ask","Need to Request","To Review","Not Started","Superseded"];
+const NEUTRAL = ["Draft","Pending","To Ask","Need to Request","To Review","Not Started","Superseded","To Do"];
+const STAGES = ["Preconstruction","Permits","Site Work","Foundation","Framing","Roofing & Envelope","Rough-ins (MEP)","Insulation & Drywall","Finishes","Punch List","Closeout","On Hold"];
+const AV_COLORS = ["#f47b20","#58a2ec","#3dbb88","#e9b63b","#c58af0","#ef7aa0","#5fd0c8","#b7c46a"];
 
 /* ---------- Dates & money ---------- */
 const pad = n => String(n).padStart(2,"0");
 const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const TODAY = isoOf(new Date());
-const addDays = n => { const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+n); return isoOf(d); };
 const dayDiff = iso => { const [y,m,d] = iso.split("-").map(Number); const a = Date.UTC(y,m-1,d); const t = new Date(); return Math.round((a - Date.UTC(t.getFullYear(),t.getMonth(),t.getDate()))/864e5); };
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const fmtDate = iso => { const [y,m,d] = iso.split("-").map(Number); return `${MON[m-1]} ${d}` + (y !== new Date().getFullYear() ? `, ${y}` : ""); };
+const fmtStamp = ms => { const d = new Date(ms); return `${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`; };
 const money = n => "$" + Math.round(Number(n)||0).toLocaleString("en-US");
 const moneyShort = n => { n = Number(n)||0; if (Math.abs(n) >= 1e6) return "$" + (n/1e6).toFixed(2).replace(/\.?0+$/,"") + "M"; if (Math.abs(n) >= 1e4) return "$" + (n/1e3).toFixed(1).replace(/\.0$/,"") + "K"; return money(n); };
+const fmtSize = b => b > 1048576 ? (b/1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b/1024)) + " KB";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+const ls = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+};
+
+/* ---------- State ---------- */
+const state = {jobs:[], items:[], team:[], files:[]};
+const loaded = {jobs:false, items:false, team:false, files:false};
+let conn = "connecting";      // connecting | live | offline
+let DB = null, ASSETS = null, USER = null, readOnly = false;
+const ui = Object.assign({job:"all", tab:"due", q:"", showClosed:false, who:""}, (() => { try { return JSON.parse(ls.get(UIKEY)) || {}; } catch(e){ return {}; } })());
+if (ui.tab !== "due" && ui.tab !== "mine" && ui.tab !== "files" && !CAT[ui.tab]) ui.tab = "due";
+let me = ls.get(MEKEY) || "";
+const allLoaded = () => loaded.jobs && loaded.items && loaded.team && loaded.files;
 
 /* ---------- Item logic ---------- */
-const isDone = it => CAT[it.cat].done.includes(it.status);
+const isDone = it => CAT[it.cat] ? CAT[it.cat].done.includes(it.status) : false;
 const isLate = it => !!it.due && !isDone(it) && it.due < TODAY;
 const unpaid = it => Math.max(0, (Number(it.amount)||0) - (Number(it.paid)||0));
 const tone = it => {
   if (NEG.includes(it.status)) return "t-red";
   if (isDone(it)) return it.status === "Superseded" ? "t-grey" : "t-green";
   if (NEUTRAL.includes(it.status)) return "t-grey";
-  if (["Partially Paid","Revise & Resubmit","Asked","Ready to Sign","Owed"].includes(it.status)) return "t-amber";
+  if (["Partially Paid","Asked","Ready to Sign","Owed"].includes(it.status)) return "t-amber";
   return "t-blue";
 };
 
-/* ---------- Sample data ---------- */
-const JOB_INFO_KEYS = ["pm","pmPhone","site","sitePhone","stage","progress","holdNote"];
-const SAMPLE_JOB_INFO = {
-  "j-oak":  {pm:"Yossi Klein", pmPhone:"(732) 555-0110", site:"Mike Russo", sitePhone:"(732) 555-0121", stage:"Insulation & Drywall", progress:62, holdNote:"Sanctuary east wall waiting on RFI-001 (lintel size)."},
-  "j-par":  {pm:"Yossi Klein", pmPhone:"(732) 555-0110", site:"Tom Hayes", sitePhone:"(732) 555-0156", stage:"Rough-ins (MEP)", progress:41, holdNote:"2nd floor ceilings wait on RTU delivery."},
-  "j-deal": {pm:"Dan Levy", pmPhone:"(732) 555-0138", site:"Eli Mizrahi", sitePhone:"(732) 555-0144", stage:"Foundation", progress:14, holdNote:"North wall footing on hold for RFI-001."},
-};
-const STAGES = ["Preconstruction","Permits","Site Work","Foundation","Framing","Roofing & Envelope","Rough-ins (MEP)","Insulation & Drywall","Finishes","Punch List","Closeout","On Hold"];
-function sampleData(){
-  const jobs = [
-    {id:"j-oak",  name:"Oakhurst Synagogue", number:"2401", location:"Oakhurst, NJ", client:"Building Committee"},
-    {id:"j-par",  name:"Paramount Office",   number:"2402", location:"", client:"Paramount ownership"},
-    {id:"j-deal", name:"Deal Kollel",        number:"2403", location:"Deal, NJ", client:"Kollel board"},
-  ];
-  for (const j of jobs) Object.assign(j, SAMPLE_JOB_INFO[j.id], {sampleInfo:true});
-  const rows = {
-    "j-oak": [
-      ["open","Confirm ark wall blocking locations","Elite Millwork",null,-3,"Open","Need final dims from millwork shop before we close up the wall."],
-      ["open","Punch list: lobby restrooms","Ray Builders",null,6,"In Progress","Partitions, accessories, caulk at vanity tops."],
-      ["owner","Bimah finish: walnut or white oak?","Building Committee",null,2,"Asked","Samples dropped off Tuesday. Millwork needs answer to release."],
-      ["owner","Approve women's section partition height","Building Committee",null,-2,"Asked","Architect shows 54\". Committee asked about 60\"."],
-      ["rfi","Steel lintel size at sanctuary east windows","Kessler Architects",null,-4,"Open","Conflict between S-201 and A-302. Mason is waiting."],
-      ["rfi","Mikvah waterproofing detail at pool walls","Kessler Architects",null,3,"Open",""],
-      ["rfi","Fire alarm device count in social hall","Benchmark Engineering",null,-12,"Answered","Answered: add 4 strobes. Passed to Allied."],
-      ["subm","Sanctuary pendant light fixtures","Shore Line Electric",null,5,"Submitted",""],
-      ["subm","Storefront glazing system","Precision Glass & Glazing",null,-1,"Revise & Resubmit","Architect wants thermally broken frames. Resubmit with updated cut sheets."],
-      ["subm","Roofing membrane: TPO 60 mil","Jersey Roofing Systems",null,null,"Approved","Approved as noted 9/18."],
-      ["subm","Ark casework","Elite Millwork",null,9,"Pending","Waiting on finish decision from owner (OQ-001)."],
-      ["dwg","A-101 Floor Plan, Rev 4","Kessler Architects",null,null,"Current","",{type:"Final"}],
-      ["dwg","Sanctuary ceiling: field markups","Ray Builders",null,2,"Under Review","Soffit heights changed at duct crossing.",{type:"Markup"}],
-      ["dwg","Ark casework shop drawings","Elite Millwork",null,-2,"Under Review","",{type:"Shop Drawing"}],
-      ["inv","Pay App #6: September","Building Committee",186450,-5,"Sent","Sent 9/30. Committee meets Thursdays.",{paid:0}],
-      ["inv","Pay App #5: August","Building Committee",142300,null,"Paid","",{paid:142300}],
-      ["co","Add blocking for memorial boards","Building Committee",4850,4,"Submitted",""],
-      ["co","Upgrade sanctuary HVAC controls","Atlantic Mechanical",18200,10,"Pending","Waiting on Atlantic's final number."],
-      ["subs","Shore Line Electric","Mike T.",null,null,"Active","",{trade:"Electrical",phone:"(732) 555-0148",noShows:0}],
-      ["subs","Atlantic Mechanical","Joe R.",null,null,"Active","",{trade:"HVAC",phone:"(732) 555-0192",noShows:1}],
-      ["subs","Garden State Drywall","Luis M.",null,1,"Active","No-shows Mon 9/29, Thu 10/2 and Wed 10/8. Call office before Friday.",{trade:"Drywall & Framing",phone:"(732) 555-0117",noShows:3}],
-      ["subs","Elite Millwork","Avi S.",null,null,"Not Started","",{trade:"Millwork",phone:"(718) 555-0163",noShows:0}],
-      ["quote","Mikvah tile: porcelain 24x24","Coastal Tile & Stone",null,3,"Requested",""],
-      ["quote","Exterior building signage","",null,-1,"Need to Request","Get 2 prices."],
-      ["prop","Site paving & concrete","Tri-County Concrete",68400,1,"Ready to Sign","Includes curbs and ADA ramp."],
-      ["owed","Req #4: drywall & framing","Garden State Drywall",38700,-3,"Owed","",{paid:0}],
-      ["owed","Req #5: electrical rough-in","Shore Line Electric",52100,7,"Partially Paid","Paid $25,000 on 10/1.",{paid:25000}],
-      ["tkt","T&M: remove and reset sanctuary door frames","Garden State Drywall",2650,-2,"Open","Signed by Mike on site 10/6. Needs office approval."],
-      ["tkt","Repair temp fence after storm","Ray Builders",null,1,"In Progress",""],
-      ["tkt","Patch slab at mikvah drain","Tri-County Concrete",1180,null,"Closed",""],
-      ["dwg","S-201 Structural framing, Rev 2","Benchmark Engineering",null,null,"Current","",{type:"Final",rev:"2"}],
-      ["dwg","Storefront shop drawings","Precision Glass & Glazing",null,4,"Under Review","Resubmittal of SUB-002.",{type:"Shop Drawing",rev:"1"}],
-      ["vend","Shore Lumber & Supply","Pat (counter)",null,null,"Active","Account #RB-2210. Next-day delivery before 2pm.",{trade:"Lumber & framing",phone:"(732) 555-0102"}],
-      ["vend","Atlantic Window Supply","Karen D.",null,3,"Active","Sanctuary windows ship week of 10/20. Confirm date.",{trade:"Windows & doors",phone:"(732) 555-0125"}],
-      ["vend","Metro Plumbing Supply","Rich",null,null,"Not Started","",{trade:"Plumbing fixtures",phone:"(732) 555-0177"}],
-      ["contact","Rabbi Feldman","Congregation",null,null,"Active","Final say on sanctuary finishes.",{trade:"Owner",phone:"(732) 555-0161",email:"office@example.org"}],
-      ["contact","Sarah Kessler","Kessler Architects",null,null,"Active","",{trade:"Architect",phone:"(732) 555-0170",email:"skessler@example.com"}],
-      ["contact","Ron Patel","Benchmark Engineering",null,null,"Active","",{trade:"Structural engineer",phone:"(732) 555-0182",email:"rpatel@example.com"}],
-      ["contact","Township building dept.","Ocean Township",null,null,"Active","Inspections: call by 3pm for next day.",{trade:"Inspector",phone:"(732) 555-0100",email:""}],
-    ],
-    "j-par": [
-      ["open","Elevator inspection scheduling","Ray Builders",null,5,"Open",""],
-      ["open","Tenant 3rd floor demising wall layout","Paramount ownership",null,-6,"Open","Waiting on tenant's lease exhibit."],
-      ["owner","Lobby flooring: confirm porcelain vs. terrazzo","Paramount ownership",null,4,"Asked",""],
-      ["rfi","Roof drain relocation at RTU-2","Benchmark Engineering",null,-2,"Open","Drain lands under new curb."],
-      ["rfi","Existing beam reinforcement at 2nd floor","Benchmark Engineering",null,6,"Open",""],
-      ["subm","RTU-1 & RTU-2 equipment","Atlantic Mechanical",null,-4,"Submitted","Long lead. Push engineer for review."],
-      ["subm","Ceiling grid and tile","Garden State Drywall",null,8,"Pending",""],
-      ["subm","Fire sprinkler hydraulic calcs","Allied Fire Protection",null,null,"Approved",""],
-      ["dwg","Mechanical shop drawings, 2nd floor","Atlantic Mechanical",null,3,"Under Review","",{type:"Shop Drawing"}],
-      ["dwg","Full permit set, Rev 2","Kessler Architects",null,null,"Current","",{type:"Final"}],
-      ["inv","Pay App #3: September","Paramount ownership",97250,12,"Sent","",{paid:0}],
-      ["inv","Pay App #2: August","Paramount ownership",88600,-18,"Partially Paid","Short paid $10,000 pending CO-001 approval.",{paid:78600}],
-      ["co","Additional outlets in open office","Paramount ownership",6320,-3,"Submitted","Owner verbally OK'd. Need signature."],
-      ["co","Upgrade lobby storefront doors","Paramount ownership",11900,null,"Approved",""],
-      ["subs","Atlantic Mechanical","Joe R.",null,null,"Active","",{trade:"HVAC",phone:"(732) 555-0192",noShows:0}],
-      ["subs","Allied Fire Protection","Dana K.",null,null,"Active","",{trade:"Fire Sprinkler",phone:"(732) 555-0175",noShows:0}],
-      ["subs","Garden State Drywall","Luis M.",null,null,"Active","",{trade:"Drywall & Ceilings",phone:"(732) 555-0117",noShows:2}],
-      ["quote","Window film, south elevation","",null,7,"Need to Request",""],
-      ["quote","Parking lot restriping","Shore Paving & Striping",3800,null,"Received",""],
-      ["prop","Elevator modernization","Liberty Elevator",42600,-1,"To Review","Compare against second bid before signing."],
-      ["owed","Req #2: HVAC rough","Atlantic Mechanical",61400,2,"Owed","",{paid:0}],
-      ["tkt","Tenant complaint: no heat in suite 104","Atlantic Mechanical",null,-1,"Open","Tenant called twice. Temporary heater dropped off."],
-      ["tkt","T&M: extra blocking for TV walls","Garden State Drywall",1440,5,"Open",""],
-      ["dwg","M-201 Mechanical plan 2nd floor, Rev 1","Benchmark Engineering",null,null,"Superseded","Replaced by Rev 2 shop set.",{type:"Final",rev:"1"}],
-      ["dwg","Lobby field markups","Ray Builders",null,6,"Under Review","",{type:"Markup"}],
-      ["vend","Garden State Ceiling Supply","Mark",null,null,"Active","",{trade:"Ceiling grid & tile",phone:"(732) 555-0129"}],
-      ["vend","Coastal HVAC Distributors","Liz",null,-3,"Active","RTU-1 & RTU-2 delivery date still unconfirmed.",{trade:"HVAC equipment",phone:"(732) 555-0147"}],
-      ["contact","Property manager","Paramount ownership",null,null,"Active","",{trade:"Owner's rep",phone:"(732) 555-0105",email:"pm@example.com"}],
-      ["contact","Ron Patel","Benchmark Engineering",null,null,"Active","",{trade:"MEP / structural engineer",phone:"(732) 555-0182",email:"rpatel@example.com"}],
-      ["contact","Liberty Elevator service desk","Liberty Elevator",null,null,"Active","",{trade:"Elevator",phone:"(732) 555-0193",email:""}],
-    ],
-    "j-deal": [
-      ["open","Temporary power for 2nd floor","Shore Line Electric",null,-1,"Open",""],
-      ["open","Dumpster swap schedule","Ray Builders",null,3,"In Progress",""],
-      ["owner","Beis medrash bookshelf layout","Kollel board",null,-4,"Asked","Need count of shelves and seating per row."],
-      ["owner","Air conditioning in study rooms: split units OK?","Kollel board",null,6,"To Ask",""],
-      ["rfi","Foundation step at north wall","Benchmark Engineering",null,-7,"Open","Field condition does not match S-100. Concrete crew on hold."],
-      ["rfi","Stair handrail height at landing","Kessler Architects",null,2,"Draft",""],
-      ["subm","Concrete mix design","Tri-County Concrete",null,null,"Approved",""],
-      ["subm","Rebar shop drawings","Monmouth Steel",null,-3,"Revise & Resubmit","Engineer flagged lap lengths."],
-      ["subm","Windows: vinyl double hung","Precision Glass & Glazing",null,10,"Pending",""],
-      ["dwg","Foundation plan with field markups","Ray Builders",null,1,"Under Review","Marked up step at north wall.",{type:"Markup"}],
-      ["dwg","Rebar shop drawings","Monmouth Steel",null,-3,"Under Review","",{type:"Shop Drawing"}],
-      ["inv","Deposit / Pay App #1","Kollel board",54000,-9,"Sent","Follow up with treasurer.",{paid:0}],
-      ["co","Rock removal at foundation","Kollel board",9750,2,"Pending",""],
-      ["subs","Tri-County Concrete","Sal P.",null,null,"Active","",{trade:"Concrete",phone:"(732) 555-0131",noShows:1}],
-      ["subs","Monmouth Steel","Ed W.",null,null,"Not Started","",{trade:"Rebar / Steel",phone:"(732) 555-0184",noShows:0}],
-      ["subs","Shore Line Electric","Mike T.",null,null,"Active","",{trade:"Electrical",phone:"(732) 555-0148",noShows:0}],
-      ["quote","Plumbing rough & finish","Coastal Plumbing & Heating",null,-2,"Requested","Second call. Promised by Monday."],
-      ["quote","Roof trusses","",null,9,"Need to Request",""],
-      ["prop","Excavation & backfill","Jersey Site Work",31500,null,"Signed",""],
-      ["owed","Excavation: progress payment","Jersey Site Work",18000,-2,"Owed","",{paid:0}],
-      ["owed","Concrete footings","Tri-County Concrete",22400,9,"Owed","",{paid:0}],
-      ["tkt","T&M: rock removal, north wall","Jersey Site Work",3900,-4,"Open","Hours signed by Eli. Tie to CO-001."],
-      ["tkt","Neighbor complaint: mud on street","Ray Builders",null,0,"In Progress","Sweep street end of day."],
-      ["dwg","S-100 Foundation plan, Rev 1","Benchmark Engineering",null,null,"Current","",{type:"Final",rev:"1"}],
-      ["dwg","A-100 Site plan, Rev 3","Kessler Architects",null,null,"Current","",{type:"Final",rev:"3"}],
-      ["vend","Shore Lumber & Supply","Pat (counter)",null,null,"Not Started","",{trade:"Lumber & framing",phone:"(732) 555-0102"}],
-      ["vend","Monmouth Ready Mix","Dispatch",null,null,"Active","Order 48 hrs ahead.",{trade:"Ready-mix concrete",phone:"(732) 555-0115"}],
-      ["contact","Kollel treasurer","Kollel board",null,null,"Active","Pay apps go to him.",{trade:"Owner",phone:"(732) 555-0166",email:"treasurer@example.org"}],
-      ["contact","Sarah Kessler","Kessler Architects",null,null,"Active","",{trade:"Architect",phone:"(732) 555-0170",email:"skessler@example.com"}],
-      ["contact","Borough of Deal building dept.","Borough of Deal",null,null,"Active","Footing inspection required before pour.",{trade:"Inspector",phone:"(732) 555-0108",email:""}],
-    ],
-  };
-  const items = [];
-  for (const j of jobs) {
-    const counters = {};
-    for (const [cat,title,party,amount,dueOff,status,notes,extra] of rows[j.id]) {
-      counters[cat] = (counters[cat]||0) + 1;
-      items.push({
-        id: uid(), jobId: j.id, cat, num: `${CAT[cat].pre}-${String(counters[cat]).padStart(3,"0")}`,
-        title, party, amount: amount ?? "", due: dueOff == null ? "" : addDays(dueOff), status, notes,
-        sample: true, created: Date.now(), ...(extra||{})
-      });
+/* ---------- Team helpers ---------- */
+const sortedTeam = () => state.team.slice().sort((a,b) => (a.order ?? 99) - (b.order ?? 99) || String(a.name).localeCompare(b.name));
+const member = id => state.team.find(m => m.id === id);
+const initials = n => String(n||"?").trim().split(/\s+/).map(w => w[0]).join("").slice(0,2).toUpperCase() || "?";
+const avColor = id => { let h = 0; for (const c of String(id)) h = (h*31 + c.charCodeAt(0)) >>> 0; return AV_COLORS[h % AV_COLORS.length]; };
+const av = m => m ? `<span class="av" style="background:${avColor(m.id)}">${esc(initials(m.name))}</span>` : `<span class="av">?</span>`;
+const whoChip = id => { const m = member(id); return m ? `<span class="who">${av(m)}${esc(m.name)}</span>` : ""; };
+
+/* ---------- Shared database ---------- */
+const COLS = ["jobs","items","team","files"];
+const chains = {};
+let renderQueued = false;
+function scheduleRender(){ if (renderQueued) return; renderQueued = true; requestAnimationFrame(() => { renderQueued = false; render(); }); }
+
+function strip(o){ const c = {...o}; delete c.id; for (const k of Object.keys(c)) if (c[k] === undefined) delete c[k]; return c; }
+function write(col, id, data){
+  if (!DB) { toast("Not connected, so this change was not saved."); return Promise.reject({code:"offline"}); }
+  const key = col + "/" + id;
+  const run = () => data ? DB.collection(col).doc(id).set(strip(data)) : DB.collection(col).doc(id).delete();
+  const attempt = () => run().catch(e => {
+    if (e && e.code === "unavailable") return new Promise(r => setTimeout(r, 600 + Math.random()*600)).then(run);
+    throw e;
+  });
+  const p = (chains[key] || Promise.resolve()).catch(() => {}).then(attempt);
+  chains[key] = p;
+  p.catch(writeError);
+  return p;
+}
+let lastErrToast = 0;
+function writeError(e){
+  const code = e && e.code;
+  if (code === "offline") return;
+  if (Date.now() - lastErrToast < 3000) return; lastErrToast = Date.now();
+  if (code === "invalid_argument" || code === "not_granted" || code === "revoked") { readOnly = true; render(); toast("You have view-only access, so changes aren't saved. Ask the owner to share it with you as Editor."); }
+  else if (code === "quota_exceeded") toast("Storage is full. Delete old items or files, then try again.");
+  else if (code === "resource_exhausted") toast("Too many changes at once. Wait a few seconds and try again.");
+  else toast("Couldn't save. Check your connection and try again.");
+}
+function putDoc(col, rec){ const arr = state[col]; const i = arr.findIndex(x => x.id === rec.id); if (i >= 0) arr[i] = rec; else arr.push(rec); scheduleRender(); return write(col, rec.id, rec); }
+function delDoc(col, id){ state[col] = state[col].filter(x => x.id !== id); scheduleRender(); return write(col, id, null); }
+
+async function connect(){
+  const use = window.claude && typeof window.claude.use === "function" ? n => window.claude.use(n).catch(() => null) : () => Promise.resolve(null);
+  const dbx = await use("db");
+  if (!dbx) { conn = "offline"; render(); return; }
+  DB = dbx;
+  for (const col of COLS) {
+    DB.collection(col).onSnapshot(snap => {
+      state[col] = snap.docs.map(d => ({...d.data(), id: d.id}));
+      loaded[col] = true;
+      if (allLoaded()) conn = "live";
+      scheduleRender();
+    }, err => { if (err && err.code === "revoked") { conn = "offline"; DB = null; } scheduleRender(); });
+  }
+  use("assets").then(a => { ASSETS = a; scheduleRender(); });
+  use("user").then(async u => {
+    USER = u; if (!u) return;
+    try { if (await u.can("data.write") === false) { readOnly = true; scheduleRender(); } } catch(e){}
+    if (!me) {
+      try {
+        const nm = ((await u.me()).name || "").trim().split(/\s+/)[0].toLowerCase();
+        const tryMatch = () => { if (me || !nm || !loaded.team) return false; const hits = state.team.filter(m => String(m.name).trim().split(/\s+/)[0].toLowerCase() === nm); if (hits.length === 1) { setMe(hits[0].id); } return true; };
+        if (!tryMatch()) { const t = setInterval(() => { if (tryMatch()) clearInterval(t); }, 500); setTimeout(() => clearInterval(t), 15000); }
+      } catch(e){}
     }
-  }
-  return {v:2, jobs, items, sampleLoaded:true};
+  });
+  scheduleRender();
 }
-
-/* ---------- Storage ---------- */
-let storageOK = true;
-function load(){
-  try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }
-  catch(e){ storageOK = false; return null; }
-}
-function save(){
-  try { localStorage.setItem(KEY, JSON.stringify(db)); storageOK = true; }
-  catch(e){ storageOK = false; }
-}
-function loadUI(){ try { return JSON.parse(localStorage.getItem(UIKEY)) || {}; } catch(e){ return {}; } }
-function saveUI(){ try { localStorage.setItem(UIKEY, JSON.stringify(ui)); } catch(e){} }
-try { navigator.storage && navigator.storage.persist && navigator.storage.persist().catch(()=>{}); } catch(e){}
-
-let db = load();
-if (!db || !Array.isArray(db.jobs)) { db = sampleData(); save(); }
-if ((db.v||1) < 2) {
-  // v2 adds job people/stage, tickets, vendors and contacts. Top up sample data for users who still have it.
-  if (db.items.some(i => i.sample)) {
-    const s = sampleData();
-    for (const j of db.jobs) if (SAMPLE_JOB_INFO[j.id] && !JOB_INFO_KEYS.some(k => j[k])) Object.assign(j, SAMPLE_JOB_INFO[j.id], {sampleInfo:true});
-    const have = new Set(db.items.map(i => i.jobId + "|" + i.cat + "|" + i.title));
-    for (const i of s.items) if (["tkt","vend","contact","dwg"].includes(i.cat) && db.jobs.some(j => j.id === i.jobId) && !have.has(i.jobId + "|" + i.cat + "|" + i.title)) { i.num = null; db.items.push(i); }
-    for (const i of db.items) if (!i.num) i.num = nextNumRaw(db.items, i.jobId, i.cat);
-  }
-  db.v = 2; save();
-}
-const ui = Object.assign({job:"all", tab:"due", q:"", showClosed:false}, loadUI());
-if (ui.job !== "all" && !db.jobs.some(j => j.id === ui.job)) ui.job = "all";
-if (ui.tab !== "due" && !CAT[ui.tab]) ui.tab = "due";
+function setMe(id){ me = id; ls.set(MEKEY, id); scheduleRender(); }
 
 /* ---------- Helpers ---------- */
 const $ = id => document.getElementById(id);
-const jobById = id => db.jobs.find(j => j.id === id);
-const scoped = () => ui.job === "all" ? db.items : db.items.filter(i => i.jobId === ui.job);
-function nextNum(jobId, cat){ return nextNumRaw(db.items, jobId, cat); }
-function nextNumRaw(items, jobId, cat){
+const jobById = id => state.jobs.find(j => j.id === id);
+const sortedJobs = () => state.jobs.slice().sort((a,b) => (a.order ?? 99) - (b.order ?? 99) || String(a.name).localeCompare(b.name));
+const scoped = () => ui.job === "all" ? state.items : state.items.filter(i => i.jobId === ui.job);
+const scopedFiles = () => ui.job === "all" ? state.files : state.files.filter(f => f.jobId === ui.job);
+function nextNum(jobId, cat){
   const pre = CAT[cat].pre; let max = 0;
-  for (const i of items) if (i.jobId === jobId && i.cat === cat) { const m = String(i.num).match(/(\d+)\s*$/); if (m) max = Math.max(max, +m[1]); }
+  for (const i of state.items) if (i.jobId === jobId && i.cat === cat) { const m = String(i.num).match(/(\d+)\s*$/); if (m) max = Math.max(max, +m[1]); }
   return `${pre}-${String(max+1).padStart(3,"0")}`;
 }
 function toast(msg){
   const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; t.setAttribute("role","status");
-  document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2800);
 }
 function sortItems(arr){
   return arr.slice().sort((a,b) => {
@@ -488,22 +453,46 @@ function sortItems(arr){
     return String(a.num).localeCompare(String(b.num), undefined, {numeric:true});
   });
 }
+const phoneLink = ph => `<a class="phone" href="tel:${esc(String(ph).replace(/[^\d+]/g,""))}" data-stop="1">${esc(ph)}</a>`;
+const blobUrl = f => "/_blob/" + f.assetId;
+const isImg = f => /^image\//.test(f.type||"");
+const isVid = f => /^video\//.test(f.type||"");
+const extOf = f => ((String(f.name||"").match(/\.([a-z0-9]{1,5})$/i)||[])[1] || (f.type==="application/pdf" ? "pdf" : "file")).toUpperCase();
 
 /* ---------- Render ---------- */
-function render(){ renderJobs(); renderBanners(); renderHead(); renderKpis(); renderTabs(); renderList(); saveUI(); }
+function render(){
+  if (loaded.jobs && ui.job !== "all" && !jobById(ui.job)) ui.job = "all";
+  renderMe(); renderJobs(); renderBanners(); renderHead(); renderKpis(); renderTabs(); renderFilesStrip(); renderList();
+  ls.set(UIKEY, JSON.stringify(ui));
+}
+
+function renderMe(){
+  const m = member(me);
+  $("meAv").outerHTML = m ? av(m).replace('class="av"', 'class="av" id="meAv"') : `<span class="av" id="meAv">?</span>`;
+  $("meName").textContent = m ? m.name : "Who are you?";
+}
 
 function renderJobs(){
   const chips = [`<button class="jobchip" data-job="all" aria-pressed="${ui.job==="all"}">All jobs</button>`]
-    .concat(db.jobs.map(j => `<button class="jobchip" data-job="${esc(j.id)}" aria-pressed="${ui.job===j.id}">${esc(j.name)}${j.number?`<span class="jn">#${esc(j.number)}</span>`:""}</button>`));
-  chips.push(`<button class="jobchip add" data-addjob="1">+ Add job</button>`);
+    .concat(sortedJobs().map(j => `<button class="jobchip" data-job="${esc(j.id)}" aria-pressed="${ui.job===j.id}">${esc(j.name)}${j.number?`<span class="jn">#${esc(j.number)}</span>`:""}</button>`));
+  if (!readOnly && DB) chips.push(`<button class="jobchip add" data-addjob="1">+ Add job</button>`);
   $("jobs").innerHTML = chips.join("");
   requestAnimationFrame(() => document.documentElement.style.setProperty("--topH", $("top").offsetHeight + "px"));
 }
 
+function localLeftovers(){
+  if (ls.get(IMPORTED)) return null;
+  try { const d = JSON.parse(ls.get(OLDKEY)); if (!d || !Array.isArray(d.items)) return null; const mine = d.items.filter(i => !i.sample); return mine.length ? {d, n: mine.length} : null; } catch(e){ return null; }
+}
+
 function renderBanners(){
   let h = "";
-  if (!storageOK) h += `<div class="banner warn"><div class="grow"><b>Saving is blocked in this browser.</b> Changes will be lost when you close it. Turn off private browsing, or use Settings → Backup to copy your data.</div></div>`;
-  if (db.items.some(i => i.sample)) h += `<div class="banner"><div class="grow"><b>Sample data.</b> These items are examples so you can see how it works. Your three jobs stay when you clear them.</div><button class="btn sm amber" data-act="clearSample">Clear sample data</button></div>`;
+  if (conn === "offline") h += `<div class="banner warn"><div class="grow"><b>Can't reach the shared job data.</b> Sign in to claude.ai, then open this link again. If you're signed in, ask the owner to share the page with you.</div></div>`;
+  else if (readOnly) h += `<div class="banner warn"><div class="grow"><b>View only.</b> You can look but changes won't save. Ask the owner to share this page with you as <b style="color:inherit">Editor</b>.</div></div>`;
+  if (conn === "live" && !readOnly && !member(me) && state.team.length) h += `<div class="banner"><div class="grow"><b>Who's using this phone?</b> Pick your name so your tasks and uploads are marked as yours.</div><div class="pickrow">${sortedTeam().map(m => `<button class="pick" data-setme="${esc(m.id)}">${av(m)}${esc(m.name)}</button>`).join("")}</div></div>`;
+  const left = conn === "live" && !readOnly ? localLeftovers() : null;
+  if (left) h += `<div class="banner"><div class="grow"><b>${left.n} item${left.n===1?"":"s"} saved only on this phone.</b> From before the app was shared. Move them in so the team can see them.</div><button class="btn sm amber" data-act="importLocal">Move to shared app</button></div>`;
+  if (conn === "live" && !readOnly && state.items.some(i => i.sample)) h += `<div class="banner"><div class="grow"><b>Sample data.</b> These items are examples so you can see how it works. Your jobs and team stay when you clear them.</div><button class="btn sm amber" data-act="clearSample">Clear sample data</button></div>`;
   $("banners").innerHTML = h;
 }
 
@@ -511,46 +500,51 @@ function renderHead(){
   const j = jobById(ui.job);
   const d = new Date();
   const dateStr = `${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  if (conn === "connecting" || (conn === "live" && !allLoaded())) { $("jobhead").innerHTML = `<div><h2>Loading jobs</h2><div class="meta"><span>Getting the latest from the team</span></div></div><div class="today">${dateStr}</div>`; return; }
   if (!j) {
-    const roster = db.jobs.map(jb => {
-      const its = db.items.filter(i => i.jobId === jb.id), late = its.filter(isLate).length, pct = Number(jb.progress)||0;
+    const roster = sortedJobs().map(jb => {
+      const its = state.items.filter(i => i.jobId === jb.id), late = its.filter(isLate).length, pct = Number(jb.progress)||0;
       const tk = its.filter(i => i.cat === "tkt" && !isDone(i)).length;
+      const pm = member(jb.pmId), site = member(jb.siteId);
       return `<button class="jobcard ${late?"hot":""}" data-job="${esc(jb.id)}">
         <div class="jc-top"><b>${esc(jb.name)}</b>${late ? `<span class="pill od">${late} overdue</span>` : `<span class="pill t-green">On track</span>`}</div>
         <div class="jc-stage">${jb.stage ? esc(jb.stage) : "No stage set"}<span>${pct}%</span></div>
         <div class="bar"><i style="width:${pct}%"></i></div>
-        <div class="jc-ppl"><span>PM <b>${esc(jb.pm || "—")}</b></span><span>Site <b>${esc(jb.site || "—")}</b></span><span>Tickets <b>${tk}</b></span></div>
+        <div class="jc-ppl"><span>PM <b>${esc(pm ? pm.name : "—")}</b></span><span>Site <b>${esc(site ? site.name : "—")}</b></span><span>Tickets <b>${tk}</b></span></div>
       </button>`;
     }).join("");
-    $("jobhead").innerHTML = `<div><h2>All Jobs</h2><div class="meta"><span>${db.jobs.length} active job${db.jobs.length===1?"":"s"}</span></div></div><div class="today">${dateStr}</div>
-      ${db.jobs.length ? `<div class="roster">${roster}</div>` : `<div class="empty" style="width:100%">No jobs yet. Tap <b style="display:inline;color:var(--accent)">+ Add job</b> to start.</div>`}`;
-  } else {
-    const meta = [j.number && `Job #${esc(j.number)}`, j.location && esc(j.location), j.client && `Owner: ${esc(j.client)}`].filter(Boolean).map(s => `<span>${s}</span>`).join("");
-    const its = db.items.filter(i => i.jobId === j.id);
-    const openN = cat => its.filter(i => i.cat === cat && !isDone(i)).length;
-    const allN = cat => its.filter(i => i.cat === cat).length;
-    const lateT = its.filter(i => i.cat === "tkt" && isLate(i)).length;
-    const person = (lbl, name, ph) => `<div class="person"><span class="lbl">${lbl}</span>${name ? `<b>${esc(name)}</b>` : `<span class="none">Not set</span>`}${ph ? phoneLink(ph) : ""}</div>`;
-    const pct = Number(j.progress)||0;
-    const q = (tab, lbl, n, sub, hot) => `<button class="qk ${hot?"hot":""}" data-tab="${tab}"><b>${n}</b><span>${lbl}</span>${sub ? `<small>${sub}</small>` : ""}</button>`;
-    $("jobhead").innerHTML = `<div><h2>${esc(j.name)}</h2><div class="meta">${meta}</div></div><div class="today">${dateStr}</div>
-      <div class="jobinfo">
-        <div class="people">${person("Project manager", j.pm, j.pmPhone)}${person("Site manager", j.site, j.sitePhone)}</div>
-        <div class="stage">
-          <div class="st-top"><span class="lbl">Where it's holding</span><button class="linkbtn" data-editjob="${esc(j.id)}">Edit job</button></div>
-          <b class="st-name">${j.stage ? esc(j.stage) : `<span class="none">No stage set</span>`}</b>
-          <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Percent complete"><i style="width:${pct}%"></i></div>
-          <div class="st-foot"><span class="pct">${pct}% complete</span>${j.holdNote ? `<span>${esc(j.holdNote)}</span>` : ""}</div>
-        </div>
-        <div class="quick">
-          ${q("tkt","Open tickets", openN("tkt"), lateT ? `${lateT} overdue` : "", lateT)}
-          ${q("subs","Subcontractors", allN("subs"), "")}
-          ${q("vend","Vendors", allN("vend"), "")}
-          ${q("dwg","Drawings", allN("dwg"), openN("dwg") ? `${openN("dwg")} in review` : "")}
-          ${q("contact","Contacts", allN("contact"), "")}
-        </div>
-      </div>`;
+    $("jobhead").innerHTML = `<div><h2>All Jobs</h2><div class="meta"><span>${state.jobs.length} active job${state.jobs.length===1?"":"s"}</span><span>${state.team.length} on the team</span></div></div><div class="today">${dateStr}</div>
+      ${state.jobs.length ? `<div class="roster">${roster}</div>` : (conn === "live" ? `<div class="empty" style="width:100%"><b>No jobs yet</b>Tap <b style="display:inline;color:var(--accent)">+ Add job</b> to start.</div>` : "")}`;
+    return;
   }
+  const meta = [j.number && `Job #${esc(j.number)}`, j.location && esc(j.location), j.client && `Owner: ${esc(j.client)}`].filter(Boolean).map(s => `<span>${s}</span>`).join("");
+  const its = state.items.filter(i => i.jobId === j.id);
+  const openN = cat => its.filter(i => i.cat === cat && !isDone(i)).length;
+  const allN = cat => its.filter(i => i.cat === cat).length;
+  const lateT = its.filter(i => i.cat === "tkt" && isLate(i)).length;
+  const person = (lbl, id) => { const m = member(id); return `<div class="person"><span class="lbl">${lbl}</span>${m ? `<b>${esc(m.name)}</b>` : `<span class="none">Not assigned</span>`}${m && m.phone ? phoneLink(m.phone) : ""}</div>`; };
+  const pct = Number(j.progress)||0;
+  const q = (tab, lbl, n, sub, hot) => `<button class="qk ${hot?"hot":""}" data-tab="${tab}"><b>${n}</b><span>${lbl}</span>${sub ? `<small>${sub}</small>` : ""}</button>`;
+  const nFiles = state.files.filter(f => f.jobId === j.id).length;
+  $("jobhead").innerHTML = `<div><h2>${esc(j.name)}</h2><div class="meta">${meta}</div></div><div class="today">${dateStr}</div>
+    <div class="jobinfo">
+      <div class="people">${person("Project manager", j.pmId)}${person("Site manager", j.siteId)}</div>
+      <div class="stage">
+        <div class="st-top"><span class="lbl">Where it's holding</span>${readOnly ? "" : `<button class="linkbtn" data-editjob="${esc(j.id)}">Edit job</button>`}</div>
+        <b class="st-name">${j.stage ? esc(j.stage) : `<span class="none">No stage set</span>`}</b>
+        <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Percent complete"><i style="width:${pct}%"></i></div>
+        <div class="st-foot"><span class="pct">${pct}% complete</span>${j.holdNote ? `<span>${esc(j.holdNote)}</span>` : ""}</div>
+      </div>
+      <div class="quick">
+        ${q("tkt","Open tickets", openN("tkt"), lateT ? `${lateT} overdue` : "", lateT)}
+        ${q("task","Team tasks", openN("task"), its.filter(i => i.cat==="task" && isLate(i)).length ? `${its.filter(i => i.cat==="task" && isLate(i)).length} overdue` : "", its.some(i => i.cat==="task" && isLate(i)))}
+        ${q("files","Photos & files", nFiles, "")}
+        ${q("subs","Subcontractors", allN("subs"), "")}
+        ${q("vend","Vendors", allN("vend"), "")}
+        ${q("dwg","Drawings", allN("dwg"), openN("dwg") ? `${openN("dwg")} in review` : "")}
+        ${q("contact","Contacts", allN("contact"), "")}
+      </div>
+    </div>`;
 }
 
 function renderKpis(){
@@ -581,26 +575,74 @@ function renderKpis(){
 function renderTabs(){
   const its = scoped();
   const late = its.filter(isLate).length;
-  const t = [`<button class="tab due" role="tab" data-tab="due" aria-selected="${ui.tab==="due"}">Overdue <span class="ct">${late}</span></button>`];
+  const mine = me ? its.filter(i => i.assignee === me && !isDone(i)).length : 0;
+  const t = [`<button class="tab due" role="tab" data-tab="due" aria-selected="${ui.tab==="due"}">Overdue <span class="ct">${late}</span></button>`,
+    `<button class="tab" role="tab" data-tab="mine" aria-selected="${ui.tab==="mine"}">My Work <span class="ct">${mine}</span></button>`];
   for (const c of CATS) {
     const n = its.filter(i => i.cat===c.k && !isDone(i)).length;
     t.push(`<button class="tab" role="tab" data-tab="${c.k}" aria-selected="${ui.tab===c.k}">${c.short} <span class="ct">${n}</span></button>`);
   }
+  t.push(`<button class="tab" role="tab" data-tab="files" aria-selected="${ui.tab==="files"}">Photos & Files <span class="ct">${scopedFiles().length}</span></button>`);
   $("tabs").innerHTML = t.join("");
   const sel = $("tabs").querySelector('[aria-selected="true"]');
   if (sel) { const tabs = $("tabs"); const l = sel.offsetLeft - 16, r = l + sel.offsetWidth + 32; if (l < tabs.scrollLeft || r > tabs.scrollLeft + tabs.clientWidth) tabs.scrollLeft = l - 40; }
-  $("fabLbl").textContent = ui.tab === "due" ? "Add item" : ("Add " + CAT[ui.tab].one.toLowerCase().replace(/^rfi$/,"RFI"));
+  const fab = $("fab");
+  fab.hidden = readOnly || !DB || (ui.tab === "files" && !ASSETS);
+  $("fabLbl").textContent = ui.tab === "files" ? "Upload" : ui.tab === "mine" ? "Add task" : ui.tab === "due" ? "Add item" : ("Add " + CAT[ui.tab].one.toLowerCase().replace(/^rfi$/,"RFI"));
   $("btnClosed").setAttribute("aria-pressed", ui.showClosed);
-  $("btnClosed").hidden = ui.tab === "due";
+  $("btnClosed").hidden = ui.tab === "due" || ui.tab === "files";
+  const who = $("selWho");
+  who.hidden = ui.tab === "files" || ui.tab === "mine";
+  who.innerHTML = `<option value="">Anyone</option><option value="none">Unassigned</option>` + sortedTeam().map(m => `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join("");
+  who.value = ui.who && (ui.who === "none" || member(ui.who)) ? ui.who : "";
+}
+
+function fileThumb(f){
+  const media = isImg(f) ? `<img src="${esc(blobUrl(f))}" alt="${esc(f.caption || f.name)}" loading="lazy">` : `<span class="doc">${esc(isVid(f) ? "VIDEO" : extOf(f))}</span>`;
+  return `<button class="thumb" data-file="${esc(f.id)}"><span class="img">${media}</span><span class="cap">${esc(f.caption || f.name)}</span></button>`;
+}
+const addThumb = (lbl="Add photo") => ASSETS && !readOnly ? `<button class="thumb add" data-upload="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>${lbl}</button>` : "";
+
+function renderFilesStrip(){
+  const host = $("filesStrip");
+  if (!CAT[ui.tab] || ui.job === "all" || conn !== "live") { host.innerHTML = ""; return; }
+  const fs = state.files.filter(f => f.jobId === ui.job && f.cat === ui.tab).sort((a,b) => (b.created||0) - (a.created||0));
+  if (!fs.length && !ASSETS) { host.innerHTML = ""; return; }
+  host.innerHTML = `<section class="files"><div class="files-h"><div><b>Photos & files</b> <span class="cnt-dot">${fs.length}</span></div><small>${ASSETS ? "Pictures, PDFs and videos for " + esc(CAT[ui.tab].label.toLowerCase()) + " on this job" : "Uploading needs Editor access"}</small></div>
+    <div class="thumbs">${addThumb(fs.length ? "Add" : "Add photo")}${fs.map(fileThumb).join("")}</div></section>`;
+}
+
+function renderFilesTab(){
+  const fs = scopedFiles().slice().sort((a,b) => (b.created||0) - (a.created||0));
+  const q = ui.q.trim().toLowerCase();
+  const list = q ? fs.filter(f => [f.name, f.caption, fileCatLabel(f.cat), (member(f.by)||{}).name].some(v => String(v||"").toLowerCase().includes(q))) : fs;
+  $("listhead").innerHTML = `<div><h3>Photos & Files</h3><div class="hint">Every picture and document${ui.job==="all" ? " across jobs" : " for this job"}, grouped by category.</div></div><div class="tally">${fs.length} file${fs.length===1?"":"s"}</div>`;
+  if (!list.length) {
+    $("list").innerHTML = `<div class="empty" style="grid-column:1/-1">${q ? `<b>No files match “${esc(ui.q)}”</b>Try a category or a word from the caption.` : `<b>No photos or files yet</b>${ASSETS && !readOnly ? `Tap <b style="display:inline;color:var(--accent)">Upload</b> to add pictures or PDFs to a job.` : "Uploading needs Editor access to this page."}`}</div>`;
+    return;
+  }
+  const groups = {};
+  for (const f of list) (groups[f.cat || "general"] = groups[f.cat || "general"] || []).push(f);
+  $("list").innerHTML = FILE_CATS.filter(c => groups[c.k]).map(c => `<div class="fgroup" style="grid-column:1/-1"><h5>${esc(c.label)} · ${groups[c.k].length}</h5><div class="thumbs grid">${groups[c.k].map(fileThumb).join("")}</div></div>`).join("");
 }
 
 function renderList(){
+  if (conn !== "live" || !allLoaded()) {
+    $("listhead").innerHTML = "";
+    $("list").innerHTML = conn === "offline" ? `<div class="empty"><b>Not connected</b>Job data lives in the team's shared database. Sign in to claude.ai to see it.</div>` : `<div class="loading">Loading the team's jobs…</div>`;
+    return;
+  }
+  if (ui.tab === "files") return renderFilesTab();
   const all = scoped();
-  let base = ui.tab === "due" ? all.filter(isLate) : all.filter(i => i.cat === ui.tab);
+  let base;
+  if (ui.tab === "due") base = all.filter(isLate);
+  else if (ui.tab === "mine") base = me ? all.filter(i => i.assignee === me) : [];
+  else base = all.filter(i => i.cat === ui.tab);
   const closedN = base.filter(isDone).length;
   let items = (ui.showClosed || ui.tab === "due") ? base : base.filter(i => !isDone(i));
+  if (ui.who && ui.tab !== "mine") items = items.filter(i => ui.who === "none" ? !member(i.assignee) : i.assignee === ui.who);
   const q = ui.q.trim().toLowerCase();
-  if (q) items = items.filter(i => [i.num,i.title,i.party,i.notes,i.trade,i.phone,i.email,i.type,i.rev,i.status].some(v => String(v||"").toLowerCase().includes(q)));
+  if (q) items = items.filter(i => [i.num,i.title,i.party,i.notes,i.trade,i.phone,i.email,i.type,i.rev,i.status,(member(i.assignee)||{}).name].some(v => String(v||"").toLowerCase().includes(q)));
   items = sortItems(items);
 
   const c = CAT[ui.tab];
@@ -612,13 +654,19 @@ function renderList(){
   } else if (ui.tab !== "due" && closedN) {
     tally = `<div class="tally">${closedN} closed<br>${ui.showClosed ? "shown" : "hidden"}</div>`;
   }
-  $("listhead").innerHTML = `<div><h3>${ui.tab==="due" ? "Overdue" : esc(c.label)}</h3><div class="hint">${ui.tab==="due" ? "Past the due or follow-up date and still open. Oldest first." : esc(c.hint)}</div></div>${tally}`;
+  const meM = member(me);
+  const title = ui.tab === "due" ? "Overdue" : ui.tab === "mine" ? (meM ? `${meM.name}'s Work` : "My Work") : c.label;
+  const hint = ui.tab === "due" ? "Past the due or follow-up date and still open. Oldest first." : ui.tab === "mine" ? "Everything assigned to you, across every list." : c.hint;
+  $("listhead").innerHTML = `<div><h3>${esc(title)}</h3><div class="hint">${esc(hint)}</div></div>${tally}`;
 
   if (!items.length) {
     let msg;
-    if (q) msg = `<b>No matches for “${esc(ui.q)}”</b>Try a number, company or word from the notes.`;
+    if (ui.tab === "mine" && !meM) msg = `<b>Pick your name first</b>Tap <b style="display:inline;color:var(--accent)">Who are you?</b> at the top so the app knows which work is yours.`;
+    else if (q) msg = `<b>No matches for “${esc(ui.q)}”</b>Try a number, company or word from the notes.`;
+    else if (ui.who) msg = `<b>Nothing here for ${esc(ui.who === "none" ? "unassigned" : (member(ui.who)||{}).name || "that person")}</b>Switch the filter back to Anyone to see everything.`;
     else if (ui.tab === "due") msg = `<b>Nothing overdue</b>Every open item is on schedule.`;
-    else msg = `<b>No open ${esc(c.label.toLowerCase())}${ui.job!=="all" ? " on this job" : ""}</b>Tap <b style="display:inline;color:var(--accent)">+ Add</b> to log the first one.${closedN && !ui.showClosed ? ` ${closedN} closed item${closedN===1?" is":"s are"} hidden.` : ""}`;
+    else if (ui.tab === "mine") msg = `<b>Nothing assigned to you</b>When someone assigns you a task, ticket or RFI it shows up here.`;
+    else msg = `<b>No open ${esc(c.label.toLowerCase())}${ui.job!=="all" ? " on this job" : ""}</b>${readOnly ? "" : `Tap <b style="display:inline;color:var(--accent)">+ Add</b> to log the first one.`}${closedN && !ui.showClosed ? ` ${closedN} closed item${closedN===1?" is":"s are"} hidden.` : ""}`;
     $("list").innerHTML = `<div class="empty">${msg}</div>`;
     return;
   }
@@ -636,10 +684,9 @@ function dueLabel(it){
   return `<span class="due">${esc(word)} ${fmtDate(it.due)}</span>`;
 }
 
-const phoneLink = ph => `<a class="phone" href="tel:${esc(String(ph).replace(/[^\d+]/g,""))}" data-stop="1">${esc(ph)}</a>`;
-
 function card(it){
-  const c = CAT[it.cat], late = isLate(it), done = isDone(it);
+  const c = CAT[it.cat]; if (!c) return "";
+  const late = isLate(it), done = isDone(it);
   const job = ui.job === "all" ? jobById(it.jobId) : null;
   const meta = [];
   if (it.cat === "dwg" && (it.type || it.rev)) meta.push(esc([it.type, it.rev && "Rev " + it.rev].filter(Boolean).join(" · ")));
@@ -649,26 +696,29 @@ function card(it){
     if (c.paid && Number(it.paid) > 0 && !done) meta.push(`<span class="amt">${money(unpaid(it))} <small>due of ${money(it.amount)}</small></span>`);
     else meta.push(`<span class="amt">${money(it.amount)}</span>`);
   }
+  const nf = state.files.filter(f => f.itemId === it.id).length;
+  if (nf) meta.push(`${nf} attachment${nf===1?"":"s"}`);
   let subrow = "";
   if (c.dir) {
     const ns = Number(it.noShows)||0;
     subrow = `<div class="subrow">${it.phone ? phoneLink(it.phone) : `<span class="due">No phone saved</span>`}
       ${c.email && it.email ? `<span class="phone mail" data-stop="1">${esc(it.email)}</span>` : ""}
-      ${c.ns ? `<div class="ns ${ns>=2?"bad":""}" data-stop="1"><span>No-shows <b>${ns}</b></span><button data-ns="-1" data-id="${it.id}" aria-label="Remove a no-show">−</button><button data-ns="1" data-id="${it.id}" aria-label="Log a no-show">+</button></div>` : ""}</div>`;
+      ${c.ns ? `<div class="ns ${ns>=2?"bad":""}" data-stop="1"><span>No-shows <b>${ns}</b></span>${readOnly ? "" : `<button data-ns="-1" data-id="${esc(it.id)}" aria-label="Remove a no-show">−</button><button data-ns="1" data-id="${esc(it.id)}" aria-label="Log a no-show">+</button>`}</div>` : ""}</div>`;
   }
-  return `<div class="card ${late?"late":""} ${done?"closed":""}" role="button" tabindex="0" data-id="${it.id}">
-    <div class="c-top"><span class="num">${esc(it.num)}</span>${ui.tab==="due" ? `<span class="cat">${esc(c.short)}</span>` : ""}<span class="sp"></span>${late?`<span class="pill od">Overdue</span>`:""}<span class="pill ${tone(it)}">${esc(it.status)}</span></div>
+  const who = whoChip(it.assignee);
+  return `<div class="card ${late?"late":""} ${done?"closed":""}" role="button" tabindex="0" data-id="${esc(it.id)}">
+    <div class="c-top"><span class="num">${esc(it.num)}</span>${(ui.tab==="due" || ui.tab==="mine") ? `<span class="cat">${esc(c.short)}</span>` : ""}<span class="sp"></span>${late?`<span class="pill od">Overdue</span>`:""}<span class="pill ${tone(it)}">${esc(it.status)}</span></div>
     <div class="c-title">${esc(it.title)}</div>
     ${meta.length ? `<div class="c-meta">${meta.map(m=>`<span>${m}</span>`).join("")}</div>` : ""}
     ${subrow}
-    ${(it.due || job) ? `<div class="c-foot">${dueLabel(it)}${job ? `<span class="jobtag">${esc(job.name)}</span>` : ""}</div>` : ""}
+    ${(it.due || job || who) ? `<div class="c-foot">${who}${dueLabel(it)}${job ? `<span class="jobtag">${esc(job.name)}</span>` : ""}</div>` : ""}
     ${it.notes ? `<div class="c-notes">${esc(it.notes)}</div>` : ""}
   </div>`;
 }
 
 /* ---------- Sheets ---------- */
 function openSheet(html, onMount){
-  $("sheetHost").innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${`<div class="grab"></div>`}${html}</div></div>`;
+  $("sheetHost").innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div></div>`;
   document.body.style.overflow = "hidden";
   $("scrim").addEventListener("click", e => { if (e.target.id === "scrim") closeSheet(); });
   onMount && onMount($("scrim").querySelector(".sheet"));
@@ -683,29 +733,152 @@ function armButton(btn, label, fn){
     setTimeout(() => { if (btn.isConnected) { btn.classList.remove("arm"); btn.textContent = old; } }, 3500);
   });
 }
+const teamOptions = (sel, emptyLbl = "Unassigned") => `<option value="">${esc(emptyLbl)}</option>` + sortedTeam().map(m => `<option value="${esc(m.id)}" ${m.id===sel?"selected":""}>${esc(m.name)}${m.role ? " · " + esc(m.role) : ""}</option>`).join("");
+function guardWrite(){ if (readOnly || !DB) { toast(readOnly ? "View only. Ask the owner for Editor access." : "Not connected."); return false; } return true; }
 
+/* ---------- Uploads ---------- */
+const OK_TYPES = ["image/png","image/jpeg","image/gif","image/webp","application/pdf","video/mp4","video/webm","text/plain","text/csv"];
+async function shrinkImage(file){
+  // Phone photos are often 4-12 MB; resize to 2400px JPEG so uploads are fast and stay under the 20 MB limit.
+  if (!/^image\//.test(file.type) || file.type === "image/gif") return file;
+  if (OK_TYPES.includes(file.type) && file.size < 1.5e6) return file;
+  try {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
+    const cv = document.createElement("canvas"); cv.width = Math.round(bmp.width*scale); cv.height = Math.round(bmp.height*scale);
+    cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+    const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", 0.85));
+    if (!blob) return file;
+    return new File([blob], String(file.name||"photo").replace(/\.[^.]+$/,"") + ".jpg", {type:"image/jpeg"});
+  } catch(e){ return file; }
+}
+function typeFor(f){
+  if (OK_TYPES.includes(f.type)) return f.type;
+  const ext = (String(f.name).match(/\.([a-z0-9]+)$/i)||[])[1];
+  const map = {pdf:"application/pdf", jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", gif:"image/gif", webp:"image/webp", mp4:"video/mp4", webm:"video/webm", txt:"text/plain", csv:"text/csv"};
+  return ext && map[ext.toLowerCase()] || "";
+}
+async function uploadFiles(fileList, ctx, onProgress){
+  if (!ASSETS) { toast("Uploading needs Editor access to this page."); return 0; }
+  let ok = 0;
+  const files = Array.from(fileList);
+  for (let n = 0; n < files.length; n++) {
+    onProgress && onProgress(n, files.length, files[n].name);
+    let f = await shrinkImage(files[n]);
+    const type = typeFor(f);
+    if (!type) { toast(`${files[n].name}: this type can't be uploaded. Save Word or Excel files as PDF first.`); continue; }
+    try {
+      const res = await ASSETS.upload(f, {type});
+      const rec = {id: uid(), jobId: ctx.jobId, cat: ctx.cat || "general", itemId: ctx.itemId || "", assetId: res.id, name: f.name || "file", type: res.contentType || type, size: res.sizeBytes || f.size, caption: ctx.caption || "", by: me || "", created: Date.now()};
+      await putDoc("files", rec);
+      ok++;
+    } catch(e){
+      const code = e && e.code;
+      const msg = code === "too_large" ? "is over 20 MB" : code === "unsupported_type" ? "isn't a supported file type" : code === "quota_or_state" ? "didn't fit: storage is full" : code === "rate_limited" ? "was skipped: too many uploads at once, try again" : "didn't upload, try again";
+      toast(`${files[n].name} ${msg}.`);
+    }
+  }
+  return ok;
+}
+function uploadSheet(preset = {}){
+  if (!guardWrite()) return;
+  if (!ASSETS) { toast("Uploading needs Editor access to this page."); return; }
+  if (!state.jobs.length) { toast("Add a job first"); return; }
+  const jobId = preset.jobId || (ui.job !== "all" ? ui.job : sortedJobs()[0].id);
+  const cat = preset.cat || (CAT[ui.tab] ? ui.tab : "general");
+  openSheet(`
+    <h4>Upload photos & files</h4>
+    <p class="shint">Take a picture or pick photos, PDFs or videos (up to 20 MB each). Word and Excel files need to be saved as PDF first.</p>
+    <form class="form" id="upForm" novalidate>
+      <div class="f full"><label for="u-job">Job</label><select id="u-job">${sortedJobs().map(j => `<option value="${esc(j.id)}" ${j.id===jobId?"selected":""}>${esc(j.name)}</option>`).join("")}</select></div>
+      <div class="f full"><label for="u-cat">Category</label><select id="u-cat">${FILE_CATS.map(c => `<option value="${c.k}" ${c.k===cat?"selected":""}>${esc(c.label)}</option>`).join("")}</select></div>
+      <div class="f full"><label for="u-cap">Caption (optional)</label><input id="u-cap" placeholder="e.g. North wall footing before pour" autocomplete="off"></div>
+      <div class="f full"><label for="u-files">Files</label><input id="u-files" type="file" multiple accept="image/*,application/pdf,video/mp4,video/webm,text/plain,text/csv" style="padding-top:9px"></div>
+      <div class="pending full f" id="u-status"></div>
+    </form>
+    <div class="actions"><button class="btn" id="uCancel" type="button">Cancel</button><button class="btn primary" id="uGo" type="button">Upload</button></div>`, () => {
+    $("uCancel").addEventListener("click", closeSheet);
+    $("uGo").addEventListener("click", async () => {
+      const fl = $("u-files").files;
+      if (!fl || !fl.length) { $("u-status").textContent = "Pick at least one photo or file."; return; }
+      $("uGo").disabled = true;
+      const n = await uploadFiles(fl, {jobId: $("u-job").value, cat: $("u-cat").value, caption: $("u-cap").value.trim()}, (i, tot, name) => { if ($("u-status")) $("u-status").textContent = `Uploading ${i+1} of ${tot}: ${name}`; });
+      closeSheet(); if (n) toast(`Uploaded ${n} file${n===1?"":"s"}`);
+    });
+  });
+}
+function fileSheet(f){
+  const by = member(f.by), job = jobById(f.jobId), item = state.items.find(i => i.id === f.itemId);
+  const media = isImg(f) ? `<img src="${esc(blobUrl(f))}" alt="${esc(f.caption || f.name)}">` : isVid(f) ? `<video src="${esc(blobUrl(f))}" controls playsinline></video>` : `<div class="thumb" style="width:100%"><span class="img" style="aspect-ratio:3/1"><span class="doc">${esc(extOf(f))}</span></span></div>`;
+  openSheet(`
+    <div class="lb">
+      ${media}
+      <div><h4 style="text-transform:none;font-size:22px">${esc(f.caption || f.name)}</h4>
+      <div class="meta">${[job && esc(job.name), esc(fileCatLabel(f.cat)), item && esc(item.num + " " + item.title), by && "by " + esc(by.name), f.created && fmtStamp(f.created), f.size && fmtSize(f.size)].filter(Boolean).join(" · ")}</div></div>
+    </div>
+    <div class="actions">
+      ${!readOnly && ASSETS ? `<button class="btn danger" id="fDel" type="button">Delete</button>` : ""}
+      <a class="btn" href="${esc(blobUrl(f))}" target="_blank" rel="noopener">Open full size</a>
+      <button class="btn primary" id="fDone" type="button">Done</button>
+    </div>`, () => {
+    $("fDone").addEventListener("click", closeSheet);
+    $("fDel") && armButton($("fDel"), "Tap again to delete", async () => {
+      closeSheet();
+      try { await ASSETS.delete(f.assetId); } catch(e){}
+      delDoc("files", f.id); toast("File deleted");
+    });
+  });
+}
+$("filePick").addEventListener("change", async e => {
+  const ctx = pickCtx; pickCtx = null; const fl = Array.from(e.target.files || []);
+  e.target.value = "";
+  if (!ctx || !fl.length) return;
+  // A new item collects files before it exists; they upload once it's saved.
+  if (ctx.collect) { if (collectPending) collectPending(fl); return; }
+  toast(`Uploading ${fl.length} file${fl.length===1?"":"s"}…`);
+  const n = await uploadFiles(fl, ctx);
+  if (n) toast(`Uploaded ${n} file${n===1?"":"s"}`);
+  if (ctx.after) ctx.after();
+});
+let pickCtx = null;
+function pickFiles(ctx){ if (!guardWrite() || !ASSETS) { if (!ASSETS) toast("Uploading needs Editor access to this page."); return; } pickCtx = ctx; $("filePick").click(); }
+
+/* ---------- Item form ---------- */
 function itemForm(existing, presetCat){
+  if (!existing && !guardWrite()) return;
   const it = existing || null;
   let cat = it ? it.cat : (presetCat && CAT[presetCat] ? presetCat : "open");
-  let jobId = it ? it.jobId : (ui.job !== "all" ? ui.job : (db.jobs[0] && db.jobs[0].id));
-  if (!db.jobs.length) { jobForm(); toast("Add a job first"); return; }
+  let jobId = it ? it.jobId : (ui.job !== "all" ? ui.job : (sortedJobs()[0] && sortedJobs()[0].id));
+  if (!state.jobs.length) { jobForm(); toast("Add a job first"); return; }
   const v = (k, d="") => it && it[k] != null ? it[k] : d;
+  const newId = it ? it.id : uid();
+  let pendingFiles = [];
+
+  const attachHtml = () => {
+    const fs = state.files.filter(f => f.itemId === newId);
+    if (!ASSETS && !fs.length) return "";
+    return `<div class="f full"><label>Photos & attachments</label><div class="thumbs">${ASSETS && !readOnly ? `<button class="thumb add" type="button" id="btnAttach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>${it ? "Add" : "Attach"}</button>` : ""}${fs.map(fileThumb).join("")}</div>${pendingFiles.length ? `<span class="due">${pendingFiles.length} file${pendingFiles.length===1?"":"s"} will upload when you tap Add</span>` : ""}</div>`;
+  };
 
   const build = () => {
     const c = CAT[cat];
     const catSel = it ? "" : `<div class="f full"><label for="f-cat">Type</label><select id="f-cat">${CATS.map(x=>`<option value="${x.k}" ${x.k===cat?"selected":""}>${esc(x.label)}</option>`).join("")}</select></div>`;
+    const ro = readOnly ? "disabled" : "";
+    const assignedBy = it && member(it.assignedBy) && it.assignee ? `<span class="due">Assigned by ${esc(member(it.assignedBy).name)}${it.assignedAt ? " on " + fmtStamp(it.assignedAt) : ""}</span>` : "";
     return `
-      <h4>${it ? "Edit " : "New "}${esc(c.one)}</h4>
+      <h4>${it ? (readOnly ? "" : "Edit ") : "New "}${esc(c.one)}</h4>
       <p class="shint">${esc(c.hint)}</p>
       <form class="form" id="itemForm" novalidate>
+        <fieldset style="display:contents" ${ro}>
         ${catSel}
-        <div class="f full"><label for="f-job">Job</label><select id="f-job">${db.jobs.map(j=>`<option value="${esc(j.id)}" ${j.id===jobId?"selected":""}>${esc(j.name)}</option>`).join("")}</select></div>
+        <div class="f full"><label for="f-job">Job</label><select id="f-job">${sortedJobs().map(j=>`<option value="${esc(j.id)}" ${j.id===jobId?"selected":""}>${esc(j.name)}</option>`).join("")}</select></div>
+        <div class="f full"><label for="f-assignee">Assigned to</label><select id="f-assignee">${teamOptions(v("assignee", cat === "task" ? "" : ""))}</select>${assignedBy}</div>
         <div class="f"><label for="f-num">Number</label><input id="f-num" value="${esc(v("num", nextNum(jobId,cat)))}" autocomplete="off"></div>
         <div class="f"><label for="f-status">Status</label><select id="f-status">${c.statuses.map(s=>`<option ${s===v("status",c.statuses[0])?"selected":""}>${esc(s)}</option>`).join("")}</select></div>
         <div class="f full"><label for="f-title">${esc(c.titleLabel || "Title")}</label><input id="f-title" value="${esc(v("title"))}" placeholder="${c.dir ? (c.email ? "Full name" : "e.g. Shore Line Electric") : "What is it?"}" autocomplete="off"><span class="err" id="e-title" hidden>Give it a title so you can find it later.</span></div>
         ${c.dir ? `
           <div class="f full"><label for="f-trade">${esc(c.tradeLabel)}</label><input id="f-trade" value="${esc(v("trade"))}" placeholder="${esc(c.tradePh)}" list="tradeList-${c.k}"></div>
-          <datalist id="tradeList-${c.k}">${[...new Set(db.items.filter(i=>i.cat===c.k).map(i=>i.trade).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
+          <datalist id="tradeList-${c.k}">${[...new Set(state.items.filter(i=>i.cat===c.k).map(i=>i.trade).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
           <div class="f"><label for="f-phone">Phone</label><input id="f-phone" type="tel" inputmode="tel" value="${esc(v("phone"))}" placeholder="(732) 555-0100"></div>
           <div class="f"><label for="f-party">${esc(c.party)}</label><input id="f-party" value="${esc(v("party"))}" ${c.email ? 'list="partyList"' : ""}></div>
           ${c.email ? `<div class="f full"><label for="f-email">Email</label><input id="f-email" type="email" inputmode="email" autocomplete="off" value="${esc(v("email"))}" placeholder="name@company.com"></div>` : ""}
@@ -716,41 +889,56 @@ function itemForm(existing, presetCat){
         ${c.paid ? `<div class="f"><label for="f-paid">Paid so far ($)</label><input id="f-paid" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(v("paid"))}" placeholder="0"></div>` : ""}
         ${c.noDue ? "" : `<div class="f ${c.money && !c.paid ? "" : "full"}"><label for="f-due">${esc(c.due)}</label><input id="f-due" type="date" value="${esc(v("due"))}"></div>`}
         <div class="f full"><label for="f-notes">Notes</label><textarea id="f-notes" placeholder="Who you spoke to, what was promised, next step">${esc(v("notes"))}</textarea></div>
-        <datalist id="partyList">${[...new Set(db.items.map(i=>i.party).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
+        <datalist id="partyList">${[...new Set(state.items.map(i=>i.party).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
+        </fieldset>
+        <div class="full" id="attachBox" style="grid-column:1/-1">${attachHtml()}</div>
       </form>
       <div class="actions">
-        ${it ? `<button class="btn danger" id="btnDel" type="button">Delete</button>` : ""}
-        <button class="btn" type="button" id="btnCancel">Cancel</button>
-        <button class="btn primary" type="button" id="btnSave">${it ? "Save changes" : "Add"}</button>
+        ${it && !readOnly ? `<button class="btn danger" id="btnDel" type="button">Delete</button>` : ""}
+        <button class="btn" type="button" id="btnCancel">${readOnly ? "Close" : "Cancel"}</button>
+        ${readOnly ? "" : `<button class="btn primary" type="button" id="btnSave">${it ? "Save changes" : "Add"}</button>`}
       </div>`;
   };
 
   const mount = sheet => {
     const read = () => ({
-      title: $("f-title")?.value, num: $("f-num")?.value, status: $("f-status")?.value, party: $("f-party")?.value,
+      title: $("f-title")?.value, num: $("f-num")?.value, status: $("f-status")?.value, party: $("f-party")?.value, assignee: $("f-assignee")?.value,
       trade: $("f-trade")?.value, phone: $("f-phone")?.value, email: $("f-email")?.value, rev: $("f-rev")?.value, noShows: $("f-ns")?.value, type: $("f-type")?.value,
       amount: $("f-amount")?.value, paid: $("f-paid")?.value, due: $("f-due")?.value, notes: $("f-notes")?.value,
     });
-    const rebuild = () => { const keep = read(); sheet.innerHTML = `<div class="grab"></div>` + build(); for (const k of ["title","party","due","notes","amount","paid","trade","phone","email","rev"]) { const el = $("f-"+k); if (el && keep[k]) el.value = keep[k]; } wire(); };
-    const wire = () => {
-      $("f-cat") && $("f-cat").addEventListener("change", e => { cat = e.target.value; rebuild(); });
-      $("f-job").addEventListener("change", e => { jobId = e.target.value; if (!it) $("f-num").value = nextNum(jobId, cat); });
-      $("btnCancel").addEventListener("click", closeSheet);
-      $("btnSave").addEventListener("click", submit);
-      $("itemForm").addEventListener("submit", e => { e.preventDefault(); submit(); });
-      $("btnDel") && armButton($("btnDel"), "Tap again to delete", () => {
-        db.items = db.items.filter(x => x.id !== it.id); save(); closeSheet(); render(); toast(`Deleted ${it.num}`);
+    const rebuild = () => { const keep = read(); sheet.innerHTML = `<div class="grab"></div>` + build(); for (const k of ["title","party","due","notes","amount","paid","trade","phone","email","rev","assignee"]) { const el = $("f-"+k); if (el && keep[k]) el.value = keep[k]; } wire(); };
+    const refreshAttach = () => { const box = $("attachBox"); if (box) { box.innerHTML = attachHtml(); wireAttach(); } };
+    const wireAttach = () => {
+      $("btnAttach") && $("btnAttach").addEventListener("click", () => {
+        if (it) pickFiles({jobId: it.jobId, cat: it.cat, itemId: it.id, after: refreshAttach});
+        else { pickCtx = {collect: true}; $("filePick").click(); }
       });
     };
+    collectPending = files => { pendingFiles = pendingFiles.concat(Array.from(files)); refreshAttach(); };
+    const wire = () => {
+      $("f-cat") && $("f-cat").addEventListener("change", e => { cat = e.target.value; rebuild(); });
+      $("f-job") && $("f-job").addEventListener("change", e => { jobId = e.target.value; if (!it) $("f-num").value = nextNum(jobId, cat); });
+      $("btnCancel").addEventListener("click", closeSheet);
+      $("btnSave") && $("btnSave").addEventListener("click", submit);
+      $("itemForm").addEventListener("submit", e => { e.preventDefault(); submit(); });
+      $("btnDel") && armButton($("btnDel"), "Tap again to delete", () => {
+        delDoc("items", it.id); closeSheet(); toast(`Deleted ${it.num}`);
+      });
+      wireAttach();
+    };
     const submit = () => {
+      if (!guardWrite()) return;
       const f = read();
       if (!f.title || !f.title.trim()) { $("e-title").hidden = false; $("f-title").focus(); return; }
       const c = CAT[cat];
       const rec = {
-        cat, jobId, num: (f.num||"").trim() || nextNum(jobId, cat), title: f.title.trim(), status: f.status,
+        ...(it || {}), id: newId, cat, jobId, num: (f.num||"").trim() || nextNum(jobId, cat), title: f.title.trim(), status: f.status,
         party: (f.party||"").trim(), due: f.due || "", notes: (f.notes||"").trim(),
         amount: c.money ? (f.amount === "" ? "" : Number(f.amount)) : "",
+        assignee: f.assignee || "", updated: Date.now(), updatedBy: me || "",
       };
+      if (!it) rec.created = Date.now();
+      if ((f.assignee || "") !== (it ? it.assignee || "" : "")) { rec.assignedBy = me || ""; rec.assignedAt = Date.now(); }
       if (c.paid) rec.paid = f.paid === "" ? 0 : Number(f.paid);
       if (c.paid && rec.status === "Paid" && rec.amount !== "") rec.paid = rec.amount;
       if (c.types) { rec.type = f.type; rec.rev = (f.rev||"").trim(); }
@@ -758,32 +946,37 @@ function itemForm(existing, presetCat){
       if (c.ns) rec.noShows = Math.max(0, parseInt(f.noShows,10)||0);
       if (c.email) rec.email = (f.email||"").trim();
       if (c.noDue) rec.due = it ? (it.due || "") : "";
-      if (it) { Object.assign(it, rec); delete it.sample; }
-      else db.items.push({id: uid(), created: Date.now(), ...rec});
-      save(); closeSheet();
-      if (!it && ui.tab !== "due") ui.tab = cat;
-      render(); toast(it ? `Saved ${rec.num}` : `Added ${rec.num}`);
+      delete rec.sample;
+      putDoc("items", rec);
+      const toUpload = pendingFiles; pendingFiles = [];
+      closeSheet();
+      if (!it && ui.tab !== "due" && ui.tab !== "mine") ui.tab = cat;
+      render();
+      const who = member(rec.assignee);
+      toast(it ? `Saved ${rec.num}` : `Added ${rec.num}${who ? " for " + who.name : ""}`);
+      if (toUpload.length) uploadFiles(toUpload, {jobId, cat, itemId: newId}).then(n => n && toast(`Attached ${n} file${n===1?"":"s"} to ${rec.num}`));
     };
     wire();
     if (!it) setTimeout(() => $("f-title") && $("f-title").focus(), 60);
   };
   openSheet(build(), mount);
 }
+let collectPending = null;
 
+/* ---------- Job form ---------- */
 function jobForm(existing){
+  if (!guardWrite()) return;
   const j = existing;
   openSheet(`
     <h4>${j ? "Edit job" : "New job"}</h4>
-    <p class="shint">${j ? "Update the job details." : "Every list (RFIs, submittals, subs and the rest) starts empty for a new job."}</p>
+    <p class="shint">${j ? "Assign the PM and site manager and update where the job is holding." : "Every list (tickets, RFIs, submittals, subs and the rest) starts empty for a new job."}</p>
     <form class="form" id="jobFormEl" novalidate>
       <div class="f full"><label for="j-name">Job name</label><input id="j-name" value="${esc(j?.name)}" placeholder="e.g. Lakewood Retail Fit-out" autocomplete="off"><span class="err" id="e-jname" hidden>Enter a job name.</span></div>
       <div class="f"><label for="j-number">Job number</label><input id="j-number" value="${esc(j?.number)}" placeholder="2404"></div>
       <div class="f"><label for="j-loc">Location</label><input id="j-loc" value="${esc(j?.location)}" placeholder="Town, NJ"></div>
       <div class="f full"><label for="j-client">Owner / client</label><input id="j-client" value="${esc(j?.client)}"></div>
-      <div class="f"><label for="j-pm">Project manager</label><input id="j-pm" value="${esc(j?.pm)}" autocomplete="off"></div>
-      <div class="f"><label for="j-pmPhone">PM phone</label><input id="j-pmPhone" type="tel" inputmode="tel" value="${esc(j?.pmPhone)}"></div>
-      <div class="f"><label for="j-site">Site manager</label><input id="j-site" value="${esc(j?.site)}" autocomplete="off"></div>
-      <div class="f"><label for="j-sitePhone">Site manager phone</label><input id="j-sitePhone" type="tel" inputmode="tel" value="${esc(j?.sitePhone)}"></div>
+      <div class="f"><label for="j-pm">Project manager</label><select id="j-pm">${teamOptions(j?.pmId, "Not assigned")}</select></div>
+      <div class="f"><label for="j-site">Site manager</label><select id="j-site">${teamOptions(j?.siteId, "Not assigned")}</select></div>
       <div class="f"><label for="j-stage">Where the job is holding</label><input id="j-stage" value="${esc(j?.stage)}" placeholder="Pick or type a stage" list="stageList" autocomplete="off"><datalist id="stageList">${STAGES.map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>
       <div class="f"><label for="j-progress">% complete</label><input id="j-progress" type="number" min="0" max="100" inputmode="numeric" value="${esc(j?.progress)}" placeholder="0"></div>
       <div class="f full"><label for="j-hold">What it's waiting on</label><textarea id="j-hold" placeholder="e.g. Framing on hold for RFI-003, steel delivery Tuesday">${esc(j?.holdNote)}</textarea></div>
@@ -798,119 +991,178 @@ function jobForm(existing){
       if (!name) { $("e-jname").hidden = false; $("j-name").focus(); return; }
       const val = id => $(id).value.trim();
       const pr = val("j-progress");
-      const rec = {name, number:val("j-number"), location:val("j-loc"), client:val("j-client"), pm:val("j-pm"), pmPhone:val("j-pmPhone"),
-        site:val("j-site"), sitePhone:val("j-sitePhone"), stage:val("j-stage"), progress: pr === "" ? "" : Math.min(100, Math.max(0, Math.round(Number(pr)||0))), holdNote:val("j-hold")};
-      if (j) { Object.assign(j, rec); delete j.sampleInfo; } else { const nj = {id:"j-"+uid(), ...rec}; db.jobs.push(nj); ui.job = nj.id; ui.tab = "open"; }
-      save(); closeSheet(); render(); toast(j ? "Job saved" : `Added ${name}`);
+      const rec = {...(j || {}), id: j ? j.id : "j-" + uid(), name, number:val("j-number"), location:val("j-loc"), client:val("j-client"), pmId:$("j-pm").value, siteId:$("j-site").value,
+        stage:val("j-stage"), progress: pr === "" ? "" : Math.min(100, Math.max(0, Math.round(Number(pr)||0))), holdNote:val("j-hold"), updated: Date.now()};
+      delete rec.sampleInfo;
+      if (!j) { rec.order = state.jobs.length; ui.job = rec.id; ui.tab = "open"; }
+      putDoc("jobs", rec); closeSheet(); toast(j ? "Job saved" : `Added ${name}`);
     };
     $("jSave").addEventListener("click", submit);
     $("jobFormEl").addEventListener("submit", e => { e.preventDefault(); submit(); });
     $("jCancel").addEventListener("click", closeSheet);
     if (j) {
-      const n = db.items.filter(i => i.jobId === j.id).length;
-      armButton($("jDel"), n ? `Delete job + ${n} items?` : "Tap again to delete", () => {
-        db.jobs = db.jobs.filter(x => x.id !== j.id); db.items = db.items.filter(i => i.jobId !== j.id);
-        if (ui.job === j.id) ui.job = "all"; save(); closeSheet(); render(); toast(`Deleted ${j.name}`);
+      const its = state.items.filter(i => i.jobId === j.id);
+      armButton($("jDel"), its.length ? `Delete job + ${its.length} items?` : "Tap again to delete", async () => {
+        closeSheet(); if (ui.job === j.id) ui.job = "all";
+        delDoc("jobs", j.id);
+        await runQueue(its.map(i => () => delDoc("items", i.id)));
+        toast(`Deleted ${j.name}`);
       });
     }
     if (!j) setTimeout(() => $("j-name").focus(), 60);
   });
 }
 
-function menuSheet(){
-  const hasSample = db.items.some(i => i.sample);
+/* ---------- Team ---------- */
+function memberForm(existing){
+  if (!guardWrite()) return;
+  const m = existing;
   openSheet(`
-    <h4>Settings & data</h4>
-    <p class="shint">Your data is saved on this phone, in this browser. Copy a backup now and then so you never lose it.</p>
+    <h4>${m ? "Edit team member" : "Add team member"}</h4>
+    <p class="shint">Team members can be assigned jobs, tasks, tickets and any other item.</p>
+    <form class="form" id="mForm" novalidate>
+      <div class="f full"><label for="m-name">Name</label><input id="m-name" value="${esc(m?.name)}" autocomplete="off"><span class="err" id="e-mname" hidden>Enter a name.</span></div>
+      <div class="f full"><label for="m-role">Role</label><input id="m-role" value="${esc(m?.role)}" placeholder="Project manager, Site manager…" list="roleList" autocomplete="off"><datalist id="roleList"><option value="Project manager"><option value="Site manager"><option value="Office"></datalist></div>
+      <div class="f"><label for="m-phone">Phone</label><input id="m-phone" type="tel" inputmode="tel" value="${esc(m?.phone)}"></div>
+      <div class="f"><label for="m-email">Email</label><input id="m-email" type="email" inputmode="email" value="${esc(m?.email)}"></div>
+    </form>
+    <div class="actions">
+      ${m ? `<button class="btn danger" id="mDel" type="button">Remove</button>` : ""}
+      <button class="btn" id="mCancel" type="button">Cancel</button>
+      <button class="btn primary" id="mSave" type="button">${m ? "Save" : "Add"}</button>
+    </div>`, () => {
+    $("mCancel").addEventListener("click", () => menuSheet());
+    $("mSave").addEventListener("click", () => {
+      const name = $("m-name").value.trim(); if (!name) { $("e-mname").hidden = false; return; }
+      const rec = {...(m || {}), id: m ? m.id : "m-" + uid(), name, role: $("m-role").value.trim(), phone: $("m-phone").value.trim(), email: $("m-email").value.trim()};
+      if (!m) rec.order = state.team.length;
+      putDoc("team", rec); menuSheet(); toast(m ? "Saved" : `Added ${name}`);
+    });
+    m && armButton($("mDel"), "Tap again to remove", () => { delDoc("team", m.id); if (me === m.id) setMe(""); menuSheet(); toast(`Removed ${m.name}`); });
+  });
+}
+function meSheet(){
+  openSheet(`
+    <h4>Who are you?</h4>
+    <p class="shint">This phone remembers your choice. It decides what shows in My Work and marks your uploads and assignments as yours.</p>
+    ${state.team.length ? `<div class="pickrow">${sortedTeam().map(m => `<button class="pick" data-setme="${esc(m.id)}" aria-pressed="${m.id===me}">${av(m)}<span>${esc(m.name)}<br><small>${esc(m.role||"")}</small></span></button>`).join("")}</div>` : `<div class="empty">No team members yet. Add them in Settings.</div>`}
+    <div class="actions"><button class="btn primary" id="meDone" type="button">Done</button></div>`, () => { $("meDone").addEventListener("click", closeSheet); });
+}
+
+/* ---------- Bulk helpers ---------- */
+async function runQueue(tasks, onStep){
+  for (let i = 0; i < tasks.length; i++) { try { await tasks[i](); } catch(e){} onStep && onStep(i+1, tasks.length); if (i % 10 === 9) await new Promise(r => setTimeout(r, 150)); }
+}
+async function clearSample(){
+  if (!guardWrite()) return;
+  const its = state.items.filter(i => i.sample);
+  toast(`Clearing ${its.length} sample items…`);
+  const jobs = state.jobs.filter(j => j.sampleInfo).map(j => { const c = {...j}; delete c.stage; delete c.progress; delete c.holdNote; delete c.sampleInfo; return c; });
+  await runQueue(jobs.map(j => () => putDoc("jobs", j)).concat(its.map(i => () => delDoc("items", i.id))));
+  toast(`Cleared ${its.length} sample items`);
+}
+async function importData(d, fromPhone){
+  if (!guardWrite()) return;
+  const jobs = (d.jobs || []).filter(j => j && j.id && j.name);
+  const items = (d.items || []).filter(i => i && !i.sample && i.cat && CAT[i.cat] && i.jobId);
+  const tasks = [];
+  for (const j of jobs) if (!jobById(j.id) && items.some(i => i.jobId === j.id)) { const r = {id:j.id, name:j.name, number:j.number||"", location:j.location||"", client:j.client||"", stage:j.stage||"", progress:j.progress||"", holdNote:j.holdNote||"", order: state.jobs.length + tasks.length}; tasks.push(() => putDoc("jobs", r)); }
+  for (const i of items) if (!state.items.some(x => x.id === i.id)) { const r = {...i}; delete r.sample; tasks.push(() => putDoc("items", r)); }
+  toast(`Moving ${items.length} items…`);
+  await runQueue(tasks);
+  if (fromPhone) ls.set(IMPORTED, "1");
+  scheduleRender(); toast(`Moved ${items.length} item${items.length===1?"":"s"} into the shared app`);
+}
+
+/* ---------- Settings ---------- */
+function menuSheet(){
+  const hasSample = state.items.some(i => i.sample);
+  openSheet(`
+    <h4>Settings & team</h4>
+    <p class="shint">Everything here is shared. Anyone the page is shared with as Editor sees the same jobs, tasks and photos, live.</p>
     <div class="menu">
+      <div class="mrow"><div class="t">Team</div>
+        ${sortedTeam().map(m => `<div class="jobline">${av(m)}<div class="grow"><div class="n">${esc(m.name)}</div><div class="m">${[esc(m.role||""), esc(m.phone||""), state.items.filter(i => i.assignee === m.id && !isDone(i)).length + " open assigned"].filter(Boolean).join(" · ")}</div></div>${readOnly ? "" : `<button class="btn sm" data-editmember="${esc(m.id)}">Edit</button>`}</div>`).join("") || `<div class="d">No team members yet.</div>`}
+        ${readOnly ? "" : `<div class="r"><button class="btn sm" id="mAddMember">+ Add team member</button></div>`}
+      </div>
       <div class="mrow"><div class="t">Jobs</div>
-        ${db.jobs.map(j => `<div class="jobline"><div class="grow"><div class="n">${esc(j.name)}</div><div class="m">${[j.number && "#"+esc(j.number), esc(j.location||""), db.items.filter(i=>i.jobId===j.id).length + " items"].filter(Boolean).join(" · ")}</div></div><button class="btn sm" data-editjob="${esc(j.id)}">Edit</button></div>`).join("") || `<div class="d">No jobs yet.</div>`}
-        <div class="r"><button class="btn sm" id="mAddJob">+ Add job</button></div>
+        ${sortedJobs().map(j => `<div class="jobline"><div class="grow"><div class="n">${esc(j.name)}</div><div class="m">${[j.number && "#"+esc(j.number), member(j.pmId) && "PM " + esc(member(j.pmId).name), member(j.siteId) && "Site " + esc(member(j.siteId).name)].filter(Boolean).join(" · ")}</div></div>${readOnly ? "" : `<button class="btn sm" data-editjob="${esc(j.id)}">Edit</button>`}</div>`).join("") || `<div class="d">No jobs yet.</div>`}
+        ${readOnly ? "" : `<div class="r"><button class="btn sm" id="mAddJob">+ Add job</button></div>`}
       </div>
-      <div class="mrow"><div class="t">Sample data</div>
-        <div class="d">${hasSample ? `${db.items.filter(i=>i.sample).length} example items are loaded. Clearing removes only the examples. Items you added or edited stay.` : "Sample items are cleared. You can load them again to try things out."}</div>
-        <div class="r">${hasSample ? `<button class="btn sm amber" id="mClear">Clear sample data</button>` : `<button class="btn sm" id="mLoad">Load sample data</button>`}</div>
+      <div class="mrow"><div class="t">How the team gets in</div>
+        <div class="d">1. Open this page on claude.ai and tap Share. 2. Invite each person by email as <b>Editor</b> (Editors can upload photos). 3. They sign in to claude.ai with that email, open the link and add it to their home screen. 4. Each person taps "Who are you?" once.</div>
       </div>
+      ${hasSample && !readOnly ? `<div class="mrow"><div class="t">Sample data</div><div class="d">${state.items.filter(i=>i.sample).length} example items are loaded. Clearing removes only the examples. Items anyone added or edited stay.</div><div class="r"><button class="btn sm amber" id="mClear">Clear sample data</button></div></div>` : ""}
       <div class="mrow"><div class="t">Backup</div>
-        <div class="d">Copy your data and paste it into an email or note to yourself. To restore, paste it back here or pick a saved backup file.</div>
-        <div class="r"><button class="btn sm" id="mExport">Copy backup</button><button class="btn sm" id="mImportShow">Restore backup</button></div>
+        <div class="d">Copy all job data as text and paste it into an email to yourself. Photos stay in the app. To bring items in from an old backup, paste it under Import.</div>
+        <div class="r"><button class="btn sm" id="mExport">Copy backup</button>${readOnly ? "" : `<button class="btn sm" id="mImportShow">Import</button>`}</div>
         <div id="exportBox" hidden><div class="f"><label for="exportText">Backup text</label><textarea class="code" id="exportText" readonly></textarea></div></div>
         <div id="importBox" hidden>
-          <div class="f"><label for="importText">Paste backup</label><textarea class="code" id="importText" placeholder='{"v":1,"jobs":[...'></textarea></div>
-          <div class="f" style="margin-top:8px"><label for="importFile">Or choose a backup file</label><input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" style="padding-top:9px"></div>
+          <div class="f"><label for="importText">Paste backup</label><textarea class="code" id="importText" placeholder='{"jobs":[...'></textarea></div>
           <span class="err" id="importErr" hidden></span>
-          <div class="r" style="margin-top:8px"><button class="btn sm" id="mImport">Replace my data with this backup</button></div>
+          <div class="r" style="margin-top:8px"><button class="btn sm" id="mImport">Add these items</button></div>
         </div>
-      </div>
-      <div class="mrow"><div class="t">Erase everything</div>
-        <div class="d">Deletes all jobs and items on this phone. Copy a backup first.</div>
-        <div class="r"><button class="btn sm danger" id="mWipe">Erase all data</button></div>
       </div>
     </div>
     <div class="actions"><button class="btn primary" id="mDone" type="button">Done</button></div>`, sheet => {
     $("mDone").addEventListener("click", closeSheet);
-    $("mAddJob").addEventListener("click", () => jobForm());
+    $("mAddJob") && $("mAddJob").addEventListener("click", () => jobForm());
+    $("mAddMember") && $("mAddMember").addEventListener("click", () => memberForm());
     sheet.querySelectorAll("[data-editjob]").forEach(b => b.addEventListener("click", () => jobForm(jobById(b.dataset.editjob))));
-    $("mClear") && armButton($("mClear"), "Tap again to clear", () => { clearSample(); menuSheet(); });
-    $("mLoad") && $("mLoad").addEventListener("click", () => { loadSample(); menuSheet(); });
+    sheet.querySelectorAll("[data-editmember]").forEach(b => b.addEventListener("click", () => memberForm(member(b.dataset.editmember))));
+    $("mClear") && armButton($("mClear"), "Tap again to clear", () => { closeSheet(); clearSample(); });
     $("mExport").addEventListener("click", () => {
-      const txt = JSON.stringify(db); $("exportBox").hidden = false; $("exportText").value = txt;
+      const txt = JSON.stringify({v:3, jobs: state.jobs, items: state.items, team: state.team, files: state.files}); $("exportBox").hidden = false; $("exportText").value = txt;
       const sel = () => { $("exportText").focus(); $("exportText").select(); };
       try { navigator.clipboard.writeText(txt).then(() => toast("Backup copied"), () => { sel(); toast("Select all and copy the text"); }); }
       catch(e){ sel(); toast("Select all and copy the text"); }
     });
-    $("mImportShow").addEventListener("click", () => { $("importBox").hidden = false; $("importText").focus(); });
-    $("importFile").addEventListener("change", e => {
-      const f = e.target.files && e.target.files[0]; if (!f) return;
-      const r = new FileReader(); r.onload = () => { $("importText").value = String(r.result||""); }; r.readAsText(f);
+    $("mImportShow") && $("mImportShow").addEventListener("click", () => { $("importBox").hidden = false; $("importText").focus(); });
+    $("mImport") && $("mImport").addEventListener("click", () => {
+      try { const d = JSON.parse($("importText").value); if (!d || !Array.isArray(d.items)) throw 0; closeSheet(); importData(d, false); }
+      catch(e){ const el = $("importErr"); el.hidden = false; el.textContent = "That text isn't a Ray Builders backup. Paste the whole backup, starting with {"; }
     });
-    armButton($("mImport"), "Tap again to replace", () => {
-      try {
-        const d = JSON.parse($("importText").value);
-        if (!d || !Array.isArray(d.jobs) || !Array.isArray(d.items)) throw new Error("shape");
-        db = d; ui.job = "all"; save(); closeSheet(); render(); toast("Backup restored");
-      } catch(e){ const el = $("importErr"); el.hidden = false; el.textContent = "That text isn't a Ray Builders backup. Paste the whole backup, starting with {\"v\":1"; }
-    });
-    armButton($("mWipe"), "Tap again to erase all", () => { db = {v:2, jobs:[], items:[], sampleLoaded:false}; ui.job = "all"; ui.tab = "due"; save(); closeSheet(); render(); toast("All data erased"); });
   });
-}
-
-function clearSample(){
-  const n = db.items.filter(i => i.sample).length;
-  db.items = db.items.filter(i => !i.sample); db.sampleLoaded = false;
-  for (const j of db.jobs) if (j.sampleInfo) { for (const k of JOB_INFO_KEYS) delete j[k]; delete j.sampleInfo; } save(); render(); toast(`Cleared ${n} sample items`);
-}
-function loadSample(){
-  const s = sampleData();
-  for (const j of s.jobs) { const ex = jobById(j.id); if (!ex) db.jobs.push(j); else if (!JOB_INFO_KEYS.some(k => ex[k])) Object.assign(ex, SAMPLE_JOB_INFO[j.id], {sampleInfo:true}); }
-  const taken = new Set(db.items.map(i => i.jobId + "|" + i.cat + "|" + i.num));
-  for (const i of s.items) { if (taken.has(i.jobId + "|" + i.cat + "|" + i.num)) i.num = nextNum(i.jobId, i.cat); db.items.push(i); }
-  db.sampleLoaded = true; save(); render(); toast("Sample data loaded");
 }
 
 /* ---------- Events ---------- */
 document.addEventListener("click", e => {
   const t = e.target;
+  const sm = t.closest("[data-setme]"); if (sm) { setMe(sm.dataset.setme); if ($("scrim")) closeSheet(); toast(`Hi ${(member(sm.dataset.setme)||{}).name || ""}`); return; }
   const ns = t.closest("[data-ns]");
-  if (ns) { const it = db.items.find(i => i.id === ns.dataset.id); if (it) { it.noShows = Math.max(0, (Number(it.noShows)||0) + Number(ns.dataset.ns)); delete it.sample; save(); render(); if (+ns.dataset.ns > 0) toast(`No-show logged for ${it.title}`); } return; }
+  if (ns) { if (!guardWrite()) return; const it = state.items.find(i => i.id === ns.dataset.id); if (it) { const rec = {...it, noShows: Math.max(0, (Number(it.noShows)||0) + Number(ns.dataset.ns))}; delete rec.sample; putDoc("items", rec); if (+ns.dataset.ns > 0) toast(`No-show logged for ${it.title}`); } return; }
   if (t.closest("[data-stop]")) return;
+  const fl = t.closest("[data-file]"); if (fl) { const f = state.files.find(x => x.id === fl.dataset.file); if (f) fileSheet(f); return; }
+  if (t.closest("[data-upload]") && !t.closest("#scrim")) { pickFiles({jobId: ui.job !== "all" ? ui.job : (sortedJobs()[0]||{}).id, cat: CAT[ui.tab] ? ui.tab : "general"}); return; }
   const jc = t.closest("[data-job]"); if (jc) { ui.job = jc.dataset.job; render(); return; }
   if (t.closest("[data-addjob]")) { jobForm(); return; }
   const ej = t.closest(".jobinfo [data-editjob]"); if (ej) { jobForm(jobById(ej.dataset.editjob)); return; }
   const tb = t.closest("[data-tab]"); if (tb) { ui.tab = tb.dataset.tab; render(); if (tb.classList.contains("kpi") || tb.classList.contains("qk")) $("tabsbar").scrollIntoView({behavior:"smooth", block:"start"}); return; }
-  const cd = t.closest(".card[data-id]"); if (cd) { const it = db.items.find(i => i.id === cd.dataset.id); if (it) itemForm(it); return; }
-  const act = t.closest("[data-act]"); if (act && act.dataset.act === "clearSample") { if (act.classList.contains("arm")) clearSample(); else { act.classList.add("arm"); act.textContent = "Tap again to clear"; } return; }
+  const cd = t.closest(".card[data-id]"); if (cd) { const it = state.items.find(i => i.id === cd.dataset.id); if (it) itemForm(it); return; }
+  const act = t.closest("[data-act]");
+  if (act) {
+    if (!act.classList.contains("arm")) { act.classList.add("arm"); act.dataset.old = act.textContent; act.textContent = "Tap again to confirm"; setTimeout(() => { if (act.isConnected) { act.classList.remove("arm"); act.textContent = act.dataset.old; } }, 3500); return; }
+    if (act.dataset.act === "clearSample") clearSample();
+    if (act.dataset.act === "importLocal") { const left = localLeftovers(); if (left) importData(left.d, true); }
+    return;
+  }
 });
 document.addEventListener("keydown", e => {
   if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("card")) { e.preventDefault(); e.target.click(); }
 });
-$("fab").addEventListener("click", () => itemForm(null, ui.tab === "due" ? "open" : ui.tab));
+$("fab").addEventListener("click", () => {
+  if (ui.tab === "files") return uploadSheet();
+  itemForm(null, ui.tab === "due" ? "open" : ui.tab === "mine" ? "task" : ui.tab);
+});
 $("btnMenu").addEventListener("click", menuSheet);
+$("btnMe").addEventListener("click", meSheet);
 $("btnClosed").addEventListener("click", () => { ui.showClosed = !ui.showClosed; render(); });
+$("selWho").addEventListener("change", e => { ui.who = e.target.value; render(); });
 $("q").value = ui.q || "";
-$("q").addEventListener("input", e => { ui.q = e.target.value; renderList(); saveUI(); });
+$("q").addEventListener("input", e => { ui.q = e.target.value; renderList(); ls.set(UIKEY, JSON.stringify(ui)); });
 window.addEventListener("resize", () => document.documentElement.style.setProperty("--topH", $("top").offsetHeight + "px"));
 
 render();
+connect();
 })();
 </script>
