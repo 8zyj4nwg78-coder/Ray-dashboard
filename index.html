@@ -58,6 +58,43 @@ button{cursor:pointer}
 .jobhead .meta span+span::before{content:" · "}
 .today{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
 
+/* Job info panel */
+.jobinfo{width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:4px}
+@media(min-width:820px){.jobinfo{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}.jobinfo .quick{grid-column:1/-1}}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.person,.stage{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:11px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.person b{font-size:15.5px;overflow-wrap:anywhere}
+.person .phone{align-self:flex-start;font-size:12.5px;padding:4px 8px}
+.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.none{color:var(--dim);font-weight:500}
+.st-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:700;font-size:13px;padding:2px 0}
+.st-name{font-family:var(--f-display);font-size:24px;font-weight:700;letter-spacing:.02em;line-height:1.1}
+.bar{height:8px;border-radius:8px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:8px}
+.st-foot{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--muted)}
+.st-foot .pct{font-family:var(--f-mono);color:var(--fg);font-weight:600}
+.quick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media(max-width:520px){.quick{grid-template-columns:repeat(3,minmax(0,1fr))}.quick .qk:first-child{grid-column:span 2}}
+.qk{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:9px 8px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;min-width:0}
+.qk:hover{border-color:var(--line2)}
+.qk b{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.qk span{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.qk small{font-size:11.5px;color:var(--amber)}
+.qk.hot{border-color:rgba(242,85,77,.55)}.qk.hot b,.qk.hot small{color:var(--red)}
+.roster{width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:4px}
+@media(min-width:700px){.roster{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.jobcard{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:12px;text-align:left;display:flex;flex-direction:column;gap:7px;min-width:0}
+.jobcard:hover{border-color:var(--line2)}
+.jobcard.hot{border-color:rgba(242,85,77,.45)}
+.jc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.jc-top b{font-size:16px;overflow-wrap:anywhere}
+.jc-stage{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:14px}
+.jc-stage span{font-family:var(--f-mono);color:var(--muted);font-size:12.5px}
+.jc-ppl{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
+.jc-ppl b{color:var(--fg);font-weight:600}
+.phone.mail{font-size:12.5px;overflow-wrap:anywhere;user-select:all}
+
 /* KPIs */
 .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
 @media(min-width:640px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -217,13 +254,16 @@ const KEY = "raybuilders.pc.v1", UIKEY = "raybuilders.ui.v1";
 /* ---------- Categories ---------- */
 const CATS = [
   {k:"open",  one:"Open Item",  label:"Open Items",      short:"Open Items", pre:"OI",  statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Responsible", due:"Follow-up date", hint:"Anything still hanging on the job."},
+  {k:"tkt", one:"Ticket", label:"Open Tickets", short:"Tickets", pre:"TKT", statuses:["Open","In Progress","Closed"], done:["Closed"], party:"Assigned to", due:"Due", money:true, hint:"Work, service and T&M tickets on the job. Amount is optional."},
   {k:"owner", one:"Owner Question", label:"Owner Questions", short:"Owner Qs",   pre:"OQ",  statuses:["To Ask","Asked","Answered"], done:["Answered"], party:"Asked to", due:"Need answer by", hint:"Decisions and answers you need from the owner."},
   {k:"rfi", one:"RFI",   label:"RFIs",            short:"RFIs",       pre:"RFI", statuses:["Draft","Open","Answered","Closed"], done:["Answered","Closed"], party:"Sent to", due:"Response due", hint:"Numbered requests for information to the design team."},
   {k:"subm", one:"Submittal",  label:"Submittals",      short:"Submittals", pre:"SUB", statuses:["Pending","Submitted","Revise & Resubmit","Approved"], done:["Approved"], party:"From (sub / supplier)", due:"Due / follow-up", hint:"Pending, submitted, revise & resubmit, approved."},
-  {k:"dwg", one:"Drawing",   label:"Drawings",        short:"Drawings",   pre:"DWG", statuses:["Under Review","Current","Superseded"], done:["Current","Superseded"], party:"From", due:"Review by", hint:"Final sets, field markups and shop drawings.", types:["Final","Markup","Shop Drawing"]},
+  {k:"dwg", one:"Drawing",   label:"Drawings",        short:"Drawings",   pre:"DWG", statuses:["Under Review","Current","Superseded"], done:["Current","Superseded"], party:"From", due:"Review by", hint:"Every drawing for the job: final sets, field markups and shop drawings.", types:["Final","Markup","Shop Drawing"]},
   {k:"inv", one:"Invoice",   label:"Invoices",        short:"Invoices",   pre:"INV", statuses:["Draft","Sent","Partially Paid","Paid"], done:["Paid"], party:"Billed to", due:"Payment due", money:true, paid:true, hint:"Pay apps and bills you sent. Unpaid = money owed to you."},
   {k:"co", one:"Change Order",    label:"Change Orders",   short:"COs",        pre:"CO",  statuses:["Pending","Submitted","Approved","Rejected"], done:["Approved","Rejected"], party:"Requested by / sent to", due:"Decision by", money:true, hint:"Track pricing and approval of changes."},
-  {k:"subs", one:"Sub",  label:"Subs on Job",     short:"Subs",       pre:"SC",  statuses:["Active","Not Started","Off Job"], done:["Off Job"], party:"Company", due:"Next follow-up", hint:"Trade, phone and no-show count for each sub.", sub:true},
+  {k:"subs", one:"Subcontractor", label:"Subcontractors", short:"Subs", pre:"SC", statuses:["Active","Not Started","Off Job"], done:["Off Job"], party:"Contact person", due:"Next follow-up", hint:"Trade, phone and no-show count for each sub on the job.", dir:true, titleLabel:"Company name", tradeLabel:"Trade", tradePh:"e.g. Electrical", ns:true},
+  {k:"vend", one:"Vendor", label:"Vendors & Suppliers", short:"Vendors", pre:"V", statuses:["Active","Not Started","Done"], done:["Done"], party:"Contact person", due:"Next follow-up", hint:"Sub-vendors and suppliers furnishing material or equipment for the job.", dir:true, titleLabel:"Company name", tradeLabel:"Supplies", tradePh:"e.g. Lumber, windows, HVAC equipment"},
+  {k:"contact", one:"Contact", label:"Contacts", short:"Contacts", pre:"C", statuses:["Active","Inactive"], done:["Inactive"], party:"Company", due:"Follow-up", hint:"Everyone on the job: owner, architect, engineers, inspectors, utilities.", dir:true, titleLabel:"Name", tradeLabel:"Role", tradePh:"e.g. Architect, Owner's rep, Inspector", email:true, noDue:true},
   {k:"quote", one:"Quote", label:"Quotes to Get",   short:"Quotes",     pre:"Q",   statuses:["Need to Request","Requested","Received"], done:["Received"], party:"Vendor", due:"Need by", money:true, hint:"Pricing you still need to chase."},
   {k:"prop", one:"Proposal",  label:"Proposals to Sign", short:"Proposals", pre:"P",  statuses:["To Review","Ready to Sign","Signed","Declined"], done:["Signed","Declined"], party:"From", due:"Sign by", money:true, hint:"Sub and vendor proposals waiting on your signature."},
   {k:"owed", one:"Payable",  label:"Who's Owed",      short:"Owed",       pre:"PAY", statuses:["Owed","Partially Paid","Paid"], done:["Paid"], party:"Pay to", due:"Pay by", money:true, paid:true, hint:"Money you owe subs and suppliers."},
@@ -258,12 +298,20 @@ const tone = it => {
 };
 
 /* ---------- Sample data ---------- */
+const JOB_INFO_KEYS = ["pm","pmPhone","site","sitePhone","stage","progress","holdNote"];
+const SAMPLE_JOB_INFO = {
+  "j-oak":  {pm:"Yossi Klein", pmPhone:"(732) 555-0110", site:"Mike Russo", sitePhone:"(732) 555-0121", stage:"Insulation & Drywall", progress:62, holdNote:"Sanctuary east wall waiting on RFI-001 (lintel size)."},
+  "j-par":  {pm:"Yossi Klein", pmPhone:"(732) 555-0110", site:"Tom Hayes", sitePhone:"(732) 555-0156", stage:"Rough-ins (MEP)", progress:41, holdNote:"2nd floor ceilings wait on RTU delivery."},
+  "j-deal": {pm:"Dan Levy", pmPhone:"(732) 555-0138", site:"Eli Mizrahi", sitePhone:"(732) 555-0144", stage:"Foundation", progress:14, holdNote:"North wall footing on hold for RFI-001."},
+};
+const STAGES = ["Preconstruction","Permits","Site Work","Foundation","Framing","Roofing & Envelope","Rough-ins (MEP)","Insulation & Drywall","Finishes","Punch List","Closeout","On Hold"];
 function sampleData(){
   const jobs = [
     {id:"j-oak",  name:"Oakhurst Synagogue", number:"2401", location:"Oakhurst, NJ", client:"Building Committee"},
     {id:"j-par",  name:"Paramount Office",   number:"2402", location:"", client:"Paramount ownership"},
     {id:"j-deal", name:"Deal Kollel",        number:"2403", location:"Deal, NJ", client:"Kollel board"},
   ];
+  for (const j of jobs) Object.assign(j, SAMPLE_JOB_INFO[j.id], {sampleInfo:true});
   const rows = {
     "j-oak": [
       ["open","Confirm ark wall blocking locations","Elite Millwork",null,-3,"Open","Need final dims from millwork shop before we close up the wall."],
@@ -293,6 +341,18 @@ function sampleData(){
       ["prop","Site paving & concrete","Tri-County Concrete",68400,1,"Ready to Sign","Includes curbs and ADA ramp."],
       ["owed","Req #4: drywall & framing","Garden State Drywall",38700,-3,"Owed","",{paid:0}],
       ["owed","Req #5: electrical rough-in","Shore Line Electric",52100,7,"Partially Paid","Paid $25,000 on 10/1.",{paid:25000}],
+      ["tkt","T&M: remove and reset sanctuary door frames","Garden State Drywall",2650,-2,"Open","Signed by Mike on site 10/6. Needs office approval."],
+      ["tkt","Repair temp fence after storm","Ray Builders",null,1,"In Progress",""],
+      ["tkt","Patch slab at mikvah drain","Tri-County Concrete",1180,null,"Closed",""],
+      ["dwg","S-201 Structural framing, Rev 2","Benchmark Engineering",null,null,"Current","",{type:"Final",rev:"2"}],
+      ["dwg","Storefront shop drawings","Precision Glass & Glazing",null,4,"Under Review","Resubmittal of SUB-002.",{type:"Shop Drawing",rev:"1"}],
+      ["vend","Shore Lumber & Supply","Pat (counter)",null,null,"Active","Account #RB-2210. Next-day delivery before 2pm.",{trade:"Lumber & framing",phone:"(732) 555-0102"}],
+      ["vend","Atlantic Window Supply","Karen D.",null,3,"Active","Sanctuary windows ship week of 10/20. Confirm date.",{trade:"Windows & doors",phone:"(732) 555-0125"}],
+      ["vend","Metro Plumbing Supply","Rich",null,null,"Not Started","",{trade:"Plumbing fixtures",phone:"(732) 555-0177"}],
+      ["contact","Rabbi Feldman","Congregation",null,null,"Active","Final say on sanctuary finishes.",{trade:"Owner",phone:"(732) 555-0161",email:"office@example.org"}],
+      ["contact","Sarah Kessler","Kessler Architects",null,null,"Active","",{trade:"Architect",phone:"(732) 555-0170",email:"skessler@example.com"}],
+      ["contact","Ron Patel","Benchmark Engineering",null,null,"Active","",{trade:"Structural engineer",phone:"(732) 555-0182",email:"rpatel@example.com"}],
+      ["contact","Township building dept.","Ocean Township",null,null,"Active","Inspections: call by 3pm for next day.",{trade:"Inspector",phone:"(732) 555-0100",email:""}],
     ],
     "j-par": [
       ["open","Elevator inspection scheduling","Ray Builders",null,5,"Open",""],
@@ -316,6 +376,15 @@ function sampleData(){
       ["quote","Parking lot restriping","Shore Paving & Striping",3800,null,"Received",""],
       ["prop","Elevator modernization","Liberty Elevator",42600,-1,"To Review","Compare against second bid before signing."],
       ["owed","Req #2: HVAC rough","Atlantic Mechanical",61400,2,"Owed","",{paid:0}],
+      ["tkt","Tenant complaint: no heat in suite 104","Atlantic Mechanical",null,-1,"Open","Tenant called twice. Temporary heater dropped off."],
+      ["tkt","T&M: extra blocking for TV walls","Garden State Drywall",1440,5,"Open",""],
+      ["dwg","M-201 Mechanical plan 2nd floor, Rev 1","Benchmark Engineering",null,null,"Superseded","Replaced by Rev 2 shop set.",{type:"Final",rev:"1"}],
+      ["dwg","Lobby field markups","Ray Builders",null,6,"Under Review","",{type:"Markup"}],
+      ["vend","Garden State Ceiling Supply","Mark",null,null,"Active","",{trade:"Ceiling grid & tile",phone:"(732) 555-0129"}],
+      ["vend","Coastal HVAC Distributors","Liz",null,-3,"Active","RTU-1 & RTU-2 delivery date still unconfirmed.",{trade:"HVAC equipment",phone:"(732) 555-0147"}],
+      ["contact","Property manager","Paramount ownership",null,null,"Active","",{trade:"Owner's rep",phone:"(732) 555-0105",email:"pm@example.com"}],
+      ["contact","Ron Patel","Benchmark Engineering",null,null,"Active","",{trade:"MEP / structural engineer",phone:"(732) 555-0182",email:"rpatel@example.com"}],
+      ["contact","Liberty Elevator service desk","Liberty Elevator",null,null,"Active","",{trade:"Elevator",phone:"(732) 555-0193",email:""}],
     ],
     "j-deal": [
       ["open","Temporary power for 2nd floor","Shore Line Electric",null,-1,"Open",""],
@@ -339,6 +408,15 @@ function sampleData(){
       ["prop","Excavation & backfill","Jersey Site Work",31500,null,"Signed",""],
       ["owed","Excavation: progress payment","Jersey Site Work",18000,-2,"Owed","",{paid:0}],
       ["owed","Concrete footings","Tri-County Concrete",22400,9,"Owed","",{paid:0}],
+      ["tkt","T&M: rock removal, north wall","Jersey Site Work",3900,-4,"Open","Hours signed by Eli. Tie to CO-001."],
+      ["tkt","Neighbor complaint: mud on street","Ray Builders",null,0,"In Progress","Sweep street end of day."],
+      ["dwg","S-100 Foundation plan, Rev 1","Benchmark Engineering",null,null,"Current","",{type:"Final",rev:"1"}],
+      ["dwg","A-100 Site plan, Rev 3","Kessler Architects",null,null,"Current","",{type:"Final",rev:"3"}],
+      ["vend","Shore Lumber & Supply","Pat (counter)",null,null,"Not Started","",{trade:"Lumber & framing",phone:"(732) 555-0102"}],
+      ["vend","Monmouth Ready Mix","Dispatch",null,null,"Active","Order 48 hrs ahead.",{trade:"Ready-mix concrete",phone:"(732) 555-0115"}],
+      ["contact","Kollel treasurer","Kollel board",null,null,"Active","Pay apps go to him.",{trade:"Owner",phone:"(732) 555-0166",email:"treasurer@example.org"}],
+      ["contact","Sarah Kessler","Kessler Architects",null,null,"Active","",{trade:"Architect",phone:"(732) 555-0170",email:"skessler@example.com"}],
+      ["contact","Borough of Deal building dept.","Borough of Deal",null,null,"Active","Footing inspection required before pour.",{trade:"Inspector",phone:"(732) 555-0108",email:""}],
     ],
   };
   const items = [];
@@ -353,7 +431,7 @@ function sampleData(){
       });
     }
   }
-  return {v:1, jobs, items, sampleLoaded:true};
+  return {v:2, jobs, items, sampleLoaded:true};
 }
 
 /* ---------- Storage ---------- */
@@ -372,6 +450,17 @@ try { navigator.storage && navigator.storage.persist && navigator.storage.persis
 
 let db = load();
 if (!db || !Array.isArray(db.jobs)) { db = sampleData(); save(); }
+if ((db.v||1) < 2) {
+  // v2 adds job people/stage, tickets, vendors and contacts. Top up sample data for users who still have it.
+  if (db.items.some(i => i.sample)) {
+    const s = sampleData();
+    for (const j of db.jobs) if (SAMPLE_JOB_INFO[j.id] && !JOB_INFO_KEYS.some(k => j[k])) Object.assign(j, SAMPLE_JOB_INFO[j.id], {sampleInfo:true});
+    const have = new Set(db.items.map(i => i.jobId + "|" + i.cat + "|" + i.title));
+    for (const i of s.items) if (["tkt","vend","contact","dwg"].includes(i.cat) && db.jobs.some(j => j.id === i.jobId) && !have.has(i.jobId + "|" + i.cat + "|" + i.title)) { i.num = null; db.items.push(i); }
+    for (const i of db.items) if (!i.num) i.num = nextNumRaw(db.items, i.jobId, i.cat);
+  }
+  db.v = 2; save();
+}
 const ui = Object.assign({job:"all", tab:"due", q:"", showClosed:false}, loadUI());
 if (ui.job !== "all" && !db.jobs.some(j => j.id === ui.job)) ui.job = "all";
 if (ui.tab !== "due" && !CAT[ui.tab]) ui.tab = "due";
@@ -380,9 +469,10 @@ if (ui.tab !== "due" && !CAT[ui.tab]) ui.tab = "due";
 const $ = id => document.getElementById(id);
 const jobById = id => db.jobs.find(j => j.id === id);
 const scoped = () => ui.job === "all" ? db.items : db.items.filter(i => i.jobId === ui.job);
-function nextNum(jobId, cat){
+function nextNum(jobId, cat){ return nextNumRaw(db.items, jobId, cat); }
+function nextNumRaw(items, jobId, cat){
   const pre = CAT[cat].pre; let max = 0;
-  for (const i of db.items) if (i.jobId === jobId && i.cat === cat) { const m = String(i.num).match(/(\d+)\s*$/); if (m) max = Math.max(max, +m[1]); }
+  for (const i of items) if (i.jobId === jobId && i.cat === cat) { const m = String(i.num).match(/(\d+)\s*$/); if (m) max = Math.max(max, +m[1]); }
   return `${pre}-${String(max+1).padStart(3,"0")}`;
 }
 function toast(msg){
@@ -422,10 +512,44 @@ function renderHead(){
   const d = new Date();
   const dateStr = `${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   if (!j) {
-    $("jobhead").innerHTML = `<div><h2>All Jobs</h2><div class="meta"><span>${db.jobs.length} active job${db.jobs.length===1?"":"s"}</span></div></div><div class="today">${dateStr}</div>`;
+    const roster = db.jobs.map(jb => {
+      const its = db.items.filter(i => i.jobId === jb.id), late = its.filter(isLate).length, pct = Number(jb.progress)||0;
+      const tk = its.filter(i => i.cat === "tkt" && !isDone(i)).length;
+      return `<button class="jobcard ${late?"hot":""}" data-job="${esc(jb.id)}">
+        <div class="jc-top"><b>${esc(jb.name)}</b>${late ? `<span class="pill od">${late} overdue</span>` : `<span class="pill t-green">On track</span>`}</div>
+        <div class="jc-stage">${jb.stage ? esc(jb.stage) : "No stage set"}<span>${pct}%</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <div class="jc-ppl"><span>PM <b>${esc(jb.pm || "—")}</b></span><span>Site <b>${esc(jb.site || "—")}</b></span><span>Tickets <b>${tk}</b></span></div>
+      </button>`;
+    }).join("");
+    $("jobhead").innerHTML = `<div><h2>All Jobs</h2><div class="meta"><span>${db.jobs.length} active job${db.jobs.length===1?"":"s"}</span></div></div><div class="today">${dateStr}</div>
+      ${db.jobs.length ? `<div class="roster">${roster}</div>` : `<div class="empty" style="width:100%">No jobs yet. Tap <b style="display:inline;color:var(--accent)">+ Add job</b> to start.</div>`}`;
   } else {
     const meta = [j.number && `Job #${esc(j.number)}`, j.location && esc(j.location), j.client && `Owner: ${esc(j.client)}`].filter(Boolean).map(s => `<span>${s}</span>`).join("");
-    $("jobhead").innerHTML = `<div><h2>${esc(j.name)}</h2><div class="meta">${meta}</div></div><div class="today">${dateStr}</div>`;
+    const its = db.items.filter(i => i.jobId === j.id);
+    const openN = cat => its.filter(i => i.cat === cat && !isDone(i)).length;
+    const allN = cat => its.filter(i => i.cat === cat).length;
+    const lateT = its.filter(i => i.cat === "tkt" && isLate(i)).length;
+    const person = (lbl, name, ph) => `<div class="person"><span class="lbl">${lbl}</span>${name ? `<b>${esc(name)}</b>` : `<span class="none">Not set</span>`}${ph ? phoneLink(ph) : ""}</div>`;
+    const pct = Number(j.progress)||0;
+    const q = (tab, lbl, n, sub, hot) => `<button class="qk ${hot?"hot":""}" data-tab="${tab}"><b>${n}</b><span>${lbl}</span>${sub ? `<small>${sub}</small>` : ""}</button>`;
+    $("jobhead").innerHTML = `<div><h2>${esc(j.name)}</h2><div class="meta">${meta}</div></div><div class="today">${dateStr}</div>
+      <div class="jobinfo">
+        <div class="people">${person("Project manager", j.pm, j.pmPhone)}${person("Site manager", j.site, j.sitePhone)}</div>
+        <div class="stage">
+          <div class="st-top"><span class="lbl">Where it's holding</span><button class="linkbtn" data-editjob="${esc(j.id)}">Edit job</button></div>
+          <b class="st-name">${j.stage ? esc(j.stage) : `<span class="none">No stage set</span>`}</b>
+          <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Percent complete"><i style="width:${pct}%"></i></div>
+          <div class="st-foot"><span class="pct">${pct}% complete</span>${j.holdNote ? `<span>${esc(j.holdNote)}</span>` : ""}</div>
+        </div>
+        <div class="quick">
+          ${q("tkt","Open tickets", openN("tkt"), lateT ? `${lateT} overdue` : "", lateT)}
+          ${q("subs","Subcontractors", allN("subs"), "")}
+          ${q("vend","Vendors", allN("vend"), "")}
+          ${q("dwg","Drawings", allN("dwg"), openN("dwg") ? `${openN("dwg")} in review` : "")}
+          ${q("contact","Contacts", allN("contact"), "")}
+        </div>
+      </div>`;
   }
 }
 
@@ -476,7 +600,7 @@ function renderList(){
   const closedN = base.filter(isDone).length;
   let items = (ui.showClosed || ui.tab === "due") ? base : base.filter(i => !isDone(i));
   const q = ui.q.trim().toLowerCase();
-  if (q) items = items.filter(i => [i.num,i.title,i.party,i.notes,i.trade,i.phone,i.type,i.status].some(v => String(v||"").toLowerCase().includes(q)));
+  if (q) items = items.filter(i => [i.num,i.title,i.party,i.notes,i.trade,i.phone,i.email,i.type,i.rev,i.status].some(v => String(v||"").toLowerCase().includes(q)));
   items = sortItems(items);
 
   const c = CAT[ui.tab];
@@ -512,22 +636,25 @@ function dueLabel(it){
   return `<span class="due">${esc(word)} ${fmtDate(it.due)}</span>`;
 }
 
+const phoneLink = ph => `<a class="phone" href="tel:${esc(String(ph).replace(/[^\d+]/g,""))}" data-stop="1">${esc(ph)}</a>`;
+
 function card(it){
   const c = CAT[it.cat], late = isLate(it), done = isDone(it);
   const job = ui.job === "all" ? jobById(it.jobId) : null;
   const meta = [];
-  if (it.cat === "dwg" && it.type) meta.push(esc(it.type));
-  if (it.cat === "subs") { if (it.trade) meta.push(`<b style="color:var(--fg);font-weight:600">${esc(it.trade)}</b>`); if (it.party) meta.push(esc(it.party)); }
+  if (it.cat === "dwg" && (it.type || it.rev)) meta.push(esc([it.type, it.rev && "Rev " + it.rev].filter(Boolean).join(" · ")));
+  if (c.dir) { if (it.trade) meta.push(`<b style="color:var(--fg);font-weight:600">${esc(it.trade)}</b>`); if (it.party) meta.push(esc(it.party)); }
   else if (it.party) meta.push(esc(it.party));
   if (c.money && it.amount !== "" && it.amount != null) {
     if (c.paid && Number(it.paid) > 0 && !done) meta.push(`<span class="amt">${money(unpaid(it))} <small>due of ${money(it.amount)}</small></span>`);
     else meta.push(`<span class="amt">${money(it.amount)}</span>`);
   }
   let subrow = "";
-  if (it.cat === "subs") {
+  if (c.dir) {
     const ns = Number(it.noShows)||0;
-    subrow = `<div class="subrow">${it.phone ? `<a class="phone" href="tel:${esc(String(it.phone).replace(/[^\d+]/g,""))}" data-stop="1">${esc(it.phone)}</a>` : `<span class="due">No phone saved</span>`}
-      <div class="ns ${ns>=2?"bad":""}" data-stop="1"><span>No-shows <b>${ns}</b></span><button data-ns="-1" data-id="${it.id}" aria-label="Remove a no-show">−</button><button data-ns="1" data-id="${it.id}" aria-label="Log a no-show">+</button></div></div>`;
+    subrow = `<div class="subrow">${it.phone ? phoneLink(it.phone) : `<span class="due">No phone saved</span>`}
+      ${c.email && it.email ? `<span class="phone mail" data-stop="1">${esc(it.email)}</span>` : ""}
+      ${c.ns ? `<div class="ns ${ns>=2?"bad":""}" data-stop="1"><span>No-shows <b>${ns}</b></span><button data-ns="-1" data-id="${it.id}" aria-label="Remove a no-show">−</button><button data-ns="1" data-id="${it.id}" aria-label="Log a no-show">+</button></div>` : ""}</div>`;
   }
   return `<div class="card ${late?"late":""} ${done?"closed":""}" role="button" tabindex="0" data-id="${it.id}">
     <div class="c-top"><span class="num">${esc(it.num)}</span>${ui.tab==="due" ? `<span class="cat">${esc(c.short)}</span>` : ""}<span class="sp"></span>${late?`<span class="pill od">Overdue</span>`:""}<span class="pill ${tone(it)}">${esc(it.status)}</span></div>
@@ -575,17 +702,19 @@ function itemForm(existing, presetCat){
         <div class="f full"><label for="f-job">Job</label><select id="f-job">${db.jobs.map(j=>`<option value="${esc(j.id)}" ${j.id===jobId?"selected":""}>${esc(j.name)}</option>`).join("")}</select></div>
         <div class="f"><label for="f-num">Number</label><input id="f-num" value="${esc(v("num", nextNum(jobId,cat)))}" autocomplete="off"></div>
         <div class="f"><label for="f-status">Status</label><select id="f-status">${c.statuses.map(s=>`<option ${s===v("status",c.statuses[0])?"selected":""}>${esc(s)}</option>`).join("")}</select></div>
-        <div class="f full"><label for="f-title">${c.sub ? "Company name" : "Title"}</label><input id="f-title" value="${esc(v("title"))}" placeholder="${c.sub ? "e.g. Shore Line Electric" : "What is it?"}" autocomplete="off"><span class="err" id="e-title" hidden>Give it a title so you can find it later.</span></div>
-        ${c.sub ? `
-          <div class="f"><label for="f-trade">Trade</label><input id="f-trade" value="${esc(v("trade"))}" placeholder="e.g. Electrical"></div>
+        <div class="f full"><label for="f-title">${esc(c.titleLabel || "Title")}</label><input id="f-title" value="${esc(v("title"))}" placeholder="${c.dir ? (c.email ? "Full name" : "e.g. Shore Line Electric") : "What is it?"}" autocomplete="off"><span class="err" id="e-title" hidden>Give it a title so you can find it later.</span></div>
+        ${c.dir ? `
+          <div class="f full"><label for="f-trade">${esc(c.tradeLabel)}</label><input id="f-trade" value="${esc(v("trade"))}" placeholder="${esc(c.tradePh)}" list="tradeList-${c.k}"></div>
+          <datalist id="tradeList-${c.k}">${[...new Set(db.items.filter(i=>i.cat===c.k).map(i=>i.trade).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
           <div class="f"><label for="f-phone">Phone</label><input id="f-phone" type="tel" inputmode="tel" value="${esc(v("phone"))}" placeholder="(732) 555-0100"></div>
-          <div class="f"><label for="f-party">Contact person</label><input id="f-party" value="${esc(v("party"))}"></div>
-          <div class="f"><label for="f-ns">No-shows</label><input id="f-ns" type="number" min="0" inputmode="numeric" value="${esc(v("noShows",0))}"></div>
+          <div class="f"><label for="f-party">${esc(c.party)}</label><input id="f-party" value="${esc(v("party"))}" ${c.email ? 'list="partyList"' : ""}></div>
+          ${c.email ? `<div class="f full"><label for="f-email">Email</label><input id="f-email" type="email" inputmode="email" autocomplete="off" value="${esc(v("email"))}" placeholder="name@company.com"></div>` : ""}
+          ${c.ns ? `<div class="f full"><label for="f-ns">No-shows</label><input id="f-ns" type="number" min="0" inputmode="numeric" value="${esc(v("noShows",0))}"></div>` : ""}
         ` : `<div class="f full"><label for="f-party">${esc(c.party)}</label><input id="f-party" value="${esc(v("party"))}" placeholder="Company or person" list="partyList"></div>`}
-        ${c.types ? `<div class="f full"><label for="f-type">Drawing type</label><select id="f-type">${c.types.map(t=>`<option ${t===v("type",c.types[0])?"selected":""}>${esc(t)}</option>`).join("")}</select></div>` : ""}
+        ${c.types ? `<div class="f"><label for="f-rev">Revision</label><input id="f-rev" value="${esc(v("rev"))}" placeholder="e.g. 4" autocomplete="off"></div><div class="f"><label for="f-type">Drawing type</label><select id="f-type">${c.types.map(t=>`<option ${t===v("type",c.types[0])?"selected":""}>${esc(t)}</option>`).join("")}</select></div>` : ""}
         ${c.money ? `<div class="f"><label for="f-amount">Amount ($)</label><input id="f-amount" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(v("amount"))}" placeholder="0"></div>` : ""}
         ${c.paid ? `<div class="f"><label for="f-paid">Paid so far ($)</label><input id="f-paid" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(v("paid"))}" placeholder="0"></div>` : ""}
-        <div class="f ${c.money && !c.paid ? "" : "full"}"><label for="f-due">${esc(c.due)}</label><input id="f-due" type="date" value="${esc(v("due"))}"></div>
+        ${c.noDue ? "" : `<div class="f ${c.money && !c.paid ? "" : "full"}"><label for="f-due">${esc(c.due)}</label><input id="f-due" type="date" value="${esc(v("due"))}"></div>`}
         <div class="f full"><label for="f-notes">Notes</label><textarea id="f-notes" placeholder="Who you spoke to, what was promised, next step">${esc(v("notes"))}</textarea></div>
         <datalist id="partyList">${[...new Set(db.items.map(i=>i.party).filter(Boolean))].sort().map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
       </form>
@@ -599,10 +728,10 @@ function itemForm(existing, presetCat){
   const mount = sheet => {
     const read = () => ({
       title: $("f-title")?.value, num: $("f-num")?.value, status: $("f-status")?.value, party: $("f-party")?.value,
-      trade: $("f-trade")?.value, phone: $("f-phone")?.value, noShows: $("f-ns")?.value, type: $("f-type")?.value,
+      trade: $("f-trade")?.value, phone: $("f-phone")?.value, email: $("f-email")?.value, rev: $("f-rev")?.value, noShows: $("f-ns")?.value, type: $("f-type")?.value,
       amount: $("f-amount")?.value, paid: $("f-paid")?.value, due: $("f-due")?.value, notes: $("f-notes")?.value,
     });
-    const rebuild = () => { const keep = read(); sheet.innerHTML = `<div class="grab"></div>` + build(); for (const k of ["title","party","due","notes","amount","paid"]) { const el = $("f-"+k); if (el && keep[k]) el.value = keep[k]; } wire(); };
+    const rebuild = () => { const keep = read(); sheet.innerHTML = `<div class="grab"></div>` + build(); for (const k of ["title","party","due","notes","amount","paid","trade","phone","email","rev"]) { const el = $("f-"+k); if (el && keep[k]) el.value = keep[k]; } wire(); };
     const wire = () => {
       $("f-cat") && $("f-cat").addEventListener("change", e => { cat = e.target.value; rebuild(); });
       $("f-job").addEventListener("change", e => { jobId = e.target.value; if (!it) $("f-num").value = nextNum(jobId, cat); });
@@ -624,8 +753,11 @@ function itemForm(existing, presetCat){
       };
       if (c.paid) rec.paid = f.paid === "" ? 0 : Number(f.paid);
       if (c.paid && rec.status === "Paid" && rec.amount !== "") rec.paid = rec.amount;
-      if (c.types) rec.type = f.type;
-      if (c.sub) { rec.trade = (f.trade||"").trim(); rec.phone = (f.phone||"").trim(); rec.noShows = Math.max(0, parseInt(f.noShows,10)||0); }
+      if (c.types) { rec.type = f.type; rec.rev = (f.rev||"").trim(); }
+      if (c.dir) { rec.trade = (f.trade||"").trim(); rec.phone = (f.phone||"").trim(); }
+      if (c.ns) rec.noShows = Math.max(0, parseInt(f.noShows,10)||0);
+      if (c.email) rec.email = (f.email||"").trim();
+      if (c.noDue) rec.due = it ? (it.due || "") : "";
       if (it) { Object.assign(it, rec); delete it.sample; }
       else db.items.push({id: uid(), created: Date.now(), ...rec});
       save(); closeSheet();
@@ -648,6 +780,13 @@ function jobForm(existing){
       <div class="f"><label for="j-number">Job number</label><input id="j-number" value="${esc(j?.number)}" placeholder="2404"></div>
       <div class="f"><label for="j-loc">Location</label><input id="j-loc" value="${esc(j?.location)}" placeholder="Town, NJ"></div>
       <div class="f full"><label for="j-client">Owner / client</label><input id="j-client" value="${esc(j?.client)}"></div>
+      <div class="f"><label for="j-pm">Project manager</label><input id="j-pm" value="${esc(j?.pm)}" autocomplete="off"></div>
+      <div class="f"><label for="j-pmPhone">PM phone</label><input id="j-pmPhone" type="tel" inputmode="tel" value="${esc(j?.pmPhone)}"></div>
+      <div class="f"><label for="j-site">Site manager</label><input id="j-site" value="${esc(j?.site)}" autocomplete="off"></div>
+      <div class="f"><label for="j-sitePhone">Site manager phone</label><input id="j-sitePhone" type="tel" inputmode="tel" value="${esc(j?.sitePhone)}"></div>
+      <div class="f"><label for="j-stage">Where the job is holding</label><input id="j-stage" value="${esc(j?.stage)}" placeholder="Pick or type a stage" list="stageList" autocomplete="off"><datalist id="stageList">${STAGES.map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>
+      <div class="f"><label for="j-progress">% complete</label><input id="j-progress" type="number" min="0" max="100" inputmode="numeric" value="${esc(j?.progress)}" placeholder="0"></div>
+      <div class="f full"><label for="j-hold">What it's waiting on</label><textarea id="j-hold" placeholder="e.g. Framing on hold for RFI-003, steel delivery Tuesday">${esc(j?.holdNote)}</textarea></div>
     </form>
     <div class="actions">
       ${j ? `<button class="btn danger" id="jDel" type="button">Delete job</button>` : ""}
@@ -657,8 +796,11 @@ function jobForm(existing){
     const submit = () => {
       const name = $("j-name").value.trim();
       if (!name) { $("e-jname").hidden = false; $("j-name").focus(); return; }
-      const rec = {name, number:$("j-number").value.trim(), location:$("j-loc").value.trim(), client:$("j-client").value.trim()};
-      if (j) Object.assign(j, rec); else { const nj = {id:"j-"+uid(), ...rec}; db.jobs.push(nj); ui.job = nj.id; ui.tab = "open"; }
+      const val = id => $(id).value.trim();
+      const pr = val("j-progress");
+      const rec = {name, number:val("j-number"), location:val("j-loc"), client:val("j-client"), pm:val("j-pm"), pmPhone:val("j-pmPhone"),
+        site:val("j-site"), sitePhone:val("j-sitePhone"), stage:val("j-stage"), progress: pr === "" ? "" : Math.min(100, Math.max(0, Math.round(Number(pr)||0))), holdNote:val("j-hold")};
+      if (j) { Object.assign(j, rec); delete j.sampleInfo; } else { const nj = {id:"j-"+uid(), ...rec}; db.jobs.push(nj); ui.job = nj.id; ui.tab = "open"; }
       save(); closeSheet(); render(); toast(j ? "Job saved" : `Added ${name}`);
     };
     $("jSave").addEventListener("click", submit);
@@ -729,17 +871,18 @@ function menuSheet(){
         db = d; ui.job = "all"; save(); closeSheet(); render(); toast("Backup restored");
       } catch(e){ const el = $("importErr"); el.hidden = false; el.textContent = "That text isn't a Ray Builders backup. Paste the whole backup, starting with {\"v\":1"; }
     });
-    armButton($("mWipe"), "Tap again to erase all", () => { db = {v:1, jobs:[], items:[], sampleLoaded:false}; ui.job = "all"; ui.tab = "due"; save(); closeSheet(); render(); toast("All data erased"); });
+    armButton($("mWipe"), "Tap again to erase all", () => { db = {v:2, jobs:[], items:[], sampleLoaded:false}; ui.job = "all"; ui.tab = "due"; save(); closeSheet(); render(); toast("All data erased"); });
   });
 }
 
 function clearSample(){
   const n = db.items.filter(i => i.sample).length;
-  db.items = db.items.filter(i => !i.sample); db.sampleLoaded = false; save(); render(); toast(`Cleared ${n} sample items`);
+  db.items = db.items.filter(i => !i.sample); db.sampleLoaded = false;
+  for (const j of db.jobs) if (j.sampleInfo) { for (const k of JOB_INFO_KEYS) delete j[k]; delete j.sampleInfo; } save(); render(); toast(`Cleared ${n} sample items`);
 }
 function loadSample(){
   const s = sampleData();
-  for (const j of s.jobs) if (!jobById(j.id)) db.jobs.push(j);
+  for (const j of s.jobs) { const ex = jobById(j.id); if (!ex) db.jobs.push(j); else if (!JOB_INFO_KEYS.some(k => ex[k])) Object.assign(ex, SAMPLE_JOB_INFO[j.id], {sampleInfo:true}); }
   const taken = new Set(db.items.map(i => i.jobId + "|" + i.cat + "|" + i.num));
   for (const i of s.items) { if (taken.has(i.jobId + "|" + i.cat + "|" + i.num)) i.num = nextNum(i.jobId, i.cat); db.items.push(i); }
   db.sampleLoaded = true; save(); render(); toast("Sample data loaded");
@@ -753,7 +896,8 @@ document.addEventListener("click", e => {
   if (t.closest("[data-stop]")) return;
   const jc = t.closest("[data-job]"); if (jc) { ui.job = jc.dataset.job; render(); return; }
   if (t.closest("[data-addjob]")) { jobForm(); return; }
-  const tb = t.closest("[data-tab]"); if (tb) { ui.tab = tb.dataset.tab; render(); if (tb.classList.contains("kpi")) $("tabsbar").scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  const ej = t.closest(".jobinfo [data-editjob]"); if (ej) { jobForm(jobById(ej.dataset.editjob)); return; }
+  const tb = t.closest("[data-tab]"); if (tb) { ui.tab = tb.dataset.tab; render(); if (tb.classList.contains("kpi") || tb.classList.contains("qk")) $("tabsbar").scrollIntoView({behavior:"smooth", block:"start"}); return; }
   const cd = t.closest(".card[data-id]"); if (cd) { const it = db.items.find(i => i.id === cd.dataset.id); if (it) itemForm(it); return; }
   const act = t.closest("[data-act]"); if (act && act.dataset.act === "clearSample") { if (act.classList.contains("arm")) clearSample(); else { act.classList.add("arm"); act.textContent = "Tap again to clear"; } return; }
 });
